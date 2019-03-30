@@ -47,6 +47,7 @@ class UsersLogic extends Model
         if (!$username || !$password) {
             return array('status' => 0, 'msg' => '请填写账号或密码');
         }
+        $config = tpCache('basic');
 
         $user = Db::name('users')->where("mobile", $username)->whereOr('email', $username)->find();
         if (!$user) {
@@ -55,7 +56,9 @@ class UsersLogic extends Model
             $result = array('status' => -2, 'msg' => '密码错误!');
         } elseif ($user['is_lock'] == 1) {
             $result = array('status' => -3, 'msg' => '账号异常已被锁定！！！');
-        } else {
+        } elseif($config['is_audit'] && $user['is_audit']!=0){
+            $result = array('status' => -4, 'msg' => '请耐心等待，审核完成才能登录！');
+        } else{
             //是否清空积分           zengmm          2018/06/05
             $this->isEmptyingIntegral($user);
             //查询用户信息之后, 查询用户的登记昵称
@@ -74,6 +77,7 @@ class UsersLogic extends Model
      */
     public function app_login($username, $password, $capache, $push_id=0)
     {
+        $config = tpCache('basic');
     	$result = array();
         if(!$username || !$password)
            $result= array('status'=>0,'msg'=>'请填写账号或密码');
@@ -84,6 +88,8 @@ class UsersLogic extends Model
            $result = array('status'=>-2,'msg'=>'密码错误!');
         }elseif($user['is_lock'] == 1){
            $result = array('status'=>-3,'msg'=>'账号异常已被锁定！！！');
+        } elseif($config['is_audit'] && $user['is_audit']!=0){
+            $result = array('status' => -4, 'msg' => '请耐心等待，审核完成才能登录！');
         }else{
             //是否清空积分           zengmm          2018/06/11
             $this->isEmptyingIntegral($user);
@@ -462,6 +468,12 @@ class UsersLogic extends Model
         $map['last_login'] = time();
         $user_level =Db::name('user_level')->where('amount = 0')->find(); //折扣
         $map['discount'] = !empty($user_level) ? $user_level['discount']/100 : 1;  //新注册的会员都不打折
+
+        //查看是否开启了审核注册
+        $config = tpCache('basic');
+        if($config['is_audit']){
+            $map['is_audit']=2;
+        }
         $user_id = Db::name('users')->insertGetId($map);
         if($user_id === false)
             return array('status'=>-1,'msg'=>'注册失败');

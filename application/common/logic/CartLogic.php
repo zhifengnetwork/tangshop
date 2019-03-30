@@ -925,6 +925,9 @@ class CartLogic extends Model
                 $total_fee += $cartItem['goods_fee'];
                 $goods_fee += $cartItem['cut_fee'];
                 $goods_num += $cartItem['goods_num'];
+                if($cartItem['is_upgrade']){
+
+                }
                 if($cartItem['combination_cart']){
                     foreach($cartItem['combination_cart'] as $combinationCartKey=>$combinationCartItem){
                         $total_fee += $combinationCartItem['goods_fee'];
