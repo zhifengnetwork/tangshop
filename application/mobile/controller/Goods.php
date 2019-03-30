@@ -228,6 +228,9 @@ class Goods extends MobileBase
             $this->assign('collect', $collect);
         }
 
+        $discount = get_discount();
+        $this->assign('discount',$discount);
+        
         $recommend_goods = M('goods')->where("is_recommend=1 and is_on_sale=1 and cat_id = {$goods['cat_id']}")->cache(7200)->limit(9)->field("goods_id, goods_name, shop_price")->select();
         $this->assign('recommend_goods', $recommend_goods);
         $this->assign('goods', $goods);

@@ -56,8 +56,9 @@
                 </a>
             </div>
             <div class="scunde p">
-                <span class="red" id="price">￥{$goods.shop_price}</span>
-                <span id="market_price_title">市场价：</span><span class="linethr" id="market_price">{$goods.market_price}</span>
+                <span class="red" id="price">￥{$goods.shop_price*$discount*0.01}</span>
+                <span id="market_price_title">原价：</span><span class="linethr" id="shop_price">{$goods.shop_price}</span>
+                
                 <p class="inlist">
                     <if condition="$goods.prom_type neq 2"><span style="float:left;">销量：{$goods['sales_sum']+$goods['virtual_sales_sum']}</span></if>
                     <!--<span >当前库存：<span class="spec_store_count">{$goods.store_count}</span></span>-->
@@ -317,7 +318,7 @@
                                     <img src="{$v.goods_id|goods_thum_images=400,400}">
                                     <span class="similar-product-text">{$v[goods_name]}</span>
                                     <span class="similar-product-price">
-                                        ¥<span class="big-price">{$v[shop_price]}</span>
+                                        ¥<span class="big-price">{$v[shop_price]*$discount*0.01}</span>
                                     </span>
                                 </div>
                             </a>
@@ -1115,9 +1116,9 @@
             $("#price").html("<em>￥</em>" + integral + '+' +exchange_integral + '积分'); //积分显示
         }else{
             $("#goods_price").html(goods_price); //变动价格显示
-            $("#price").html("<em>￥</em>" + goods_price); //变动价格显示
+            $("#price").html("<em>￥</em>" + goods_price*discount*0.01); //变动价格显示
         }
-        $('#market_price_title').html('市场价：');
+        $('#market_price_title').html('原价：');
         $('#spec_store_count').html(store_count);
         $('#number').attr('max', store_count);
         $('.spec_store_count').html(store_count);

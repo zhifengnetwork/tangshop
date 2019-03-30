@@ -1520,3 +1520,17 @@ function orderExresperMent($order_info = array(),$des='',$order_id=''){
       }
       
 }
+
+/**
+ * 获取会员折扣价
+ */
+function get_discount()
+{
+    $user_id = session('user');
+    $user_id =$user_id['user_id'];
+
+    $level = Db::name('users')->where('user_id',$user_id)->value('level');
+    $discount = Db::name('user_level')->where('level_id',$level)->value('discount');
+    
+    return $discount;
+}
