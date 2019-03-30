@@ -28,12 +28,12 @@
             </dl>
             <dl class="row">
                 <dt class="tit">
-                    <label for="amount"><em>*</em>累计消费额度</label>
+                    <label for="amount"><em>*</em>升级需要商品数</label>
                 </dt>
                 <dd class="opt">
-                    <input type="text" name="amount" value="{$info.amount}" id="amount" class="input-txt" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''">
-                    <span class="err" id="err_amount"></span>
-                    <p class="notic">达到该等级，会员累计所需消费的额度,单位：元</p>
+                    <input type="text" name="goods_num" value="{$info.goods_num}" id="goods_num" class="input-txt" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''">
+                    <span class="err" id="err_goods_num"></span>
+                    <p class="notic">要达到该等级，会员所需升级需要商品数</p>
                 </dd>
             </dl>
             <dl class="row">
