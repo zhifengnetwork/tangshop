@@ -92,8 +92,126 @@ class MobileBase extends Controller {
             }
         }
         
+        /**
+         * 组装 【users -> parens】字段
+         */
+        
+        $this->assemble_parents();
+        $this->assemble_parents_exe();
+        
+        if(!isset($user)) $user = session('user');
+
         $this->public_assign();
     }
+
+    /**
+     * 组装、更新上级列
+     * @author Rock
+     * @date 2019/03/23
+     */
+    public function assemble_parents(){
+        $user = session('user');
+        if($user['user_id'] > 0 && !isset($user['q_parents'])){
+			$assemble = Db::query("select `parents`,`first_leader` from `tp_users` where `user_id` = '$user[user_id]' and `first_leader` > 0");
+            $assemble = $assemble[0];
+            if(isset($assemble)){
+				if($assemble['first_leader']){
+					if($assemble['parents']){
+						$parents = explode(',',$assemble['parents']);
+						if($parents[0] > 0){
+							$start_id = $parents[0];
+							$p_str = $assemble['parents'];
+						}else{
+							$user['q_parents'] = 1;
+                            session('user',$user);
+                            goto RE;
+						}
+					}else{
+						$start_id = $assemble['first_leader'];
+						$p_str = $start_id . ',';
+					}
+					
+					// 开始查询上级列
+					$sinfo = Db::query("select `first_leader`,`parents` from `tp_users` where `user_id` = '$start_id'");
+					$sinfo = $sinfo[0];
+					if($sinfo){
+						if($sinfo['parents']){
+							$up_str = $sinfo['parents'] . $p_str;
+							$this->set_parents($user['user_id'],$up_str);
+						}else{
+							if($sinfo['first_leader'] == 0){
+								$user['q_parents'] = 1;
+								session('user',$user);
+								goto RE;
+							}
+							$up_str = $sinfo['first_leader'] . ',' . $p_str;
+							$this->set_parents($user['user_id'],$up_str);
+						}
+					}else{
+						$up_str = '0,' . $p_str;
+						$user['q_parents'] = 1;
+						session('user',$user);
+						$this->set_parents($user['user_id'],$up_str);
+					}
+				}else{
+					// 设置上级列
+					$this->set_parents($user['user_id']);
+					$user['q_parents'] = 1;
+					session('user',$user);
+				}
+            }
+        }
+        RE:
+            return '';
+    }
+
+
+    /**
+     * 自动程序，组装用户的上级列
+     * @author Rock
+     * @date  2019/03/25
+     */
+    public function assemble_parents_exe(){
+        $qsql = "select `user_id`,`first_leader`,`parents` from `tp_users` where (`parents` = '' or `parents` REGEXP '^[1-9]') and `first_leader` > 0 limit 1";
+        $user = Db::query($qsql);
+        if($user){
+            $user = $user[0];
+            if($user['parents']){
+                $parents = explode(',',$user['parents']);
+                $start_id = $parents[0];
+                $p_str = $user['parents'];
+            }else{
+                $start_id = $user['first_leader'];
+                $p_str = $start_id . ',';
+            }
+
+            // 开始查询上级列
+            $sinfo = Db::query("select `first_leader`,`parents` from `tp_users` where `user_id` = '$start_id'");
+            $sinfo = $sinfo[0];
+            if($sinfo){
+                if($sinfo['parents']){
+                    $up_str = $sinfo['parents'] . $p_str;
+                    $this->set_parents($user['user_id'],$up_str);
+                }else{
+                    $up_str = $sinfo['first_leader'] . ',' . $p_str;
+                    $this->set_parents($user['user_id'],$up_str);
+                }
+            }else{
+                $up_str = '0,' . $p_str;
+                $this->set_parents($user['user_id'],$up_str);
+            }
+        }
+    }
+
+
+	
+	/**
+	 * 填充上级列
+	 * @author Rock
+	 */
+	public function set_parents($user_id,$parents = '0,'){
+		Db::execute("update `tp_users` set `parents` = '$parents' where `user_id` = '$user_id'");
+	}
     
     /**
      * 保存公告变量到 smarty中 比如 导航 
