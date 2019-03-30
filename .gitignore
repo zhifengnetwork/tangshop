@@ -1,0 +1,11 @@
+/runtime
+/application/database.php
+/vendor/topthink/think-captcha/assets/bgs/*
+.vscode
+.project
+.idea
+/public/upload/*
+/public/qrcode/
+cron.txt
+cron_team.sh
+/sql
