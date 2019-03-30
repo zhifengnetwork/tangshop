@@ -289,6 +289,12 @@ class User extends MobileBase
              
             
             if ($data['status'] != 1) $this->ajaxReturn($data);
+
+            //看是否需要审核注册
+            $config = tpCache('basic');
+            if($config['basic']){
+                $this->ajaxReturn(['status'=>-1,'msg'=>'注册成功，请等待审核通过后方可登录']);
+            }
             
             //获取公众号openid,并保持到session的user中
             $oauth_users = M('OauthUsers')->where(['user_id'=>$data['result']['user_id'] , 'oauth'=>'weixin' , 'oauth_child'=>'mp'])->find();

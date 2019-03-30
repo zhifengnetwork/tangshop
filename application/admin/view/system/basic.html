@@ -65,6 +65,20 @@
             </dl>-->
             <dl class="row">
                 <dt class="tit">
+                    <label>注册审核开关</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="audit_on_off1" class="cb-enable  <if condition="$config['is_audit'] eq 1">selected</if>">开启</label>
+                        <label for="audit_on_off0" class="cb-disable <if condition="$config['is_audit'] eq 0">selected</if>">关闭</label>
+                        <input type="radio" onclick="$('#switch_on_off').show();"  id="audit_on_off1"  name="is_audit" value="1" <if condition="$config['is_audit'] eq 1">checked="checked"</if>>
+                        <input type="radio" onclick="$('#switch_on_off').hide();" id="audit_on_off0" name="is_audit" value="0" <if condition="$config['is_audit'] eq 0">checked="checked"</if> >
+                    </div>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
                     <label>VIP充值开关</label>
                 </dt>
                 <dd class="opt">
