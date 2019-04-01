@@ -12,6 +12,23 @@
  * Date: 2015-09-09
  */
 
+ function offline($user_id){
+	$is_offline = M('user_offline')->where('user_id',$user_id)->value('is_offline');
+
+	if($is_offline){
+		switch($is_offline){
+			case 0: $is_offline = '无';break;
+			case 1: $is_offline = '已拥有';break;
+			case 2: $is_offline = '无';break;
+			default:$is_offline = '无';
+		}
+	}else{
+		$is_offline = '无';
+	}
+	
+	return $is_offline;
+ }
+
 /**
  * 管理员操作记录
  * @param $log_info string 记录信息

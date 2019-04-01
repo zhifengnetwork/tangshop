@@ -6,7 +6,7 @@ class UserLevel extends Validate
     // 验证规则
     protected $rule = [
         ['level_name', 'require|unique:user_level'],
-        ['amount','require|number|unique:user_level'],
+        // ['amount','require|number|unique:user_level'],
         ['discount','require|between:1,100|unique:user_level'],
     ];
     //错误信息
@@ -24,7 +24,7 @@ class UserLevel extends Validate
     protected $scene = [
         'edit'  =>  [
             'level_name'    =>'require|unique:user_level,level_name^level_id',
-            'amount'        =>'require|number|unique:user_level,amount^level_id',
+            // 'amount'        =>'require|number|unique:user_level,amount^level_id',
             'discount'    =>'require|between:1,100|unique:user_level,discount^level_id',
         ],
     ];
