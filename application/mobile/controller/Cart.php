@@ -82,7 +82,7 @@ class Cart extends MobileBase {
         $cartLogic->setUserId($this->user_id);
         $cartLogic->AsyncUpdateCart($cart);
         $select_cart_list = $cartLogic->getCartList(1);//获取选中购物车
-//        var_dump($select_cart_list);die;
+        var_dump($select_cart_list);die;
         $cart_price_info = $cartLogic->getCartPriceInfo($select_cart_list);//计算选中购物车
         $user_cart_list = $cartLogic->getCartList();//获取用户购物车
         $return['cart_list'] = $cartLogic->cartListToArray($user_cart_list);//拼接需要的数据

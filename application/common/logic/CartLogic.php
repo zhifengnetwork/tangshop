@@ -919,14 +919,14 @@ class CartLogic extends Model
      */
     public function getCartPriceInfo($cartList = null)
     {
-        $total_fee = $goods_fee = $goods_num = 0;//初始化数据。商品总额/节约金额/商品总共数量
+        $total_fee = $goods_fee = $goods_num = $save_price = $designated_goods_num = 0;//初始化数据。商品总额/节约金额/商品总共数量/购买的商品超过升级的等级后节省下来的金额/购买的商品中指定的商品的数量
         if ($cartList) {
             foreach ($cartList as $cartKey => $cartItem) {
                 $total_fee += $cartItem['goods_fee'];
                 $goods_fee += $cartItem['cut_fee'];
                 $goods_num += $cartItem['goods_num'];
                 if($cartItem['is_upgrade']){
-
+                    $designated_goods_num++;
                 }
                 if($cartItem['combination_cart']){
                     foreach($cartItem['combination_cart'] as $combinationCartKey=>$combinationCartItem){
@@ -937,9 +937,44 @@ class CartLogic extends Model
                 }
             }
         }
+        $save_price=$this->get_goods_cost($this->user_id,$designated_goods_num);
+        $goods_fee+=$save_price;
         $total_fee = round($total_fee,2);
         $goods_fee = round($goods_fee,2);
         return compact('total_fee', 'goods_fee', 'goods_num');
+    }
+
+    //计算购买的商品是否已升级变差价
+    public function get_goods_cost($user_id,$num){
+        //获取当前用户等级
+        $user_level=M('users')->where(['user_id'=>$user_id])->find();
+        //获取最大等级
+        $max_level=M('user_level')->order('discount')->find();
+        //节省的钱
+        $save_price=0;
+        //查询当前用户升级所需购买商品数量
+        if($user_level['level']>1 && $user_level['level']<$max_level['level_id']){
+            $level_num=M('user_level')->where(['level_id'=>$user_level['level']+1])->find();
+            //查询升级之后已经购买的商品数
+            $level_time=M('user_level_time')->where(['user_id'=>$user_id,'user_level'=>$user_level['level']])->find();
+            $goods_num=M('order_goods')->alias('og')->join('order o','og.order_id = o.order_id')->where('o.pay_time','>',$level_time['level_time'])->count();
+            //查询当前等级的折扣
+            $discount=M('user_level')->where(['level_id'=>$user_level['level']])->find();
+            if(($goods_num+$num>$level_num['goods_num']) && ($user_level['level']+1<$max_level['level_id'])){
+                //查询上上级的升级数量   判断是否超过
+                $up_level_num=M('user_level')->where(['user_id'=>$user_id])->find();
+                $discount_up1=M('user_level')->where(['level_id'=>$user_level['level']+1])->find();
+                if(($goods_num+$num>$level_num['goods_num']+$up_level_num['goods_num']) && ($user_level['level']+2<$max_level['level_id'])){
+                    $discount_up2=M('user_level')->where(['level_id'=>$user_level['level']+2])->find();
+                    //算差价
+                    $save_price=($discount['discount']-$discount_up1['discount'])/100*$up_level_num['goods_num']+($goods_num+$num-$level_num['goods_num']-$up_level_num['goods_num'])*($discount['discount']-$discount_up2['discount'])/100;
+                }else{
+                    $save_price=($discount['discount']-$discount_up1['discount'])/100*$up_level_num['goods_num'];
+                }
+            }
+        }
+        return $save_price;
+
     }
 
     /**
