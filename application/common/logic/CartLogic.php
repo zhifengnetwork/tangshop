@@ -639,6 +639,7 @@ class CartLogic extends Model
         }
         $cartWhere['combination_group_id'] = 0;
         $cartList = $cart->with('goods')->where($cartWhere)->select();  // 获取购物车商品
+//        var_dump($cartList);die;
         $cartCheckAfterList = $this->checkCartList($cartList);
         return $cartCheckAfterList;
     }
@@ -922,12 +923,13 @@ class CartLogic extends Model
         $total_fee = $goods_fee = $goods_num = $save_price = $designated_goods_num = 0;//初始化数据。商品总额/节约金额/商品总共数量/购买的商品超过升级的等级后节省下来的金额/购买的商品中指定的商品的数量
         if ($cartList) {
             foreach ($cartList as $cartKey => $cartItem) {
+//                var_dump($cartItem);die;
                 $total_fee += $cartItem['goods_fee'];
                 $goods_fee += $cartItem['cut_fee'];
                 $goods_num += $cartItem['goods_num'];
-                if($cartItem['is_upgrade']){
-                    $designated_goods_num++;
-                }
+//                if($cartItem['is_upgrade']){
+//                    $designated_goods_num++;
+//                }
                 if($cartItem['combination_cart']){
                     foreach($cartItem['combination_cart'] as $combinationCartKey=>$combinationCartItem){
                         $total_fee += $combinationCartItem['goods_fee'];
@@ -937,7 +939,19 @@ class CartLogic extends Model
                 }
             }
         }
-        $save_price=$this->get_goods_cost($this->user_id,$designated_goods_num);
+        //我来算差价
+        //先查询有没有指定产品
+        $save_price=array('price'=>0,'discount'=>0);
+        if(isset($this->user_id)){
+            $upgrade=$this->get_upgrade_goods_num($this->user_id);
+            if($upgrade){
+                $save_price=$this->get_goods_cost($this->user_id,$upgrade);
+            }
+        }
+        //处理升级之后其他商品的差价
+        if($save_price['discount']){
+            $total_fee=$total_fee*$save_price['discount'];
+        }
         $goods_fee+=$save_price;
         $total_fee = round($total_fee,2);
         $goods_fee = round($goods_fee,2);
@@ -951,7 +965,7 @@ class CartLogic extends Model
         //获取最大等级
         $max_level=M('user_level')->order('discount')->find();
         //节省的钱
-        $save_price=0;
+        $save_price=array('price'=>0,'discount'=>0);
         //查询当前用户升级所需购买商品数量
         if($user_level['level']>1 && $user_level['level']<$max_level['level_id']){
             $level_num=M('user_level')->where(['level_id'=>$user_level['level']+1])->find();
@@ -967,14 +981,24 @@ class CartLogic extends Model
                 if(($goods_num+$num>$level_num['goods_num']+$up_level_num['goods_num']) && ($user_level['level']+2<$max_level['level_id'])){
                     $discount_up2=M('user_level')->where(['level_id'=>$user_level['level']+2])->find();
                     //算差价
-                    $save_price=($discount['discount']-$discount_up1['discount'])/100*$up_level_num['goods_num']+($goods_num+$num-$level_num['goods_num']-$up_level_num['goods_num'])*($discount['discount']-$discount_up2['discount'])/100;
+                    $save_price['price']=($discount['discount']-$discount_up1['discount'])/100*$up_level_num['goods_num']+($goods_num+$num-$level_num['goods_num']-$up_level_num['goods_num'])*($discount['discount']-$discount_up2['discount'])/100;
+                    $save_price['discount']=($discount['discount']-$discount_up2['discount'])/$discount['discount'];
                 }else{
-                    $save_price=($discount['discount']-$discount_up1['discount'])/100*$up_level_num['goods_num'];
+                    $save_price['price']=($discount['discount']-$discount_up1['discount'])/100*$up_level_num['goods_num'];
+                    $save_price['discount']=($discount['discount']-$discount_up1['discount'])/$discount['discount'];
                 }
             }
         }
         return $save_price;
 
+    }
+    //查询购买的商品中指定商品数量
+    public function get_upgrade_goods_num($user_id){
+        if(is_numeric($user_id) && $user_id>0){
+            return M('cart')->alias('c')->join('goods g','g.goods_id=c.goods_id')->where(['c.user_id'=>$user_id,'g.is_upgrade'=>1])->count();
+        }else{
+            return 0;
+        }
     }
 
     /**
