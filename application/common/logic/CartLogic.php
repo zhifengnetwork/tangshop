@@ -952,7 +952,7 @@ class CartLogic extends Model
         if($save_price['discount']){
             $total_fee=$total_fee*$save_price['discount'];
         }
-        $goods_fee+=$save_price;
+//        $goods_fee+=$save_price;
         $total_fee = round($total_fee,2);
         $goods_fee = round($goods_fee,2);
         return compact('total_fee', 'goods_fee', 'goods_num');
