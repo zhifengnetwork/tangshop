@@ -115,6 +115,10 @@ class Goods extends MobileBase
                 $goods_images = M('goods_images')->where("goods_id", "in", implode(',', $filter_goods_id2))->cache(true)->select();
         }
         $goods_category = M('goods_category')->where('is_show=1')->cache(true)->getField('id,name,parent_id,level'); // 键值分类数组
+
+        $dis_info = get_discount();
+        $this->assign('user_id',$dis_info['user_id']);
+        $this->assign('discount',$dis_info['discount']);
         $this->assign('goods_list', $goods_list);
         $this->assign('goods_category', $goods_category);
         $this->assign('goods_images', $goods_images);  // 相册图片
@@ -228,8 +232,9 @@ class Goods extends MobileBase
             $this->assign('collect', $collect);
         }
 
-        $discount = get_discount();
-        $this->assign('discount',$discount);
+        $dis_info = get_discount();
+        $this->assign('user_id',$dis_info['user_id']);
+        $this->assign('discount',$dis_info['discount']);
         
         $recommend_goods = M('goods')->where("is_recommend=1 and is_on_sale=1 and cat_id = {$goods['cat_id']}")->cache(7200)->limit(9)->field("goods_id, goods_name, shop_price")->select();
         $this->assign('recommend_goods', $recommend_goods);

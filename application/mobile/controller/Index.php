@@ -267,8 +267,10 @@ class Index extends MobileBase {
             'virtual_indate' => ['exp', ' = 0 OR virtual_indate > ' . time()]
         ];
         $favourite_goods = Db::name('goods')->where($where)->order('sort DESC')->page($p,C('PAGESIZE'))->cache(true,TPSHOP_CACHE_TIME)->select();//首页推荐商品
-        $discount = get_discount();
-        $this->assign('discount',$discount);
+        
+        $dis_info = get_discount();
+        $this->assign('user_id',$dis_info['user_id']);
+        $this->assign('discount',$dis_info['discount']);
         $this->assign('favourite_goods',$favourite_goods);
     	return $this->fetch();
     }

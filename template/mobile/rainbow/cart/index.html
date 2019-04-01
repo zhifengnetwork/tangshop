@@ -277,10 +277,14 @@
                         <div class="similer-product">
                             <img src="{$good[goods_id]|goods_thum_images=400,400}"/>
                             <span class="similar-product-text">{$good[goods_name]|getsubstr=0,20}</span>
-                                <span class="similar-product-price">
-                                    ¥<span class="big-price">{$good[shop_price]}</span>
-                                    <!--<span class="small-price">.00</span>-->
-                                </span>
+                                <empty name="$user_id">
+                                        <span class="similar-product-price">
+                                        ¥<span class="big-price">{$good[shop_price]}</span>
+                                        </span>
+                                    <else />
+                                        <span class="similar-product-price">
+                                        ¥<span class="big-price">{$good[shop_price]*$discount*0.01}({$good[shop_price]})</span></span>
+                                </empty>
                         </div>
                     </a>
                 </li>

@@ -64,6 +64,9 @@ class Cart extends MobileBase {
         $cartLogic->setUserId($this->user_id);
         $cartList = $cartLogic->getCartList();//用户购物车
         $hot_goods = db('Goods')->where('is_hot=1 and is_on_sale=1')->limit(20)->cache(true, TPSHOP_CACHE_TIME)->select();
+        $dis_info = get_discount();
+        $this->assign('user_id',$dis_info['user_id']);
+        $this->assign('discount',$dis_info['discount']);
         $this->assign('hot_goods', $hot_goods);
         $this->assign('cartList', $cartList);//购物车列表
         return $this->fetch();
