@@ -359,25 +359,25 @@ class Cart extends MobileBase {
             $this->error('请上传凭证');
         }
 
-        $img_name = md5(mt_rand(0,100000).time()).'png'; //文件名
-        $img_path = ROOT_PATH.'public'.DS.'uploads'.DS.Date('Ymd');
+        $name = $file->getInfo('name');
+        $exten = substr($name,strrpos($name,'.')); //上传文件后缀名
+        $img_name = md5(mt_rand(0,100000).time()); //文件名
+        $img_path = ROOT_PATH.'public'.DS.'upload'.DS.'proof'.Date('Ymd');
         if(!is_dir($img_path)){
             mkdir($img_path,0777,true);
         }
-        $img_src = $path.DS.$img_name;
-        $pay_img->move($img_path);
-
-
-        //上传之前验证图片
-        // $pay_img = $file->validate(['ext' => 'jpg,png']);
-        // $name = $file->getInfo('name');
-        // $img_path = ROOT_PATH.'public'.DS.'uploads';
-
-        // $pay_img->move($img_path);
-        // $path = get_extension_funcs($pay_img);
-        dump($img_path);
-        dump($img_name);
-        die;
+        $img_src = $img_path.DS.$img_name.$exten;
+        $pay_img = $file->validate(['ext' => 'jpg,png']);
+        $pay_img->move($img_path,$img_name);
+        //插入数据库
+        Db::name('user_pay_log')->insert([
+            'user_id' => $this->user_id,
+            'order_id'  => $info['order_id'],
+            'pay_way'   => '0',
+            'image' =>  $img_src,
+            'add_time'  =>  time(),
+            'status'    =>  '0'
+        ]);
         //上传验证
         $result = $this->validate(
             ['file' => $file],
@@ -385,9 +385,9 @@ class Cart extends MobileBase {
             ['file.require' => '请选择上传文件','file.image'=> '必须是100*100的PNG格式文件']
         );
         if($info){
-            $this->success('文件上传成功'.$pay_img->getRealPath());
+            $this->success('文件上传成功');
         }else{
-            $this->error('文件上传失败'.$pay_img->getError());
+            $this->error('文件上传失败');
         }
     }
 
