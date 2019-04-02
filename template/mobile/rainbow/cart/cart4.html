@@ -1,16 +1,32 @@
 <include file="public/header" title="支付,提交订单" body=""/>
 <include file="public/header_nav" title="支付,提交订单" href="/index.php/Mobile/Order/order_list/type/WAITPAY"/>
-<form action="{:U('Mobile/Payment/getCode')}" method="post" name="cart4_form" id="cart4_form">
+<form action="{:U('upload')}" enctype="multipart/form-data" method="post" name="cart4_form" id="cart4_form">
     <div class="ddmoney">
         <div class="maleri30">
             <span class="fl">订单号</span>
-            <span class="fr">{$order[order_sn]}</span>
+            <span class="fr"><input type="hidden" name="order_sn" value="{$order[order_sn]}">{$order[order_sn]}</span>
         </div>
     </div>
     <div class="ddmoney">
         <div class="maleri30">
             <span class="fl">订单金额</span>
-            <span class="fr">{$order[order_amount]}元</span>
+            <span class="fr"><input type="hidden" name="order_amount" value="{$order[order_amount]}">{$order[order_amount]}元</span>
+        </div>
+    </div>
+    <div class="maleri30">
+        <span class="fl"><input type="radio" name="pay" value="支付宝账号">支付宝账号</span>
+        <span class="fl"><input type="radio" name="pay" value="建设银行卡号">建设银行卡号</span>
+        <span class="fl"><input type="radio" name="pay" value="中国银行卡号">中国银行卡号</span>
+        <span class="fl"><input type="radio" name="pay" value="工商银行卡号">工商银行卡号</span><br />
+        <span class="fl"><input type="text" name="number" ></span>
+    </div>
+    <div class="maleri30">
+        <input type="file" class="file" name="file"><br />
+    </div>
+    <div class="paiton">
+        <div class="maleri30">
+            <input type="hidden" name="order_id" value="{$order['order_id']}" id="order_id"/>
+            <a class="soon" href="javascript:void(0);" onClick="pay()"><span>上传凭证</span></a>
         </div>
     </div>
     <!--其他支付方式-s-->
@@ -65,70 +81,6 @@
         <!-- </div>
     </div> -->
 
-<!--    <div class="quickpayment">
-        <div class="maleri30">
-            <div class="quicks fl"><img src="__STATIC__/images/quick.png"/></div>
-            <div class="paym fl">
-                <p class="titp">快捷支付</p>
-                <p class="spi">银行卡快捷支付服务</p>
-            </div>
-        </div>
-    </div>
-    <div class="myorder debit usedeb p">
-        <div class="content30">
-            <a href="javascript:void(0)">
-                <div class="order">
-                    <div class="fl">
-                        <span>使用银行卡</span>
-                    </div>
-                    <div class="fr">
-                        <i class="Mright xjt"></i>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-&lt;!&ndash;选择银行卡弹窗-s&ndash;&gt;
-		<div class="chooseebitcard">
-			<div class="maleri30">
-				<div class="choose-titr">
-					<span>选择银行卡</span>
-					<i class="gb-close"></i>
-				</div>
-
-				<div class="card">
-					<div class="card-list">
-						<div class="radio fl">
-							<span class="che">
-								<i>
-                                    <input type="radio"   value="pay_code={$v['code']}" class="c_checkbox_t" name="pay_radio" style="display:none;"/>
-                                </i>
-							</span>
-						</div>
-						<p class="fl">&nbsp;&nbsp;<span>工商银行储蓄卡</span>&nbsp;&nbsp;<span>(3689)</span></p>
-					</div>
-				</div>
-
-				<p class="teuse"><span class="red">+</span><span>使用新银行卡</span></p>
-			</div>
-		</div>
-&lt;!&ndash;选择银行卡弹窗-e&ndash;&gt;
-
-&lt;!&ndash;支付失败-s&ndash;&gt;
-		<div class="losepay">
-			<div class="maleri30">
-				<p class="red">支付失败</p>
-				<p class="lo-tit">以下两种情况需要您重新绑卡：</p>
-				<p class="con-lo">1.信用卡有效期过期或更换了卡片</p>
-				<p class="con-lo">2.修改了银行卡预留手机号码</p>
-				<div class="qx-rebd">
-					<a class="ax">取消</a>
-					<a class="are">重新绑定</a>
-				</div>
-			</div>
-		</div>
-&lt;!&ndash;支付失败-e&ndash;&gt;-->
-
 <div class="mask-filter-div" style="display: none;"></div>
 </form>
 <script type="text/javascript">
@@ -149,10 +101,10 @@
     }
 
     function pay(){
-    	if($("input[name='pay_radio']:checked").length == 0){
-    		layer.open({content:'请选择支付方式',time:2});
-    		return false;
-    	}
+    	// if($("input[name='pay_radio']:checked").length == 0){
+    	// 	layer.open({content:'请选择支付方式',time:2});
+    	// 	return false;
+    	// }
         $('#cart4_form').submit();
         return;//微信JS支付
     }

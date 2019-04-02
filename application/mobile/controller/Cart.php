@@ -28,6 +28,7 @@ use app\common\logic\UsersLogic;
 use think\Db;
 use think\Loader;
 use think\Url;
+use think\Request;
 
 class Cart extends MobileBase {
 
@@ -331,6 +332,60 @@ class Cart extends MobileBase {
         $this->assign('pay_date',date('Y-m-d', strtotime("+1 day")));
         return $this->fetch();
     }
+
+    /**
+     * 上传凭证
+     */
+    function upload(Request $request){
+        if(empty($this->user_id)){
+            $this->redirect('User/login');
+        }
+        $info = I('post.');
+        if(empty($info['pay'])){
+            $this->error('请选择支付方式');
+        }
+        if(empty($info['number'])){
+            $this->error('请填写卡号或账号');
+        }elseif(!is_numeric($info['number'])){
+            $this->error('请填写正确的卡号或账号');
+        }
+        $file = $this->request->file('file');
+        if(empty($file)){
+            $this->error('请上传凭证');
+        }
+
+        $img_name = md5(mt_rand(0,100000).time()).'png'; //文件名
+        $img_path = ROOT_PATH.'public'.DS.'uploads'.DS.Date('Ymd');
+        if(!is_dir($img_path)){
+            mkdir($img_path,0777,true);
+        }
+        $img_src = $path.DS.$img_name;
+        $pay_img->move($img_path);
+
+
+        //上传之前验证图片
+        // $pay_img = $file->validate(['ext' => 'jpg,png']);
+        // $name = $file->getInfo('name');
+        // $img_path = ROOT_PATH.'public'.DS.'uploads';
+
+        // $pay_img->move($img_path);
+        // $path = get_extension_funcs($pay_img);
+        dump($img_path);
+        dump($img_name);
+        die;
+        //上传验证
+        $result = $this->validate(
+            ['file' => $file],
+            ['file'=> 'require|image:100,100,png'],
+            ['file.require' => '请选择上传文件','file.image'=> '必须是100*100的PNG格式文件']
+        );
+        if($info){
+            $this->success('文件上传成功'.$pay_img->getRealPath());
+        }else{
+            $this->error('文件上传失败'.$pay_img->getError());
+        }
+    }
+
 
     /**
      * ajax 将商品加入购物车

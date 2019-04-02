@@ -285,9 +285,7 @@ a.green:hover { color: #FFF; background-color: #1BBC9D; border-color: #16A086; }
         <div class="contact-info">
           <h3>支付凭证</h3>
           <dl class="row">
-	        <td class="w30"><div class="goods-thumb"><img alt="" src="{$order[user_id]|goods_thum_images=200,200}" /></div></td>
-          </dl> 
-          <dl class="row">
+	        <td class="w30"><div class="goods-thumb"><img alt="" src="{$good['goods_id']|goods_thum_images=200,200}"/></div></td>
 	        <dd class="opt" style="margin-left:10px">
 	         	<foreach name="$order.adminOrderButton" item="vo" key="k">
                		<if condition="$k eq 'pay_cancel'">

@@ -390,10 +390,12 @@ exit("请联系TPshop官网客服购买高级版支持此功能");
         $order_id = input('order_id', 0);
         $orderModel = new OrderModel();
         $order = $orderModel::get(['order_id'=>$order_id]);
+        $pay_img = M('user_pay_log')->where('order_id',$order_id)->value('image');
         if(empty($order)){
             $this->error('订单不存在或已被删除');
         }
         $this->assign('order', $order);
+        $this->assign('pay_img',$pay_img);
         return $this->fetch();
     }
 
