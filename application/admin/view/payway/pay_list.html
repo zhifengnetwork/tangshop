@@ -1,0 +1,211 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>支付方式</h3>
+        <h5>支付方式查询及管理</h5>
+      </div>
+    </div>
+  </div>
+  <!-- 操作说明 -->
+  <div id="explanation" class="explanation" style=" width: 99%; height: 100%;">
+    <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+      <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+    </div>
+     <ul>
+      <li>支付方式可以编辑</li>
+    </ul>
+  </div>
+  <div class="flexigrid">
+    <div class="mDiv">
+      <div class="ftitle">
+        <h3>支付方式列表</h3>
+        <h5>(共{$page->totalRows}条记录)</h5>
+      </div>
+      <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+	  <!-- <form class="navbar-form form-inline"  method="post" action="{:U('Admin/payway/pay_list')}"  name="search-form2" id="search-form2">  
+	  		<input type="hidden" name="order_by" value="order_id">
+            <input type="hidden" name="sort" value="desc">
+            <input type="hidden" name="user_id" value="{$Request.param.user_id}">
+            <input type="hidden" name="order_ids" value="">
+             //用于查看结算统计 包含了哪些订单 -->
+            <!-- <input type="hidden" value="{$_GET['order_statis_id']}" name="order_statis_id" />
+                                    
+     </form>  -->
+    </div>
+    <div class="hDiv">
+      <div class="hDivBox" id="ajax_return">
+        <table cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+                <th axis="col0">
+                <div style="width: 24px;"><i class="ico-check"></i></div>
+                </th>
+                <th align="left" abbr="order_sn" axis="col3" class="">
+                <div style="text-align: left; width: 140px;" class="">编号</div>
+                </th>
+                <th align="left" abbr="consignee" axis="col4" class="">
+                <div style="text-align: left; width: 120px;" class="">支付方式名称</div>
+                </th>
+                <th align="center" abbr="article_show" axis="col5" class="">
+                <div style="text-align: center; width: 60px;" class="">支付卡号</div>
+                </th>
+                <th align="center" abbr="article_time" axis="col6" class="">
+                <div style="text-align: center; width: 60px;" class="">支付码</div>
+                </th>
+                <th align="center" abbr="article_time" axis="col6" class="">
+                <div style="text-align: center; width: 120px;" class="">添加时间</div>
+                </th>
+                <th align="left" axis="col1" class="handle">
+                    <div style="text-align: left; width: 150px;">操作</div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+                <volist name="pay_list" id="list">
+                <tr data-order-id="{$list.id}" id="{$list.id}">
+                    <td class="sign" axis="col0">
+                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                    </td>
+                    <td align="left" abbr="id" axis="col3" class="">
+                    <div style="text-align: left; width: 140px;" class="">{$list.id}</div>
+                    </td>
+                    <td align="left" abbr="pay_name" axis="col4" class="">
+                    <div style="text-align: left; width: 120px;" class="">{$list.pay_name}</div>
+                    </td>
+                    <td align="center" abbr="pay_card" axis="col5" class="">
+                    <div style="text-align: center; width: 60px;" class="">{$list.pay_card}</div>
+                    </td>
+                    <td align="center" abbr="pay_code" axis="col6" class="">
+                    <div style="text-align: center; width: 60px;" class="">{$list.pay_code}</div>
+                    </td>
+                    <td align="center" abbr="add_time" axis="col6" class="">
+                    <div style="text-align: center; width: 120px;" class="">{$list.add_time|date='Y-m-d H:i',###}</div>
+                    </td>
+                    <td style="width: 100%;">
+                        <div style="text-align: left; ">
+                            <a class="btn green" href="{:U('Admin/payway/add')}"><i class="fa fa-list-alt"></i>查看</a>
+                            <!-- <if condition="($list['order_status'] eq 3  and $list['pay_status'] eq 0) or ($list['order_status'] eq 5)"> -->
+                                <a class="btn red" href="javascript:void(0);" data-order-id="{$list['order_id']}" onclick="del(this)"><i class="fa fa-trash-o"></i>删除</a>
+                            <!-- </if> -->
+                            <!--<if condition="($list['order_status'] eq 3  and $list['pay_status'] eq 1)">
+                                <a class="btn green" href="{:U('Admin/order/detail',array('order_id'=>$list['order_id']))}"><i class="fa fa-list-alt"></i>查看</a>
+                            </if>-->
+                        </div>
+                    </td>
+                </tr>
+                </volist>
+            </tbody>  
+        </table>
+      </div>
+    </div>
+    <div class="tDiv">
+      <div class="tDiv2">
+        <div class="fbutton"> 
+        	<a href="javascript:exportReport()">
+	          	<div class="add" title="选定行数据导出excel文件,如果不选中行，将导出列表所有数据">
+	            	<span><i class="fa fa-plus"></i>导出数据</span>
+	          	</div>
+          	</a> 
+          </div>
+          <div class="fbutton"> 
+        	<!--<a href="/index.php?m=Admin&c=Order&a=add_order">
+	          	<div class="add" title="添加订单">
+	            	<span><i class="fa fa-plus"></i>添加订单</span>
+	          	</div>
+          	</a> -->
+          </div>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+    <div class="bDiv" style="height: auto;">
+      <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+        
+      </div>
+      <div class="iDiv" style="display: none;"></div>
+    </div>
+    <!--分页位置--> 
+   	</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){	
+	   
+     	$('#start_time').layDate();
+     	$('#end_time').layDate();
+     	
+		// 点击刷新数据
+		$('.fa-refresh').click(function(){
+			location.href = location.href;
+		});
+		
+		ajax_get_table('search-form2',1);
+		
+		$('.ico-check ' , '.hDivBox').click(function(){
+			$('tr' ,'.hDivBox').toggleClass('trSelected' , function(index,currentclass){
+	    		var hasClass = $(this).hasClass('trSelected');
+	    		$('tr' , '#flexigrid').each(function(){
+	    			if(hasClass){
+	    				$(this).addClass('trSelected');
+	    			}else{
+	    				$(this).removeClass('trSelected');
+	    			}
+	    		});  
+	    	});
+		});
+		 
+	});
+    /**
+     * ajax 抓取页面
+     * @param tab
+     * @param page
+     */
+    function ajax_get_table(tab,page){
+        cur_page = page; //当前页面 保存为全局变量
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/payway/ajaxindex/p/"+page,//+tab,
+            data : $('#'+tab).serialize(),//
+            success: function(data){
+                $("#flexigrid").html('');
+                $("#flexigrid").append(data);
+                // 表格行点击选中切换
+                $('#flexigrid > table>tbody >tr').click(function(){
+                    $(this).toggleClass('trSelected');
+                });
+
+            }
+        });
+    }
+    /**
+     * 点击排序
+     * @param field
+     */
+    function sort(field){
+        $("input[name='order_by']").val(field);
+        var v = $("input[name='sort']").val() == 'desc' ? 'asc' : 'desc';
+        $("input[name='sort']").val(v);
+        ajax_get_table('search-form2',cur_page);
+    }
+	
+	function exportReport(){
+        var selected_ids = '';
+        $('.trSelected' , '#flexigrid').each(function(i){
+            selected_ids += $(this).data('order-id')+',';
+        });
+        if(selected_ids != ''){
+            $('input[name="order_ids"]').val(selected_ids.substring(0,selected_ids.length-1));
+        }
+		$('#search-form2').submit();
+	}
+	
+	 
+</script>
+</body>
+</html>
