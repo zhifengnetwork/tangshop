@@ -87,6 +87,11 @@ class Cart extends MobileBase {
         $cart_price_info = $cartLogic->getCartPriceInfo($select_cart_list);//计算选中购物车
         $user_cart_list = $cartLogic->getCartList();//获取用户购物车
         $return['cart_list'] = $cartLogic->cartListToArray($user_cart_list);//拼接需要的数据
+        if(isset($cart_price_info['goods_fee']) && isset($this->user_id) && !empty($this->user_id)){
+            $save_price=$cartLogic->get_goods_cost($this->user_id);
+            $cart_price_info['total_fee']-=$save_price;
+            $cart_price_info['goods_fee']+=$save_price;
+        }
         $return['cart_price_info'] = $cart_price_info;
         $this->ajaxReturn(['status' => 1, 'msg' => '计算成功', 'result' => $return]);
     }
