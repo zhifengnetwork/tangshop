@@ -392,6 +392,22 @@
                     <p class="notic">多个关键词，用空格隔开</p>
                 </dd>
             </dl>
+
+            <dl class="row goods_shipping">
+                <dt class="tit">
+                    <label><em>*</em>是否为升级指定商品</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label id="is_upgrade_1" for="is_upgrade1" class="cb-enable <if condition='$goods.is_upgrade eq 1'>selected</if>">是</label>
+                        <label id="is_upgrade_0" for="is_upgrade0" class="cb-disable <if condition='$goods.is_upgrade eq 0'>selected</if>">否</label>
+                        <input id="is_upgrade1" autocomplete="off" class="is_free_shipping" name="is_upgrade" value="1" type="radio" <if condition="$goods[is_free_shipping] eq 1"> checked="checked"</if>>
+                        <input id="is_upgrade0" autocomplete="off" class="is_free_shipping" name="is_upgrade" value="0" type="radio" <if condition="$goods[is_free_shipping] eq 0"> checked="checked"</if>>
+                    </div>
+                    <span class="err" id="err_is_upgrade"></span>
+                </dd>
+            </dl>
+
             <dl class="row">
                 <dt class="tit">
                     <label>是否为虚拟商品</label>
