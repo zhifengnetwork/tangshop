@@ -18,6 +18,7 @@ use app\common\model\Cart;
 use app\common\model\CouponList;
 use app\common\model\Shop;
 use app\common\util\TpshopException;
+use app\common\logic\CartLogic;
 use think\Model;
 use think\Db;
 /**
@@ -501,15 +502,17 @@ class Pay
 
     public function toArray()
     {
+        $carLogic=new CartLogic();
+        $save_price=$carLogic->get_goods_cost($this->user['user_id']);
         return [
             'shipping_price' => round($this->shippingPrice, 2),
             'coupon_price' => round($this->couponPrice, 2),
             'user_money' => round($this->userMoney, 2),
             'integral_money' => $this->integralMoney,
             'pay_points' => $this->payPoints,
-            'order_amount' => round($this->orderAmount, 2),
-            'total_amount' => round($this->totalAmount, 2),
-            'goods_price' => round($this->goodsPrice, 2),
+            'order_amount' => round($this->orderAmount-$save_price, 2),
+            'total_amount' => round($this->totalAmount-$save_price, 2),
+            'goods_price' => round($this->goodsPrice-$save_price, 2),
             'total_num' => $this->totalNum,
             'order_prom_amount' => round($this->orderPromAmount, 2),
         ];

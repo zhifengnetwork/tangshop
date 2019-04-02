@@ -1021,9 +1021,11 @@ class CartLogic extends Model
         if($user_level==2){
             //升到销售员需要购买的数量
             $level_num=$this->get_up_level_num(3);
+//            return $goods_num."```".$buy_num."````".$level_num;die;
             if($goods_num+$buy_num>$level_num){
                 //从销售员升到合伙人需要的数量
                 $level_num1=$this->get_up_level_num(4);
+//                return $level_num1+$level_num;die;
                 $discount2=$this->get_level_discount(2);
                 $discount3=$this->get_level_discount(3);
                 if($goods_num+$buy_num>$level_num+$level_num1){
@@ -1033,7 +1035,8 @@ class CartLogic extends Model
                     $upgrade_cost=$level_num1*($discount2-$discount3)/100*$upgrade_goods_price+($goods_num+$buy_num-$level_num-$level_num1)*($discount2-$discount4)/100*$upgrade_goods_price;
                     $save_money=$upgrade_cost+$goods_cost*($discount2-$discount4);
                 }else{
-                    $upgrade_cost=$level_num1*($discount2-$discount3)/100*$upgrade_goods_price;
+//                    return $upgrade_goods_price.'````'.$level_num1.'`````'.$goods_cost;die;
+                    $upgrade_cost=($goods_num+$buy_num-$level_num)*($discount2-$discount3)/100*$upgrade_goods_price;
                     $save_money=$upgrade_cost+$goods_cost*($discount2-$discount3);
                 }
             }
@@ -1101,7 +1104,8 @@ class CartLogic extends Model
     //查询购买的商品中指定/非指定商品数量
     public function get_upgrade_goods_num($user_id,$is_upgrade){
         if(is_numeric($user_id) && $user_id>0){
-            return M('cart')->alias('c')->join('goods g','g.goods_id=c.goods_id')->where(['c.user_id'=>$user_id,'g.is_upgrade'=>$is_upgrade,'selected'=>1])->count();
+            $goods_num=M('cart')->alias('c')->join('goods g','g.goods_id=c.goods_id')->where(['c.user_id'=>$user_id,'g.is_upgrade'=>$is_upgrade,'selected'=>1])->find();
+            return $goods_num['goods_num'];
         }else{
             return 0;
         }
@@ -1110,7 +1114,11 @@ class CartLogic extends Model
     public function get_cart_goods_price($user_id,$is_upgrade){
         if(is_numeric($user_id) && $user_id>0){
             $goods_price=M('cart')->alias('c')->join('goods g','g.goods_id=c.goods_id')->where(['c.user_id'=>$user_id,'g.is_upgrade'=>$is_upgrade,'selected'=>1])->field('SUM(g.shop_price) price')->select();
-            return $goods_price['price'];
+            if(isset($goods_price)){
+                return $goods_price['price'];
+            }else{
+                return 0;
+            }
         }else{
             return 0;
         }
