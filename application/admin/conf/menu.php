@@ -95,7 +95,6 @@ return	array(
 
 			array('name' => '支付方式','child' => array(
 				array('name'=>'支付方式列表','act'=>'pay_list','op'=>'Payway'),
-				array('name'=>'添加支付方式','act'=>'add','op'=>'Payway'),
 			)),
 
 			array('name' => '文章','child'=>array(

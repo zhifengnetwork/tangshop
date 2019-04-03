@@ -30,15 +30,6 @@
         <h5>(共{$page->totalRows}条记录)</h5>
       </div>
       <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
-	  <!-- <form class="navbar-form form-inline"  method="post" action="{:U('Admin/payway/pay_list')}"  name="search-form2" id="search-form2">  
-	  		<input type="hidden" name="order_by" value="order_id">
-            <input type="hidden" name="sort" value="desc">
-            <input type="hidden" name="user_id" value="{$Request.param.user_id}">
-            <input type="hidden" name="order_ids" value="">
-             //用于查看结算统计 包含了哪些订单 -->
-            <!-- <input type="hidden" value="{$_GET['order_statis_id']}" name="order_statis_id" />
-                                    
-     </form>  -->
     </div>
     <div class="hDiv">
       <div class="hDivBox" id="ajax_return">
@@ -46,88 +37,78 @@
           <thead>
             <tr>
                 <th axis="col0">
-                <div style="width: 24px;"><i class="ico-check"></i></div>
+                <div style="width: 90%;"><i class="ico-check"></i></div>
                 </th>
-                <th align="left" abbr="order_sn" axis="col3" class="">
-                <div style="text-align: left; width: 140px;" class="">编号</div>
+                <th align="left" abbr="id" axis="col3" class="">
+                <div style="text-align: left; width: 50px;" class="">编号</div>
                 </th>
-                <th align="left" abbr="consignee" axis="col4" class="">
+                <th align="left" abbr="pay_name" axis="col4" class="">
                 <div style="text-align: left; width: 120px;" class="">支付方式名称</div>
                 </th>
-                <th align="center" abbr="article_show" axis="col5" class="">
-                <div style="text-align: center; width: 60px;" class="">支付卡号</div>
+                <th align="center" abbr="pay_card" axis="col5" class="">
+                <div style="text-align: center; width: 140px;" class="">支付卡号</div>
                 </th>
-                <th align="center" abbr="article_time" axis="col6" class="">
-                <div style="text-align: center; width: 60px;" class="">支付码</div>
+                <th align="center" abbr="pay_code" axis="col6" class="">
+                <div style="text-align: center; width: 150px;" class="">支付码</div>
                 </th>
-                <th align="center" abbr="article_time" axis="col6" class="">
+                <th align="center" abbr="add_time" axis="col6" class="">
                 <div style="text-align: center; width: 120px;" class="">添加时间</div>
                 </th>
                 <th align="left" axis="col1" class="handle">
-                    <div style="text-align: left; width: 150px;">操作</div>
+                    <div style="text-align: center; width: 150px;">操作</div>
                 </th>
             </tr>
-            </thead>
-            <tbody>
-                <volist name="pay_list" id="list">
-                <tr data-order-id="{$list.id}" id="{$list.id}">
-                    <td class="sign" axis="col0">
-                    <div style="width: 24px;"><i class="ico-check"></i></div>
+          </thead>
+        </table>
+			</div>
+		</div>
+		<div class="tDiv">
+			<div class="tDiv2">
+				<div class="fbutton"> <a href="{:U('Payway/add')}">
+					<div class="add" title="新增支付方式">
+						<span><i class="fa fa-plus"></i>新增支付方式</span>
+					</div>
+				</a> </div>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+		<div class="bDiv" style="height: auto;">
+			<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+				<table>
+          <tbody>
+            <foreach name="list" item="vo" key="k" >
+                <tr>
+                    <td axis="col0">
+                    <div style="width: 90%;"><i class="ico-check"></i></div>
                     </td>
                     <td align="left" abbr="id" axis="col3" class="">
-                    <div style="text-align: left; width: 140px;" class="">{$list.id}</div>
+                    <div style="text-align: left; width: 50px;" class="">{$vo.id}</div>
                     </td>
                     <td align="left" abbr="pay_name" axis="col4" class="">
-                    <div style="text-align: left; width: 120px;" class="">{$list.pay_name}</div>
+                    <div style="text-align: left; width: 120px;" class="">{$vo.pay_name}</div>
                     </td>
                     <td align="center" abbr="pay_card" axis="col5" class="">
-                    <div style="text-align: center; width: 60px;" class="">{$list.pay_card}</div>
+                    <div style="text-align: center; width: 140px;" class="">{$vo.pay_card}</div>
                     </td>
                     <td align="center" abbr="pay_code" axis="col6" class="">
-                    <div style="text-align: center; width: 60px;" class="">{$list.pay_code}</div>
+                    <div style="text-align: center; width: 150px;" class="">{$vo.pay_code}</div>
                     </td>
                     <td align="center" abbr="add_time" axis="col6" class="">
-                    <div style="text-align: center; width: 120px;" class="">{$list.add_time|date='Y-m-d H:i',###}</div>
+                    <div style="text-align: center; width: 120px;" class="">{$vo.add_time}</div>
                     </td>
-                    <td style="width: 100%;">
+                    <td align="center" class="handle">
                         <div style="text-align: left; ">
-                            <a class="btn green" href="{:U('Admin/payway/add')}"><i class="fa fa-list-alt"></i>查看</a>
-                            <!-- <if condition="($list['order_status'] eq 3  and $list['pay_status'] eq 0) or ($list['order_status'] eq 5)"> -->
-                                <a class="btn red" href="javascript:void(0);" data-order-id="{$list['order_id']}" onclick="del(this)"><i class="fa fa-trash-o"></i>删除</a>
-                            <!-- </if> -->
-                            <!--<if condition="($list['order_status'] eq 3  and $list['pay_status'] eq 1)">
-                                <a class="btn green" href="{:U('Admin/order/detail',array('order_id'=>$list['order_id']))}"><i class="fa fa-list-alt"></i>查看</a>
-                            </if>-->
+                            <a class="btn green" href="{:U('Payway/add',array('act'=>'edit','id'=>$vo['id']))}"><i class="fa fa-list-alt"></i>查看</a>
+                            <a class="btn red" href="javascript:void(0);" data-url="{:U('Payway/payHandle')}" data-id="{$vo.id}" onclick="delfun(this)">删除</a>
                         </div>
                     </td>
+                    <td align="" class="" style="width: 100%;">
+                      <div>&nbsp;</div>
+                    </td>
                 </tr>
-                </volist>
+            </foreach>
             </tbody>  
         </table>
-      </div>
-    </div>
-    <div class="tDiv">
-      <div class="tDiv2">
-        <div class="fbutton"> 
-        	<a href="javascript:exportReport()">
-	          	<div class="add" title="选定行数据导出excel文件,如果不选中行，将导出列表所有数据">
-	            	<span><i class="fa fa-plus"></i>导出数据</span>
-	          	</div>
-          	</a> 
-          </div>
-          <div class="fbutton"> 
-        	<!--<a href="/index.php?m=Admin&c=Order&a=add_order">
-	          	<div class="add" title="添加订单">
-	            	<span><i class="fa fa-plus"></i>添加订单</span>
-	          	</div>
-          	</a> -->
-          </div>
-      </div>
-      <div style="clear:both"></div>
-    </div>
-    <div class="bDiv" style="height: auto;">
-      <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
-        
       </div>
       <div class="iDiv" style="display: none;"></div>
     </div>
@@ -136,16 +117,16 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function(){	
-	   
-     	$('#start_time').layDate();
-     	$('#end_time').layDate();
+      // 表格行点击选中切换
+      $('#flexigrid > table>tbody >tr').click(function(){
+        $(this).toggleClass('trSelected');
+      });
      	
 		// 点击刷新数据
 		$('.fa-refresh').click(function(){
 			location.href = location.href;
 		});
-		
-		ajax_get_table('search-form2',1);
+    
 		
 		$('.ico-check ' , '.hDivBox').click(function(){
 			$('tr' ,'.hDivBox').toggleClass('trSelected' , function(index,currentclass){
@@ -161,50 +142,31 @@
 		});
 		 
 	});
-    /**
-     * ajax 抓取页面
-     * @param tab
-     * @param page
-     */
-    function ajax_get_table(tab,page){
-        cur_page = page; //当前页面 保存为全局变量
-        $.ajax({
-            type : "POST",
-            url:"/index.php/Admin/payway/ajaxindex/p/"+page,//+tab,
-            data : $('#'+tab).serialize(),//
-            success: function(data){
-                $("#flexigrid").html('');
-                $("#flexigrid").append(data);
-                // 表格行点击选中切换
-                $('#flexigrid > table>tbody >tr').click(function(){
-                    $(this).toggleClass('trSelected');
-                });
 
-            }
-        });
+  function delfun(obj) {
+		// 删除按钮
+		layer.confirm('确认删除？', {
+			btn: ['确定', '取消'] //按钮
+		}, function () {
+			$.ajax({
+				type: 'post',
+				url: $(obj).attr('data-url'),
+				data : {act:'del',id:$(obj).attr('data-id')},
+				dataType: 'json',
+				success: function (data) {
+					layer.closeAll();
+					if (data.status == 1) {
+						layer.msg(data.msg, {icon: 1});
+						$(obj).parent().parent().parent().remove();
+					} else {
+						layer.alert(data.msg, {icon: 2});
+					}
+				}
+			})
+      }, function () {
+        layer.closeAll();
+      });
     }
-    /**
-     * 点击排序
-     * @param field
-     */
-    function sort(field){
-        $("input[name='order_by']").val(field);
-        var v = $("input[name='sort']").val() == 'desc' ? 'asc' : 'desc';
-        $("input[name='sort']").val(v);
-        ajax_get_table('search-form2',cur_page);
-    }
-	
-	function exportReport(){
-        var selected_ids = '';
-        $('.trSelected' , '#flexigrid').each(function(i){
-            selected_ids += $(this).data('order-id')+',';
-        });
-        if(selected_ids != ''){
-            $('input[name="order_ids"]').val(selected_ids.substring(0,selected_ids.length-1));
-        }
-		$('#search-form2').submit();
-	}
-	
 	 
 </script>
 </body>
