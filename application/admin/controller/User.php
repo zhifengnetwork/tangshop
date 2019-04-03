@@ -36,6 +36,10 @@ class User extends Base
     {
         return $this->fetch();
     }
+    public function auditList()
+    {
+        return $this->fetch();
+    }
 
     /**
      * 会员列表
@@ -54,6 +58,49 @@ class User extends Base
         I('third_leader') && ($condition['third_leader'] = I('third_leader')); // 查看三级下线人有哪些
         $sort_order = I('order_by') . ' ' . I('sort');
 
+        $usersModel = new Users();
+        $count = $usersModel->where($condition)->count();
+        $Page = new AjaxPage($count, 10);
+        $userList = $usersModel->where($condition)->order($sort_order)->limit($Page->firstRow . ',' . $Page->listRows)->select();
+        $user_id_arr = get_arr_column($userList, 'user_id');
+        if (!empty($user_id_arr)) {
+            $first_leader = DB::query("select first_leader,count(1) as count  from __PREFIX__users where first_leader in(" . implode(',', $user_id_arr) . ")  group by first_leader");
+            $first_leader = convert_arr_key($first_leader, 'first_leader');
+
+            $second_leader = DB::query("select second_leader,count(1) as count  from __PREFIX__users where second_leader in(" . implode(',', $user_id_arr) . ")  group by second_leader");
+            $second_leader = convert_arr_key($second_leader, 'second_leader');
+
+            $third_leader = DB::query("select third_leader,count(1) as count  from __PREFIX__users where third_leader in(" . implode(',', $user_id_arr) . ")  group by third_leader");
+            $third_leader = convert_arr_key($third_leader, 'third_leader');
+        }
+        $this->assign('first_leader', $first_leader);
+        $this->assign('second_leader', $second_leader);
+        $this->assign('third_leader', $third_leader);
+        $show = $Page->show();
+        $this->assign('userList', $userList);
+        $this->assign('level', M('user_level')->getField('level_id,level_name'));
+        $this->assign('page', $show);// 赋值分页输出
+        $this->assign('pager', $Page);
+        return $this->fetch();
+    }
+
+    /**
+     * 会员审核列表
+     */
+    public function ajaxAuditIndex()
+    {
+        // 搜索条件
+        $condition = array();
+        $nickname = I('nickname');
+        $account = I('account');
+        $account ? $condition['email|mobile'] = ['like', "%$account%"] : false;
+        $nickname ? $condition['nickname'] = ['like', "%$nickname%"] : false;
+
+        I('first_leader') && ($condition['first_leader'] = I('first_leader')); // 查看一级下线人有哪些
+        I('second_leader') && ($condition['second_leader'] = I('second_leader')); // 查看二级下线人有哪些
+        I('third_leader') && ($condition['third_leader'] = I('third_leader')); // 查看三级下线人有哪些
+        $sort_order = I('order_by') . ' ' . I('sort');
+        $condition['is_audit']=2;
         $usersModel = new Users();
         $count = $usersModel->where($condition)->count();
         $Page = new AjaxPage($count, 10);
@@ -128,6 +175,30 @@ class User extends Base
 
         $this->assign('user', $user);
         return $this->fetch();
+    }
+
+    /**
+     * 会员详细信息审核
+     */
+    public function audit()
+    {
+        $uid = I('id');
+        $is_audit=I('is_audit');
+        $user = D('users')->where(array('user_id' => $uid))->find();
+        if (!$user)
+            $this->ajaxReturn(array('status' => 2, 'msg' => '会员不存在'));
+        if(!in_array($is_audit,array(0,1)))
+            $this->ajaxReturn(array('status'=>2,'msg'=>'请问是通过审核还是驳回呢'));
+        if($is_audit){
+            //驳回注册申请同时删除注册信息
+            M('oauth_users')->where(array('user_id' => $uid))->delete();
+            M('users')->where(array('user_id' => $uid))->delete();
+            $this->ajaxReturn(array('status'=>1,'msg'=>'驳回成功，已删除用户注册信息'));
+        }else{
+            //审核成功
+            M('users')->where(['user_id'=>$uid])->save(['is_audit'=>0]);
+            $this->ajaxReturn(array('status'=>1,'msg'=>'审核成功'));
+        }
     }
 
     public function add_user()
