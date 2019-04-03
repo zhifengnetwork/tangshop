@@ -57,7 +57,7 @@ class UsersLogic extends Model
         } elseif ($user['is_lock'] == 1) {
             $result = array('status' => -3, 'msg' => '账号异常已被锁定！！！');
         } elseif($config['is_audit'] && $user['is_audit']!=0){
-            $result = array('status' => -4, 'msg' => '请耐心等待，审核完成才能登录！');
+            $result = array('status' => -3, 'msg' => '请耐心等待，审核完成才能登录！');
         } else{
             //是否清空积分           zengmm          2018/06/05
             $this->isEmptyingIntegral($user);

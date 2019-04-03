@@ -153,6 +153,7 @@ return	array(
 		array('name' => '会员管理','child'=>array(
 			array('name'=>'会员列表','act'=>'index','op'=>'User'),
 			array('name'=>'会员等级','act'=>'levelList','op'=>'User'),
+			array('name'=>'会员审核','act'=>'auditList','op'=>'User'),
 		)),
 		array('name' => '充值提现','child'=>array(
 			array('name'=>'充值记录','act'=>'recharge','op'=>'User'),

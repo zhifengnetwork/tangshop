@@ -292,7 +292,7 @@ class User extends MobileBase
 
             //看是否需要审核注册
             $config = tpCache('basic');
-            if($config['basic']){
+            if($config['is_audit']){
                 $this->ajaxReturn(['status'=>-1,'msg'=>'注册成功，请等待审核通过后方可登录']);
             }
             
