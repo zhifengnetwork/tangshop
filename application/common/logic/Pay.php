@@ -415,7 +415,9 @@ class Pay
      */
     public function getOrderAmount()
     {
-        return number_format($this->orderAmount, 2, '.', '');
+        $carLogic=new CartLogic();
+        $save_price=$carLogic->get_goods_cost($this->user['user_id']);
+        return number_format($this->orderAmount-$save_price, 2, '.', '');
     }
 
     /**
