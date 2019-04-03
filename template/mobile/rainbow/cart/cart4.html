@@ -14,11 +14,9 @@
         </div>
     </div>
     <div class="maleri30">
-        <span class="fl"><input type="radio" name="pay" value="支付宝账号">支付宝账号</span>
-        <span class="fl"><input type="radio" name="pay" value="建设银行卡号">建设银行卡号</span>
-        <span class="fl"><input type="radio" name="pay" value="中国银行卡号">中国银行卡号</span>
-        <span class="fl"><input type="radio" name="pay" value="工商银行卡号">工商银行卡号</span><br />
-        <span class="fl"><input type="text" name="number" ></span>
+        <foreach name="pay_list" item="list">
+        <input type="radio" name="pay" value="$list['pay_name']">{$list.pay_name}</span>
+        <span>{$list.pay_card}</span><br /></foreach>
     </div>
     <div class="maleri30">
         <input type="file" class="file" name="file"><br />

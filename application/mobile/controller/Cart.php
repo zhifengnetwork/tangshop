@@ -332,6 +332,11 @@ class Cart extends MobileBase {
         }
 
         $bank_img = include APP_PATH.'home/bank.php'; // 银行对应图片
+
+        //支付方式列表
+        $pay_list = M('user_pay_way')->select();
+        $this->assign('pay_list',$pay_list);
+
         $this->assign('paymentList',$paymentList);
         $this->assign('bank_img',$bank_img);
         $this->assign('order',$order);
@@ -344,18 +349,19 @@ class Cart extends MobileBase {
      * 上传凭证
      */
     function upload(Request $request){
-        if(empty($this->user_id)){
-            $this->redirect('User/login');
-        }
-        $info = I('post.');
-        if(empty($info['pay'])){
-            $this->error('请选择支付方式');
-        }
-        if(empty($info['number'])){
-            $this->error('请填写卡号或账号');
-        }elseif(!is_numeric($info['number'])){
-            $this->error('请填写正确的卡号或账号');
-        }
+        // $info = I('post.');dump($info);die;
+        // if(empty($this->user_id)){
+        //     $this->redirect('User/login');
+        // }
+        // $info = I('post.');
+        // if(empty($info['pay'])){
+        //     $this->error('请选择支付方式');
+        // }
+        // if(empty($info['number'])){
+        //     $this->error('请填写卡号或账号');
+        // }elseif(!is_numeric($info['number'])){
+        //     $this->error('请填写正确的卡号或账号');
+        // }
         $file = $this->request->file('file');
         if(empty($file)){
             $this->error('请上传凭证');
