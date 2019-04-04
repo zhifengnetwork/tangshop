@@ -82,7 +82,7 @@
                     <div style="width: 90%;"><i class="ico-check"></i></div>
                     </td>
                     <td align="left" abbr="id" axis="col3" class="">
-                    <div style="text-align: left; width: 50px;" class="">{$vo.id}</div>
+                    <div style="text-align: left; width: 50px;" class="">{$k+1}</div>
                     </td>
                     <td align="left" abbr="pay_name" axis="col4" class="">
                     <div style="text-align: left; width: 120px;" class="">{$vo.pay_name}</div>
@@ -90,16 +90,21 @@
                     <td align="center" abbr="pay_card" axis="col5" class="">
                     <div style="text-align: center; width: 140px;" class="">{$vo.pay_card}</div>
                     </td>
-                    <td align="center" abbr="pay_code" axis="col6" class="">
+                    <td align="center" abbr="pay_card" axis="col6" class="">
+                    <div style="text-align: center; width: 150px;">
+                      <a href="{$vo['pay_code']?$vo['pay_code']:''}" target="_blank"><img onMouseOver="$(this).attr('width','160').attr('height','45');" onMouseOut="$(this).attr('width','40').attr('height','30');" width="40" height="30" src="{$vo['pay_code']?$vo['pay_code']:'/public/images/icon_goods_thumb_empty_300.png'}"/></a>
+                    </div>
+                  </td>
+                    <!-- <td align="center" abbr="pay_code" axis="col6" class="">
                     <div style="text-align: center; width: 150px;" class="">{$vo.pay_code}</div>
-                    </td>
+                    </td> -->
                     <td align="center" abbr="add_time" axis="col6" class="">
-                    <div style="text-align: center; width: 120px;" class="">{$vo.add_time}</div>
+                    <div style="text-align: center; width: 120px;" class="">{$vo.add_time|date='Y-m-d H:i',###}</div>
                     </td>
                     <td align="center" class="handle">
                         <div style="text-align: left; ">
                             <a class="btn green" href="{:U('Payway/add',array('act'=>'edit','id'=>$vo['id']))}"><i class="fa fa-list-alt"></i>查看</a>
-                            <a class="btn red" href="javascript:void(0);" data-url="{:U('Payway/payHandle')}" data-id="{$vo.id}" onclick="delfun(this)">删除</a>
+                            <a class="btn red" href="javascript:void(0);" data-url="{:U('Payway/payHandle')}" data-id="{$vo.id}" onclick="delfun(this)" <if condition="$vo['id'] eq 1 or $vo['id'] eq 2">style="display :none;"</if>>删除</a>
                         </div>
                     </td>
                     <td align="" class="" style="width: 100%;">

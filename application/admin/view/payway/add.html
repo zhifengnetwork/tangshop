@@ -46,59 +46,70 @@
         <input type="hidden" name="act" value="{$act}">
         <input type="hidden" name="id" value="{$info.id}">
         <div class="ncap-form-default">
-            <dl class="row">
+            <!-- <dl class="row goods_shipping" <if condition="$act eq add">checked="checked"</if>>
                 <dt class="tit">
-                    <label><em></em>支付方式名称</label>
+                <label><em>*</em>请选择使用支付卡号或付款码</label>
                 </dt>
                 <dd class="opt">
-                    <input type="text" name="pay_name" id="pay_name" class="input-txt" value="{$info.pay_name}" />
-                </dd>
-            </dl>
-            <dl class="row goods_shipping">
-                <dt class="tit">
-                  <label><em>*</em>请选择使用支付卡号或付款码</label>
-                </dt>
-                <dd class="opt">
-                  <div class="onoff">
-                    <label id="is_free_shipping_label_1" for="is_free_shipping1" class="cb-enable <if condition='$flag eq 1'>selected</if>" >支付卡号</label>
-                    <label id="is_free_shipping_label_0" for="is_free_shipping0" class="cb-disable <if condition='$falg eq 2'>selected</if>">付款码</label>
+                <div class="onoff">
+                    <label id="is_free_shipping_label_1" for="is_free_shipping1" class="cb-enable <if condition='$flag eq 1'>selected</if>" >银行卡</label>
+                    <label id="is_free_shipping_label_0" for="is_free_shipping0" class="cb-disable <if condition='$flag eq 2'>selected</if>">付款码</label>
                     <input id="is_free_shipping1" autocomplete="off" class="is_free_shipping" name="is_free_shipping" value="1" type="radio" <if condition="$flag eq 1"> checked="checked"</if>>
-                    <input id="is_free_shipping0" autocomplete="off" class="is_free_shipping" name="is_free_shipping" value="0" type="radio" <if condition="$falg eq 2"> checked="checked"</if>>
-                  </div>
+                    <input id="is_free_shipping0" autocomplete="off" class="is_free_shipping" name="is_free_shipping" value="0" type="radio" <if condition="$flag eq 2"> checked="checked"</if>>
+                </div>
                 </dd>
-            </dl>
-            <dl class="row" id="paycard">
-                <dt class="tit">
-                    <label for="pay_card"><em>*</em>支付卡号</label>
-                </dt>
-                <dd class="opt">
-                    <input type="text" name="pay_card" id="pay_card" class="input-txt" value="{$info.pay_card}"/>
-                </dd>
-            </dl>
-            <dl class="row" id="paycode" style="display :none;">
-                <dt class="tit">
-                    <label for="pay_code">付款码</label>
-                </dt>
-                <dd class="opt">
-                    <div class="input-file-show">
-                        <span class="show">
-                            <a id="pay_code_a" target="_blank" class="nyroModal" rel="gal" href="{$info.pay_code}">
-                                <i id="pay_code_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$list.pay_code}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
-                            </a>
-                        </span>
-           	            <span class="type-file-box">
-                            <input type="text" id="pay_code" name="pay_code" value="{$info.pay_code}" class="type-file-text">
-                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
-                            <input class="type-file-file" onClick="GetUploadify(1,'pay_code','logo','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
-                        </span>
-                    </div>
-                    <!-- <div class="system_img_location">
-                        <a title="图片所在位置" href="/public/static/images/logo/pc_home_logo_pos.png" class="pic-thumb-tip" onmouseover="layer.tips('<img src=\'/public/static/images/logo/pc_home_logo_pos.png\' style=\'height:500px;width: 500px\'>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"><i class="fa fa-picture-o"></i></a>
-                    </div> -->
-                    <!-- <span class="err"></span> -->
-                    <p class="notic">请选择支付宝或微信的付款码</p>
-                </dd>
-            </dl>
+            </dl> -->
+            <if condition="$info.id eq 1 or $info.id eq 2">
+                    <dl class="row" id="way2">
+                            <dt class="tit">
+                                <label><em></em>选择方式</label>
+                            </dt>
+                            <dd class="opt">
+                                <input type="radio" name="pay_name" id="alipay" <if condition="$info.id eq 1"> checked="checked"</if> value="支付宝" >支付宝
+                                <input type="radio" name="pay_name" id="wechat" <if condition="$info.id eq 2"> checked="checked"</if> value="微信" >微信
+                            </dd>
+                        </dl>
+                        <dl class="row" id="paycode">
+                                <dt class="tit">
+                                    <label for="pay_code">付款码</label>
+                                </dt>
+                                <dd class="opt">
+                                    <div class="input-file-show">
+                                        <span class="show">
+                                            <a id="pay_code_a" target="_blank" class="nyroModal" rel="gal" href="{$info.pay_code}">
+                                                <i id="pay_code_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$info.pay_code}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                                            </a>
+                                        </span>
+                                           <span class="type-file-box">
+                                            <input type="text" id="pay_code" name="pay_code" value="{$info.pay_code}" class="type-file-text">
+                                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                                            <input class="type-file-file" onClick="GetUploadify(1,'pay_code','logo','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                                        </span>
+                                    </div>
+                                    <p class="notic">请选择支付宝或微信的付款码</p>
+                                </dd>
+                            </dl>
+            <else>
+                <dl class="row" id="way1">
+                        <dt class="tit">
+                            <label><em></em>银行卡名</label>
+                        </dt>
+                        <dd class="opt">
+                            <input type="text" name="pay_name" id="bank_name" class="input-txt" value="{$info.pay_name}" />
+                        </dd>
+                    </dl>
+                <dl class="row" id="paycard">
+                    <dt class="tit">
+                        <label for="pay_card"><em>*</em>支付卡号</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" name="pay_card" id="pay_card" class="input-txt" value="{$info.pay_card}"/>
+                    </dd>
+                </dl>
+            </if>
+            
+            
+            
             <div class="bot"><a href="JavaScript:void(0);" onclick="checkSubmit()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
         </div>
 
@@ -107,7 +118,6 @@
 <script type="text/javascript">
 
     function checkSubmit(){
-        // $('#pay_add').submit();
         $.ajax({
             type:"POST",
             url:"{:U('Admin/Payway/payHandle')}",
@@ -122,23 +132,25 @@
                     location.href = "{:U('Admin/Payway/pay_list')}";
                 }else{
                     layer.msg(data.msg, {icon:2});
-                    // $.each(data.result, function(index,item){
-                    //     $('#err_' + index).text(item).show();
-                    // });
                 }
             }
         });
     }
 
-    $(".is_free_shipping").change(function () {
-    if($(this).val()==1){
-        $('#paycard').show();
-        $('#paycode').hide();
-    }else{
-        $('#paycode').show();
-        $('#paycard').hide();
-    }
-    })
+    // $(".is_free_shipping").change(function () {
+    //     // console.log($(this).val());
+    // if($(this).val()==1){
+    //     $('#paycard').show();
+    //     $('#way1').show();
+    //     $('#way2').hide();
+    //     $('#paycode').hide();
+    // }else{
+    //     $('#way2').show();
+    //     $('#paycode').show();
+    //     $('#paycard').hide();
+    //     $('#way1').hide();
+    // }
+    // })
 
     function img_call_back(fileurl_tmp , elementid)
     {

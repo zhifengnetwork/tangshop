@@ -33,11 +33,6 @@ class Payway extends Base{
         $flag=0;
         if($id){
             $list_info = D('user_pay_way')->where('id',$id)->find();
-            if(empty($list_info['pay_card'])){
-                $flag = 2;
-            }else{
-                $flag = 1;
-            }
             $this->assign('info',$list_info);
         }else{
             $flag=1;   
