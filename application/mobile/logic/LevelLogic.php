@@ -21,41 +21,30 @@ class LevelLogic
         $user_level = M('users')->where('user_id',$user_id)->value('level');
         $max_level = Db::name('user_level')->max('level_id');//最大等级
         $time = time();
-        $sql = "INSERT INTO `tp_user_level_time` (`user_id`, `user_level`, `level_time`) VALUES ('$user_id','$user_level'+1,'$time')";
 
         if($user_level == 1){
             if($nums >= 3){
                 Db::name('users')->where('user_id',$user_id)->setInc('level');
-                Db::query($sql);
+                // Db::query($sql);
+                Db::name('user_level_time')->data(['user_id'=>$user_id,'user_level'=>$user_level+1,'level_time'=>$time])->insert();
             }
         }else{
             // //如果用户等级等于最大等级
-            // while($nums['goods_num'] >= $nums['need_num']){
-            //     if($user_level != $max_level){
-            //         Db::name('users')->where('user_id',$user_id)->setInc('level');
-            //         Db::query($sql);
-            //         $user_level = M('users')->where('user_id',$user_id)->value('level');
-            //         $nums = $this->condition($user_id);
-            //         // if($nums['need_num'] < $nums['goods_num']){
-            //         //     break;
-            //         // }
-            //         dump($nums);
-            //     }else{
-            //         break;
-            //     }
+            while($nums['goods_num'] >= $nums['need_num']){
+                if($user_level != $max_level){
+                    Db::name('users')->where('user_id',$user_id)->setInc('level');
+                    $user_level = M('users')->where('user_id',$user_id)->value('level');
+                    Db::name('user_level_time')->data(['user_id'=>$user_id,'user_level'=>$user_level,'level_time'=>$time])->insert();
+                    $nums = $this->condition($user_id);
+                    if(empty($nums['need_num'])){
+                        break;
+                    }
+                    dump($nums);
+                }else{
+                    break;
+                }
             }
-            // while($user_level != $max_level){
-            //     if($nums['goods_num'] >= $nums['need_num']){
-            //         Db::name('users')->where('user_id',$user_id)->setInc('level');
-            //         Db::query($sql);
-            //         $nums = $this->condition($user_id);
-            //         // if($nums['need_num'] < $nums['goods_num']){
-            //         //     break;
-            //         // }
-            //         dump($nums);
-            //     };
-            // }
-        // }
+        }
     }
 
 

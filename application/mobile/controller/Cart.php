@@ -32,7 +32,6 @@ use think\Db;
 use think\Loader;
 use think\Url;
 use think\Request;
-use app\mobile\logic\LevelLogic;
 
 class Cart extends MobileBase {
 
@@ -65,10 +64,6 @@ class Cart extends MobileBase {
 
     public function index()
     {
-        // $le = new LevelLogic();
-        // $test = $le->upgrade(4);
-        // dump($test);
-        // die;
         $cartLogic = new CartLogic();
         $cartLogic->setUserId($this->user_id);
         $cartList = $cartLogic->getCartList();//用户购物车
