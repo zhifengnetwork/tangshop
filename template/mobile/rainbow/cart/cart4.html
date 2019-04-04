@@ -50,7 +50,7 @@
         }
 
         #d1,
-        #d2 {
+        #d2{
 
             display: flex;
             justify-content: center;
@@ -64,6 +64,7 @@
             padding: 2% 3%;
             box-sizing: border-box;
             margin-top: 30px;
+          
 
         }
 
@@ -103,7 +104,8 @@
             background: red;
             text-align: center;
             color: white;
-            border-radius: .1rem
+            border-radius: .1rem;
+           
         }
 
         .lj_wrap {
@@ -182,11 +184,12 @@
             border-radius: 0.1rem;
             display: block;
         }
+      
 
     </style>
     <div class="ddmoney">
         <div class="maleri30">
-            <span class="fl">订单号</span>
+            <span class="fl">订单号</span><h1></h1>
             <span class="fr"><input type="hidden" name="order_sn" value="{$order[order_sn]}">{$order[order_sn]}</span>
         </div>
     </div>
@@ -239,17 +242,21 @@
         <div id="d1">
             <img src="{$list.pay_code}" style="width:320px;height:320px;background: red;margin-top: 50px;border-radius:.1rem" />
         </div>
-        <elseif condition="$list.id eq 2">
+        </if>
+        <if condition="$list.id eq 2"/>
         <div id="d2" style="display:none;">
             <img src="{$list.pay_code}" style="width:300px;height:300px;background: blue;margin-top: 50px;border-radius:.1rem" />
-        </div>
-        <else />
-        <div id="d{$k+1}" style="display:none;">
+        </div></if>
+        <if condition="$list.id gt 2" >
+        <!-- <h1>d{$list.id}</h1> -->
+        <div id="d{$list.id}" style="display:none;">
             <p style="color:red;font-size:.6rem">*请前往当地银行打款</p>
-            <div style="margin-top:20px"><span>银行：</span id="span1"><span id="span1">{$list.pay_name}</span><span
-                    onClick='copy("span1")'>复制</span></div>
+            <div style="margin-top:20px">
+                <span>银行：</span>
+                <span id="span1">{$list.pay_name}</span>
+                <span onClick='copy("span1")'>复制</span></div>
             <!-- <div><span>户主：</span><span id="span2">胖子</span><span onClick='copy("span2")'>复制</span></div> -->
-            <div><span>卡号：</span><span id="span3">{$list.pay_card}</span><span onClick='copy("span3")'>复制</span></div>
+            <div><span>卡号：</span><span id="span2">{$list.pay_card}</span><span onClick='copy("span2")'>复制</span></div>
         </div>
         </if>
         </foreach>
@@ -278,10 +285,10 @@
 
             <!--上传图片wrap-->
             <div class="uploadWrap">
-                <div class="imageEchoBox" style="width:600px;height:300px;">
+                <div class="imageEchoBox" style="width:12rem;height:7rem;">
                     <img class="preViewImg" src="__STATIC__/images/tianjia.png"  />
                     <!--上传图片 tyle='file'-->
-                    <a class="uploadFile2" href="#" style="width:100%;height: 70px;line-height: 70px;font-size:.6rem">上传凭证</a>
+                    <a class="uploadFile2" href="#" style="width:100%;height: 2rem;line-height: 2rem;font-size:.6rem">上传凭证</a>
                     <input class="uploadFile" type="file" onchange="UpLoad(this)" name="file" id="" value="0" accept="image/*" />
                 </div>
 
@@ -419,7 +426,8 @@ var ind = null;
 
 
         //   支付方式不一样，显示不一样的内容
-        // var map = { "1": "d1", "2": "d2", "3": "d3" };
+        // value 和显示的div的id的值
+        var map = { "1": "d1", "2": "d2", "3": "d3","4":"d4","5":"d5"};
         $("#s").bind("change", function () {
             var divId = this.value;
             $("#d" + divId).show().siblings().hide();
