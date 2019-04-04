@@ -12,6 +12,9 @@
  * $Author: IT宇宙人 2015-08-10 $
  */
 namespace app\mobile\controller;
+
+header('content-type:text/html;charset=utf-8');
+
 use app\common\logic\CartLogic;
 use app\common\logic\CouponLogic;
 use app\common\logic\Integral;
@@ -29,6 +32,7 @@ use think\Db;
 use think\Loader;
 use think\Url;
 use think\Request;
+use app\mobile\logic\LevelLogic;
 
 class Cart extends MobileBase {
 
@@ -61,6 +65,10 @@ class Cart extends MobileBase {
 
     public function index()
     {
+        // $le = new LevelLogic();
+        // $test = $le->upgrade(4);
+        // dump($test);
+        // die;
         $cartLogic = new CartLogic();
         $cartLogic->setUserId($this->user_id);
         $cartList = $cartLogic->getCartList();//用户购物车
@@ -333,10 +341,22 @@ class Cart extends MobileBase {
 
         $bank_img = include APP_PATH.'home/bank.php'; // 银行对应图片
 
+        
         //支付方式列表
         $pay_list = M('user_pay_way')->select();
+        //为了迎合前端样式制造ID字符串
+        $style='';
+        foreach($pay_list as $k=>$v){
+            if($k>1){
+                $n=$k+1;
+                $style.="#d".$n.",";
+            }
+            
+        }
+        $style=trim($style,',');
         $this->assign('pay_list',$pay_list);
 
+        $this->assign('style',$style);
         $this->assign('paymentList',$paymentList);
         $this->assign('bank_img',$bank_img);
         $this->assign('order',$order);

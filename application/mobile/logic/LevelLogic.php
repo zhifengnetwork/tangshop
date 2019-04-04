@@ -29,15 +29,33 @@ class LevelLogic
                 Db::query($sql);
             }
         }else{
-            //如果用户等级等于最大等级，
-            if($user_level != $max_level){
-                while($nums['need_num'] >= $nums['goods_num']){
-                    Db::name('users')->where('user_id',$user_id)->setInc('level');
-                    Db::query($sql);
-                    $nums = $this->condition($user_id);
-                };
+            // //如果用户等级等于最大等级
+            // while($nums['goods_num'] >= $nums['need_num']){
+            //     if($user_level != $max_level){
+            //         Db::name('users')->where('user_id',$user_id)->setInc('level');
+            //         Db::query($sql);
+            //         $user_level = M('users')->where('user_id',$user_id)->value('level');
+            //         $nums = $this->condition($user_id);
+            //         // if($nums['need_num'] < $nums['goods_num']){
+            //         //     break;
+            //         // }
+            //         dump($nums);
+            //     }else{
+            //         break;
+            //     }
             }
-        }
+            // while($user_level != $max_level){
+            //     if($nums['goods_num'] >= $nums['need_num']){
+            //         Db::name('users')->where('user_id',$user_id)->setInc('level');
+            //         Db::query($sql);
+            //         $nums = $this->condition($user_id);
+            //         // if($nums['need_num'] < $nums['goods_num']){
+            //         //     break;
+            //         // }
+            //         dump($nums);
+            //     };
+            // }
+        // }
     }
 
 
@@ -59,20 +77,41 @@ class LevelLogic
     /**
      * 获取升级条件
      */
-    public function condition($user_id){
+    // public function condition($user_id){
+    //     $user_level = M('users')->where('user_id',$user_id)->value('level');
+        
+    //     if($user_level == 1){
+    //         $count = count($this->get_down($user_id));
+    //         return $count;
+    //     }else{
+    //         $carts = new CartLogic();
+    //         $time = M('user_level_time')->where('user_id',$user_id)->value('level_time');
+    //         $need_num = $carts->get_up_level_num($user_level+1);
+    //         $goods_num = $carts->get_time_goods_num($user_id,$time ,1);
+    //         $nums = [
+    //             'need_num' => $need_num,
+    //             'goods_num' => $goods_num
+    //         ];
+    //         return $nums;
+    //     }
+    // }
+    public function condition($user_id)
+    {
         $user_level = M('users')->where('user_id',$user_id)->value('level');
         
         if($user_level == 1){
             $count = count($this->get_down($user_id));
             return $count;
         }else{
-            $carts = new CartLogic();
+            // $carts = new CartLogic();
             $time = M('user_level_time')->where('user_id',$user_id)->value('level_time');
-            $need_num = $carts->get_up_level_num($user_level+1);
-            $goods_num = $carts->get_time_goods_num($user_id,$time ,1);
+            $need_num = M('user_level')->where('level_id',$user_level+1)->value('goods_num');//升级需要指定商品数
+            $le_num = M('user_level')->where('level_id',$user_level)->value('goods_num');//该级别需要指定商品数
+            $goods_num = M('bonus')->where('user_id',$user_id)->value('goods_num');//已经购买了的指定商品数
+            $goods_nums = $goods_num - $le_num;
             $nums = [
                 'need_num' => $need_num,
-                'goods_num' => $goods_num
+                'goods_num' => $goods_nums
             ];
             return $nums;
         }
