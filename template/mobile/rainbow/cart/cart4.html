@@ -1,6 +1,190 @@
-<include file="public/header" title="支付,提交订单" body=""/>
-<include file="public/header_nav" title="支付,提交订单" href="/index.php/Mobile/Order/order_list/type/WAITPAY"/>
+<include file="public/header" title="支付,提交订单" body="" />
+<include file="public/header_nav" title="支付,提交订单" href="/index.php/Mobile/Order/order_list/type/WAITPAY" />
 <form action="{:U('upload')}" enctype="multipart/form-data" method="post" name="cart4_form" id="cart4_form">
+
+
+    <style>
+        .zfBox {
+
+            margin: auto;
+            height: 1.1rem;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+        }
+
+        .header {
+            width: 12rem;
+            border:1px solid green;
+            width:100%
+        }
+
+        .zfBox span {
+
+            height: 1.1rem;
+            line-height: 1.1rem;
+            display: inline-block;
+            font-size: .5rem;
+            vertical-align: top;
+            width: 6rem;
+
+
+
+        }
+
+        #s {
+
+            width: 4rem;
+            font-size: .5rem;
+            height: 1.1rem;
+            line-height: 1.1rem;
+            vertical-align: top;
+            outline: none;
+            margin-top: .5rem
+        }
+
+        #s option {
+
+            font-size: .3rem;
+            vertical-align: center
+        }
+
+        #d1,
+        #d2 {
+
+            display: flex;
+            justify-content: center;
+            align-content: center;
+
+        }
+
+        #d3 {
+
+
+            padding: 2% 3%;
+            box-sizing: border-box;
+            margin-top: 30px;
+
+        }
+
+        #d3 div {
+
+            margin-top: 20px;
+            margin-bottom: 20px;
+
+
+        }
+
+        #d3 div span {
+
+            font-size: .6rem;
+            height: 1.2rem;
+            line-height: 1.2rem;
+            display: inline-block
+        }
+
+
+        #d3 div span:nth-child(1) {
+
+            width: 15%;
+
+        }
+
+        #d3 div span:nth-child(2) {
+
+            width: 70%;
+
+
+        }
+
+        #d3 div span:nth-child(3) {
+
+            width: 15%;
+            background: red;
+            text-align: center;
+            color: white;
+            border-radius: .1rem
+        }
+
+        .lj_wrap {
+            width: 6.9rem;
+            margin: 0 auto;
+        }
+
+        .imageEchoBox {
+           
+            background: #f5f5f5;
+            margin-bottom: 1.4rem;
+            position: absolute;
+            border-radius: 0.09rem;
+            left:50%;
+            transform: translate(-50%,0)
+           
+           
+        }
+
+        .renderingRrpa {
+            padding-top: 0.88rem;
+            box-sizing: border-box;
+        }
+
+        .uploadWrap p {
+            font-size: 0.3rem;
+            color: #ffff;
+            text-align: center;
+            line-height: 0.8rem;
+        }
+
+        .imageEchoBox img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .uploadFile {
+            width: 100%;
+            height: 0.6rem;
+            line-height: 0.6rem;
+            position: absolute;
+            top: 105%;
+            left: 0;
+            opacity: 0;
+            z-index: 10;
+        }
+
+        .uploadFile2 {
+            width: 100%;
+            height: 0.6rem;
+            position: absolute;
+            top: 105%;
+            left: 0;
+            color: #000;
+            background: #f5f5f5;
+            text-align: center;
+            line-height: 0.6rem;
+            border-radius: 0.09rem;
+        }
+
+        .decideToSell {
+            width: 100%;
+            margin: 0 auto;
+            margin-bottom: 1rem;
+        }
+
+        .decideToSell p {
+            background: #f5f5f5;
+            color: #000;
+            padding: 0.2rem 0;
+            text-align: center;
+            border-radius: 0.1rem;
+            display: block;
+        }
+
+    </style>
     <div class="ddmoney">
         <div class="maleri30">
             <span class="fl">订单号</span>
@@ -10,15 +194,72 @@
     <div class="ddmoney">
         <div class="maleri30">
             <span class="fl">订单金额</span>
-            <span class="fr"><input type="hidden" name="order_amount" value="{$order[order_amount]}">{$order[order_amount]}元</span>
+            <span class="fr"><input type="hidden" name="order_amount"
+                    value="{$order[order_amount]}">{$order[order_amount]}元</span>
         </div>
     </div>
-    <div class="maleri30">
+    <div class="ddmoney">
+            <div class="maleri30">
+                <span class="fl">支付方式：</span>
+                <span style="float:right"> 
+                    <select name="zfselect" id="s" >
+                        <option value="weixin">微信</option>
+                        <option value="zhifubao">支付宝</option>
+                        <option value="zhongguo">中国银行</option>
+                    </select> 
+                </span>
+            </div>
+        </div>
+
+
+    
+
+    <!-- 支付方式 -->
+    <!-- <div class="maleri30">
         <foreach name="pay_list" item="list">
         <input type="radio" name="pay" value="$list['pay_name']">{$list.pay_name}
         <span>{$list.pay_card}</span><br /></foreach>
+    </div> -->
+
+    <!-- 支付方式 -->
+    <!-- <div class="zfBox">
+        <div class="header">
+            <span>支付方式：</span>
+            <select name="zfselect" id="s">
+
+                <option value="weixin">微信</option>
+                <option value="zhifubao">支付宝</option>
+                <option value="zhongguo">中国银行</option>
+
+            </select>
+        </div>
+    </div> -->
+
+    <!-- 根据支付方式不一样，显示不同的内容  -->
+
+    <div>
+        <div id="d1">
+            <img src="" style="width:320px;height:320px;background: red;margin-top: 50px;border-radius:.1rem" />
+        </div>
+        <div id="d2" style="display:none;">
+            <img src="" style="width:300px;height:300px;background: blue;margin-top: 50px;border-radius:.1rem" />
+        </div>
+        <div id="d3" style="display:none;">
+
+
+            <p style="color:red;font-size:.6rem">*请前往当地银行打款</p>
+            <div style="margin-top:20px"><span>银行：</span id="span1"><span id="span1">瘦子专属银行</span><span
+                    onClick='copy("span1")'>复制</span></div>
+            <div><span>户主：</span><span id="span2">胖子</span><span onClick='copy("span2")'>复制</span></div>
+            <div><span>卡号：</span><span id="span3">1234567891520</span><span onClick='copy("span3")'>复制</span></div>
+
+
+
+        </div>
     </div>
-    <div class="maleri30">
+
+    <!-- 上传凭证 -->
+    <!-- <div class="maleri30">
         <input type="file" class="file" name="file"><br />
     </div>
     <div class="paiton">
@@ -26,7 +267,39 @@
             <input type="hidden" name="order_id" value="{$order['order_id']}" id="order_id"/>
             <a class="soon" href="javascript:void(0);" onClick="pay()"><span>上传凭证</span></a>
         </div>
+    </div> -->
+    <!-- <img src="__STATIC__/images/upload.png"/> -->
+
+    <!-- 上传凭证 -->
+
+    <div class="lj_wrap">
+        <!--渲染wrpa-->
+        <div class="renderingRrpa">
+            <!-- '创建一个image对象'，给canvas绘制使用 -->
+            <canvas id="canvas" style="display: none;"></canvas>
+
+            <!--上传图片wrap-->
+            <div class="uploadWrap">
+                <div class="imageEchoBox" style="width:600px;height:300px;">
+                    <img class="preViewImg" src="__STATIC__/images/tianjia.png"  />
+                    <!--上传图片 tyle='file'-->
+                    <a class="uploadFile2" href="#" style="width:100%;height: 70px;line-height: 70px;font-size:.6rem">上传凭证</a>
+                    <input class="uploadFile" type="file" onchange="UpLoad(this)" name="file" id="" value="0"
+                        accept="image/*" />
+                </div>
+
+
+            </div>
+
+        </div>
+
     </div>
+
+
+
+
+
+
     <!--其他支付方式-s-->
     <!-- <div class="paylist">
         <div class="myorder debit otherpay p">
@@ -37,8 +310,8 @@
                             <span>支付方式</span>
                         </div>
                         <div class="fr"> -->
-                            <!--<i class="Mright xjt"></i>-->
-                        <!-- </div>
+    <!--<i class="Mright xjt"></i>-->
+    <!-- </div>
                     </div>
                 </a>
             </div>
@@ -75,92 +348,178 @@
         <div class="maleri30">
             <input type="hidden" name="order_id" value="{$order['order_id']}" id="order_id"/>
             <a class="soon" href="javascript:void(0);" onClick="pay()"><span>立即支付</span></a> -->
-            <!--<p class="fr"><a href="javascript:void(0);" class="lossbq">支付失败？</a></p>-->
-        <!-- </div>
+    <!--<p class="fr"><a href="javascript:void(0);" class="lossbq">支付失败？</a></p>-->
+    <!-- </div>
     </div> -->
 
-<div class="mask-filter-div" style="display: none;"></div>
+    <div class="mask-filter-div" style="display: none;"></div>
 </form>
 <script type="text/javascript">
-    $(function(){
+var ind = null;
+    $(function () {
         //默认选中第一个
-        $('.pay-list-4 div ul li:first').find('.che').addClass('check_t').end().find(':radio').prop('checked',true);
+        $('.pay-list-4 div ul li:first').find('.che').addClass('check_t').end().find(':radio').prop('checked', true);
     })
     //切换支付方式
-    function changepay(obj){
+    function changepay(obj) {
         $(obj).find('.che').addClass('check_t').parents('li').siblings('li').find('.che').removeClass('check_t');
         //改变中状态
-        if($(obj).find('.che').hasClass('check_t')){
-            $(obj).find(':radio').prop('checked',true);//选中
-            $(obj).siblings('li').find(':radio').prop('checked',false);
-        }else{
-            $(obj).find(':radio').prop('checked',false);//取消选中
+        if ($(obj).find('.che').hasClass('check_t')) {
+            $(obj).find(':radio').prop('checked', true);//选中
+            $(obj).siblings('li').find(':radio').prop('checked', false);
+        } else {
+            $(obj).find(':radio').prop('checked', false);//取消选中
         }
     }
 
-    function pay(){
-    	// if($("input[name='pay_radio']:checked").length == 0){
-    	// 	layer.open({content:'请选择支付方式',time:2});
-    	// 	return false;
-    	// }
+    function pay() {
+        // if($("input[name='pay_radio']:checked").length == 0){
+        // 	layer.open({content:'请选择支付方式',time:2});
+        // 	return false;
+        // }
         $('#cart4_form').submit();
         return;//微信JS支付
     }
 
-    $(function(){
+    $(function () {
         //使用银行卡
-        $('.usedeb').click(function(){
+        $('.usedeb').click(function () {
             cover();
             $('.chooseebitcard').show();
         })
-        $('.gb-close').click(function(){
+        $('.gb-close').click(function () {
             undercover();
             $('.chooseebitcard').hide();
         })
 
-//        // 其他支付方式
-//        $('.pay-list-4 ul li').click(function(){
-//            $(this).find('.che').toggleClass('check_t').parents('li').siblings('li').find('.che').removeClass('check_t');
-//        })
+        //        // 其他支付方式
+        //        $('.pay-list-4 ul li').click(function(){
+        //            $(this).find('.che').toggleClass('check_t').parents('li').siblings('li').find('.che').removeClass('check_t');
+        //        })
 
         //选择银行卡
-        $('.card').click(function(){
+        $('.card').click(function () {
             $(this).find('.che').toggleClass('check_t').parents('.card').siblings().find('.che').removeClass('check_t');
         })
-//        $('.che').click(function(){
-//            $(this).toggleClass('check_t')
-//        })
+        //        $('.che').click(function(){
+        //            $(this).toggleClass('check_t')
+        //        })
 
         //支付失败弹窗
-        $('.lossbq').click(function(){
+        $('.lossbq').click(function () {
             cover();
             $('.losepay').show();
         })
-        $('.qx-rebd .ax').click(function(){
+        $('.qx-rebd .ax').click(function () {
             undercover();
             $('.losepay').hide();
         })
-        $('.are').click(function(){
+        $('.are').click(function () {
             $('.losepay').hide();
             $('.chooseebitcard').show();
         })
+
+
+
+        //   支付方式不一样，显示不一样的内容
+        var map = { "weixin": "d1", "zhifubao": "d2", "zhongguo": "d3" };
+        $("#s").bind("change", function () {
+            var divId = map[this.value];
+            $("#" + divId).show().siblings().hide();
+
+        })
+
+
+        //执行复制的方法
+        copy = function (id) {
+            var Url2 = document.getElementById(id).innerText;
+            var oInput = document.createElement('input');
+            oInput.value = Url2;
+            document.body.appendChild(oInput);
+            oInput.select(); // 选择对象
+            document.execCommand("Copy"); // 执行浏览器复制命令
+            oInput.className = 'oInput';
+            oInput.style.display = 'none';
+            console.log("复制成功");
+            alert("您已经复制成功")
+        }
+        // 选择图片的按钮
+        /*上传图片*/
+        UpLoad=function (e) {
+				var that = $(e);
+				if(e.files[0]) {
+					var f = e.files[0];
+					fileType = f.type;
+					if(/image\/\w+/.test(fileType)) {
+						var fileReader = new FileReader();
+						fileReader.readAsDataURL(f);
+						fileReader.onload = function(event) {
+							var result = event.target.result; //返回的dataURL   
+							var image = new Image();
+							image.src = result;
+							//若图片大小大于1M，压缩后再上传，否则直接上传  
+							if(f.size > 1024 * 1024) {
+								image.onload = function() {
+									//创建一个image对象，给canvas绘制使用
+									var canvas = document.getElementById("canvas");
+									canvas.width = image.width;
+									canvas.height = image.height; //计算等比缩小后图片宽高   
+									var ctx = canvas.getContext('2d');
+									ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+									var newImageData = canvas.toDataURL(fileType, 0.8); //重新生成图片
+									/* 图片 回显*/
+									that.siblings(".preViewImg").attr("src", newImageData);
+									console.log(newImageData);
+
+									$("#canvas").hide();
+									/*根据点击的下标 =>显示 '回显图片'*/
+//									$(".echoImages").eq(ind).show();
+								}
+							} else {
+								//创建一个image对象，给canvas绘制使用 
+								image.onload = function() {
+									/*图片 回显 */
+									that.siblings(".preViewImg").eq(ind).attr("src", result);
+									console.log(result);
+								}
+							}
+						}
+					} else {
+						alert("请选择图片");
+					}
+
+				} else {
+					console.log('取消选择图片！')
+				}
+			}
+
+
+
+
+
+
+
+
+
+
     })
 </script>
 <!--支付返回弹窗-->
-		<div class="package-pop-bg-opacity" style="display: none;"></div>
-		<div class="package-pop p "  style="display: none;">
-			<p>便宜不等人，请三思而行</p>
-			<div class="package-pop-select p">
-				<a href="" class="fl">
-					我再想想
-				</a>
-				<a href="" class="fr">
-					去意已决
-				</a>
-				<div class="package-pop-icon">
-					
-				</div>
-			</div>
-		</div>
-	</body>
+<div class="package-pop-bg-opacity" style="display: none;"></div>
+<div class="package-pop p " style="display: none;">
+    <p>便宜不等人，请三思而行</p>
+    <div class="package-pop-select p">
+        <a href="" class="fl">
+            我再想想
+        </a>
+        <a href="" class="fr">
+            去意已决
+        </a>
+        <div class="package-pop-icon">
+
+        </div>
+    </div>
+</div>
+</body>
+
 </html>
