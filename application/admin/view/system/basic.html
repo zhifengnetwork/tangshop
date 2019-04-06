@@ -79,6 +79,66 @@
 
             <dl class="row">
                 <dt class="tit">
+                    <label for="shop_repair">店铺返利比例</label>
+                </dt>
+                <dd class="opt">
+                    <input id="shop_repair" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" id="shop_repair" name="shop_repair" value="{$config.shop_repair|default=0}" class="input-txt" type="text">
+                    <span class="err">只能输入数字，不用输入%</span>
+
+                    <p class="notic">拥有线下门店的合伙人进货享有的店补比例</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="upgrade_conditions">升级VIP直推人数</label>
+                </dt>
+                <dd class="opt">
+                    <input id="upgrade_conditions" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" name="upgrade_conditions" value="{$config.upgrade_conditions|default=0}" class="input-txt" type="text">
+                    <span class="err">只能输入整数</span>
+
+                    <p class="notic">普通会员升级到VIP需要直推的人数</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="dividend_ratio">合伙人分红比例</label>
+                </dt>
+                <dd class="opt">
+                    <input id="dividend_ratio" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" name="dividend_ratio" value="{$config.dividend_ratio|default=0}" class="input-txt" type="text">
+                    <span class="err">只能输入整数，不用输入%</span>
+
+                    <p class="notic">所有的合伙人享有自己团队销售额的百分比</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="partner_cash">直推合伙人奖金</label>
+                </dt>
+                <dd class="opt">
+                    <input id="partner_cash" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" name="partner_cash" value="{$config.partner_cash|default=0}" class="input-txt" type="text">
+                    <span class="err">只能输入整数</span>
+
+                    <p class="notic">会员级别达到合伙人之后直推一个人升级到合伙人后得到的奖励金额</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="partner_award">直推合伙人享有奖金比例</label>
+                </dt>
+                <dd class="opt">
+                    <input id="partner_award" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$"  name="partner_award" value="{$config.partner_award|default=0}" class="input-txt" type="text">
+                    <span class="err">只能输入整数，不用输入%</span>
+
+                    <p class="notic">会员级别达到合伙人后直推一个人升级到合伙人后永久享有这个人进货金额的百分比</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
                     <label>VIP充值开关</label>
                 </dt>
                 <dd class="opt">
@@ -93,10 +153,10 @@
 
             <dl class="row">
                 <dt class="tit">
-                    <label for="reg_integral">VIP价格</label>
+                    <label for="reg_integral_vip">VIP价格</label>
                 </dt>
                 <dd class="opt">
-                    <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" id="rechargevip_price" name="rechargevip_price" value="{$config.rechargevip_price|default=0}" class="input-txt" type="text">
+                    <input id="reg_integral_vip" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$"  name="rechargevip_price" value="{$config.rechargevip_price|default=0}" class="input-txt" type="text">
                     <span class="err">只能输入整数</span>
 
                     <p class="notic">充值VIP价格</p>
@@ -121,7 +181,7 @@
 
             <dl class="row">
                 <dt class="tit">
-                    <label for="reg_integral">返利金额</label>
+                    <label for="rechargevip_rebate">返利金额</label>
                 </dt>
                 <dd class="opt">
                     <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" id="rechargevip_rebate" name="rechargevip_rebate" value="{$config.rechargevip_rebate|default=0}" class="input-txt" type="text">
@@ -163,10 +223,10 @@
             </dl>
             <dl class="row">
                 <dt class="tit">
-                    <label for="default_storage">库存预警数</label>
+                    <label for="warning_storage">库存预警数</label>
                 </dt>
                 <dd class="opt">
-                    <input onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" name="warning_storage" value="{$config.warning_storage}" class="input-txt" type="text">
+                    <input id="warning_storage" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" pattern="^\d{1,}$" name="warning_storage" value="{$config.warning_storage}" class="input-txt" type="text">
                     <span class="err">只能输入整数</span>
                     <p class="notic">库存预警,当商品库存少于库存预警数，将在商品列表页库存显示红色</p>
                 </dd>

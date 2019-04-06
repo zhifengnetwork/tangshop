@@ -23,11 +23,13 @@ class RangeLogic
     public function get_range($order_id){
         //查询订单信息
         $order_info=$this->get_order_info($order_id);
+//        var_dump($order_info);
         if(!empty($order_info)){
             //有没有购买指定商品
             $cartLogic=new CartLogic();
             //获取用户当前等级（购买商品之前）
             $user_info=$this->get_user_info($order_info['user_id']);
+//            var_dump($user_info);
             //获取升级指定商品数量
             $upgrade_num=$this->get_order_level_num($order_id);
             //获取在这个等级买过的指定升级产品
@@ -38,14 +40,15 @@ class RangeLogic
             //对比的等级
             $compare_level=$user_info['level'];
             //看有没有上级
-            $user_info['parents']=substr($user_info['parents'],2);
+            $user_info['parents']=trim(substr($user_info['parents'],2),',');
             if($user_info['parents']=='') exit();
-            //只有VIP和销售员才做特殊处理
             if(in_array($user_info['level'],array(1,2,3))){
                 if($upgrade_num==0 || $user_info['level']==1){
                     //没有指定商品正常处理
-                    $user_info['parents']=strrev($user_info['parents']);
+//                    $user_info['parents']=strrev($user_info['parents']);
                     $parents=explode(',',$user_info['parents']);
+                    $parents=array_reverse($parents);
+//                    var_dump($parents);
                     foreach($parents as $key=>$value){
                         //获取等级进行对比
                         $user_level=$cartLogic->get_user_level($value);
@@ -58,6 +61,7 @@ class RangeLogic
                             //算极差奖励
                             $bonus=$order_info['order_amount']/$user_discount*($compare_user_discount-$up_user_discount);
                             $data=array('user_id'=>$value,'bonus'=>$bonus,'order_id'=>$order_id,'buy_discount'=>$compare_user_discount,'reward_discount'=>$up_user_discount,'add_time'=>time());
+//                            var_dump($data);die;
                             M('range_log')->insert($data);
                             if($user_level==2){
                                 //提高比较等级
@@ -139,6 +143,62 @@ class RangeLogic
             }
         }
     }
+
+    /**
+     *分红  年结算
+     */
+    public function partner_team_dividend($user_id){
+        //先看看是不是合伙人
+        $user_info=$this->get_user_info($user_id);
+        if($user_info['level']!=4) exit('这个会员不是合伙人');
+        //寻找团队成员
+        $team=$this->get_my_team($user_id);
+        if(empty($team)) exit('团队还在组建中');
+        //团队总销售额
+        $cost=0;
+        //拼接起始时间
+        $start_time=strtotime(date('Y-1-1 00:00:00',time()));
+        foreach($team as $key=>$value){
+            $cost+=$this->get_sales_volume($value,$start_time);
+        }
+        $config = tpCache('basic');
+        //那么这个人年分红金额为
+        $cost=$cost*$config['dividend_ratio']/100;
+        //看如何处理这个分红
+
+    }
+
+    /**
+     * 奖金周结算
+     */
+    public function weekly_settlement(){
+        //先处理时间
+        $monday=strtotime(date('Y-m-d 00:00:00', (time() - ((date('w') == 0 ? 7 : date('w')) - 1) * 24 * 3600)));//本周一起始时间
+        
+
+    }
+
+    /**
+     * 获取从一个时间至今的订单总价
+     * @param $user_id
+     * @param $start_time
+     * @return int
+     */
+    public function get_sales_volume($user_id,$start_time){
+        if(is_numeric($user_id) && $user_id>0 && $start_time>0){
+            $total=M('order')->where(['user_id'=>$user_id,'pay_status'=>1])->where('pay_time','>',$start_time)->field('sum(order_amount) as total')->select();
+            return $total['total'];
+        }
+        return 0;
+    }
+
+
+
+
+
+
+
+
     //直推合伙人奖金2000  /   5%进货消费
     public function partner_bonus($type,$partner_id,$bonus,$order_id,$user_discount,$partner_discount){
         if(in_array($type,array(2,3))){
@@ -215,5 +275,12 @@ class RangeLogic
         }else{
             return 0;
         }
+    }
+    //寻找自己的团队   直推的人组成了自己的团队
+    public function get_my_team($user_id){
+        if(is_numeric($user_id) && $user_id>0){
+            return M('users')->where(['first_leader'=>$user_id])->column('user_id');
+        }
+        return array();
     }
 }

@@ -20,6 +20,7 @@ use app\common\model\Order as OrderModel;
 use app\common\model\SpecGoodsPrice;
 use app\common\logic\MessageTemplateLogic;
 use app\common\logic\MessageFactory;
+use app\mobile\logic\RangeLogic;
 use think\Cache;
 use think\Db;
 /**
@@ -588,6 +589,9 @@ class OrderLogic
             case 'pay': //付款
                 $order_sn = Db::name('order')->where("order_id = $order_id")->getField("order_sn");
                 update_pay_status($order_sn,$ext); // 调用确认收货按钮
+                $range=new RangeLogic();
+                $result=$range->get_range($order_id);
+//                var_dump($result);die;
                 return true;
             case 'pay_cancel': //取消付款
 				$update['pay_status'] = 0;
