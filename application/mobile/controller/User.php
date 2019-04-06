@@ -81,6 +81,10 @@ class User extends MobileBase
         $MenuCfg = new MenuCfg();
         $menu_list = $MenuCfg->where('is_show', 1)->order('menu_id asc')->select();
         $this->assign('menu_list', $menu_list);
+        //加个判断当有门店的时候不用提交申请
+        $logic = new UsersLogic();
+        $is_offline=$logic->get_is_offline($this->user_id);
+        $this->assign('is_offline',$is_offline);
         return $this->fetch();
     }
 
@@ -797,6 +801,33 @@ class User extends MobileBase
         if (IS_AJAX) {      //ajax加载更多
             return $this->fetch('ajax_collect_list');
             exit;
+        }
+        return $this->fetch();
+    }
+
+    /**
+     * 用户申请线下门店
+     */
+    public function offline_store()
+    {
+        $userLogic = new UsersLogic();
+        $data = $userLogic->get_offline_store($this->user_id);
+//        var_dump($data);die;
+        if(isset($data) && !empty($data)){
+            $this->assign('data',$data);
+            $this->assign('flag',1);
+        }else{
+            $this->assign('flag',0);
+        }
+        if (IS_POST) {
+            $phone=I('phone');
+            $flag=I('flag');
+            if($flag){
+                M('user_offline')->where(['user_id'=>$this->user_id])->save(['phone'=>$phone]);
+            }else{
+                M('user_offline')->insert(['user_id'=>$this->user_id,'is_offline'=>0,'phone'=>$phone,'add_time'=>time()]);
+            }
+            header('Location: index/');
         }
         return $this->fetch();
     }

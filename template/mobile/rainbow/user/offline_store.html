@@ -1,0 +1,50 @@
+<include file="public/header" title="我的门店" body="pore_add"/>
+<include file="public/header_nav" title="我的门店" href="javascript:history.back(-1)"/>
+<div class="floor my p edit">
+    <form action="" method="post" id="offlineForm">
+        <input type="hidden"  name="flag" value="{$flag}" />
+        <div class="content">
+            <div class="floor list7">
+                <div class="myorder p">
+                    <div class="content30">
+                        <a href="javascript:void(0)">
+                            <div class="order">
+                                <div class="fl">
+                                    <span>手机号码:</span>
+                                </div>
+                                <div class="fl">
+                                    <input type="tel" value="{$data.phone}" name="phone" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"/>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="edita">
+            <div class="content30">
+                <input type="button" value="提交" class="dotm_btn1 beett" onclick="checkForm(this)" />
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/mobile-location.js"></script>
+<script type="text/javascript">
+    function checkForm(obj){
+        $(obj).attr('disabled',true);
+        var mobile = $('input[name="phone"]').val();
+        var error = '';
+        if(!checkMobile(mobile)){
+            error = '手机号码格式有误 <br/>';
+        }
+        console.log(mobile);
+        if(error){
+            $(obj).attr('disabled',false);
+            showErrorMsg(error)
+            return false;
+        }
+        $("#offlineForm").submit();
+    }
+</script>
+</body>
+</html>

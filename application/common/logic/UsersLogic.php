@@ -1551,4 +1551,18 @@ class UsersLogic extends Model
         $info = M('user_extend')->field($field)->where($map)->find();
         return !empty($info) ? $info : '';
     }
+    /**
+     * 获取用户线下门店信息
+     */
+    public function get_offline_store($user_id){
+        if(!$user_id) return [];
+        return M('user_offline')->where(['user_id'=>$user_id])->find();
+    }
+    /**
+     * 查询是否开了线下门店
+     */
+    public function get_is_offline($user_id){
+        if(!$user_id) return 0;
+        return M('user_offline')->where(['user_id'=>$user_id,'is_offline'=>1])->count();
+    }
 }

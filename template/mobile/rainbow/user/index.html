@@ -91,7 +91,11 @@
                     </div>
                 </case>
                 <default />
-                <a href="{$menu.menu_url}">
+                <if condition="$menu.menu_id eq 18 and $is_offline eq 1">
+                    <a>
+                <else>
+                    <a href="{$menu.menu_url}">
+                </if>
                     <div class="z_user_list <if condition='$menu.is_tab eq 1'>border10</if>">
                         <div class="user_list_cont padd10">
                             <div class="cont_fl">
@@ -99,7 +103,11 @@
                                 <span>{$menu.menu_name}</span>
                             </div>
                             <div class="cont_fr">
-                                <i class="zMright"></i>
+                                <if condition="$menu.menu_id eq 18 and $is_offline eq 1">
+                                    <span>已有门店</span>
+                                <else>
+                                    <i class="zMright"></i>
+                                </if>
                             </div>
                         </div>
                     </div>
