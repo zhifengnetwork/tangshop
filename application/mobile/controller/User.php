@@ -813,6 +813,7 @@ class User extends MobileBase
         $userLogic = new UsersLogic();
         $data = $userLogic->get_offline_store($this->user_id);
 //        var_dump($data);die;
+        if(isset($data['is_offline']) && $data['is_offline']==1)  header('Location: index/');
         if(isset($data) && !empty($data)){
             $this->assign('data',$data);
             $this->assign('flag',1);
@@ -823,7 +824,7 @@ class User extends MobileBase
             $phone=I('phone');
             $flag=I('flag');
             if($flag){
-                M('user_offline')->where(['user_id'=>$this->user_id])->save(['phone'=>$phone]);
+                M('user_offline')->where(['user_id'=>$this->user_id])->save(['phone'=>$phone,'is_offline'=>0]);
             }else{
                 M('user_offline')->insert(['user_id'=>$this->user_id,'is_offline'=>0,'phone'=>$phone,'add_time'=>time()]);
             }

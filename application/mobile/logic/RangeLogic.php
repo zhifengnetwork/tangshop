@@ -174,8 +174,16 @@ class RangeLogic
     public function weekly_settlement(){
         //先处理时间
         $monday=strtotime(date('Y-m-d 00:00:00', (time() - ((date('w') == 0 ? 7 : date('w')) - 1) * 24 * 3600)));//本周一起始时间
-        
+        $user_bonus=$this->get_user_bonus($monday);
+        //接下来如何处理这些奖金
 
+    }
+
+    /**
+     * 查询所有获奖的用户从本周一到现在获得的奖金
+     */
+    public function get_user_bonus($monday){
+        return M('range_log')->where('add_time','>',$monday)->field('user_id,sum(bonus) bonus')->group_by('user_id')->select();
     }
 
     /**

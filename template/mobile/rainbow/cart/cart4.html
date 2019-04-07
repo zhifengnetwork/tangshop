@@ -3,6 +3,7 @@
 <form action="{:U('upload')}" enctype="multipart/form-data" method="post" name="cart4_form" id="cart4_form">
 
     <style>
+
         .zfBox {
 
             margin: auto;
@@ -58,7 +59,7 @@
 
         }
 
-        <?php echo $style;?> {
+        .d3 {
 
 
             padding: 2% 3%;
@@ -68,7 +69,7 @@
 
         }
 
-        <?php echo $style;?> div {
+        .d3 div {
 
             margin-top: 20px;
             margin-bottom: 20px;
@@ -76,7 +77,7 @@
 
         }
 
-        <?php echo $style;?> div span {
+        .d3 div span {
 
             font-size: .6rem;
             height: 1.2rem;
@@ -85,20 +86,20 @@
         }
 
 
-        <?php echo $style;?> div span:nth-child(1) {
+        .d3 div span:nth-child(1) {
 
             width: 15%;
 
         }
 
-        <?php echo $style;?> div span:nth-child(2) {
+        .d3 div span:nth-child(2) {
 
             width: 70%;
 
 
         }
 
-        <?php echo $style;?> div span:nth-child(3) {
+       .d3 div span:nth-child(3) {
 
             width: 15%;
             background: red;
@@ -184,7 +185,10 @@
             border-radius: 0.1rem;
             display: block;
         }
-      
+        .uploadFile{
+            height: 90px;
+            line-height: 90px
+        }
 
     </style>
     <div class="ddmoney">
@@ -249,12 +253,11 @@
         </div></if>
         <if condition="$list.id gt 2" >
         <!-- <h1>d{$list.id}</h1> -->
-        <div id="d{$list.id}" style="display:none;">
+        <div id="d{$list.id}" class="d3" style="display:none;">
             <p style="color:red;font-size:.6rem">*请前往当地银行打款</p>
             <div style="margin-top:20px">
-                <span>银行：</span>
-                <span id="span1">{$list.pay_name}</span>
-                <span onClick='copy("span1")'>复制</span></div>
+                <span>银行：</span><span id="span1">{$list.pay_name}</span><span onClick='copy("span1")'>复制</span>
+            </div>
             <!-- <div><span>户主：</span><span id="span2">胖子</span><span onClick='copy("span2")'>复制</span></div> -->
             <div><span>卡号：</span><span id="span2">{$list.pay_card}</span><span onClick='copy("span2")'>复制</span></div>
         </div>
