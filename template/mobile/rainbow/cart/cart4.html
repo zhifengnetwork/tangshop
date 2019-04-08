@@ -152,7 +152,7 @@
             height: 0.6rem;
             line-height: 0.6rem;
             position: absolute;
-            top: 105%;
+            top: 0%;
             left: 0;
             opacity: 0;
             z-index: 10;
@@ -186,8 +186,8 @@
             display: block;
         }
         .uploadFile{
-            height: 90px;
-            line-height: 90px
+            height: 7.4rem;
+           
         }
 
     </style>
@@ -492,18 +492,6 @@ var ind = null;
                                 console.log(result);
                             }
                         }
-                        $.ajax({
-                            type: "POST",
-                            url: "{:U('Mobile/Cart/upload')}",
-                            dataType: 'json',
-                            data: newImageData,
-                            success: function(data){
-                                console.log('sss')
-                            },
-                            error: function(data){
-                                console.log('sgfkasfg')
-                            }
-                        })
                     }
                 } else {
                     alert("请选择图片");

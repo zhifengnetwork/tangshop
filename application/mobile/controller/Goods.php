@@ -231,7 +231,7 @@ class Goods extends MobileBase
             $collect = db('goods_collect')->where(array("goods_id" => $goods_id, "user_id" => $user_id))->count(); //当前用户收藏
             $this->assign('collect', $collect);
         }
-
+        //获取折扣
         $dis_info = get_discount();
         $this->assign('user_id',$dis_info['user_id']);
         $this->assign('discount',$dis_info['discount']);

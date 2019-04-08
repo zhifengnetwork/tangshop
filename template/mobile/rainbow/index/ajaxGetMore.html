@@ -7,9 +7,9 @@
 		</a>
 		<span class="similar-product-price">
 			<empty name="$user_id">
-				¥<span class="big-price">({$v[shop_price]})</span>
+				¥<span class="big-price">{$v[shop_price]}</span>
 			<else />
-				¥<span class="big-price">{$v[shop_price]*$discount*0.01}({$v[shop_price]})</span>
+				¥<span class="big-price">{$v[shop_price]*$discount}({$v[shop_price]})</span>
 			</empty>
 			<a href="{:U('Goods/goodsList',['id'=>$v['cat_id']])}" title="{$v.goods_name}">
 				<span class="guess-button J_ping">看相似</span>

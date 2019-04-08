@@ -1532,6 +1532,9 @@ function get_discount()
     if($user_id){
         $level = Db::name('users')->where('user_id',$user_id)->value('level');
         $discount = Db::name('user_level')->where('level_id',$level)->value('discount');
+        $discount = $discount*0.01;
+    }else{
+        $discount = 1;
     }
     $dis_info = [];
     $dis_info['user_id'] = $user_id;

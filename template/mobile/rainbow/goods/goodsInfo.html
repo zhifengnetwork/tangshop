@@ -56,11 +56,10 @@
                 </a>
             </div>
             <div class="scunde p">
+                <span class="red" id="price">￥{$goods.shop_price*$discount}</span>
                 <empty name="$user_id">
-                    <span class="red" id="price">￥{$goods.shop_price}</span>
                     <span id="market_price_title">原价：</span><span class="linethr" id="shop_price">{$goods.market_price}</span>
                 <else />
-                    <span class="red" id="price">￥{$goods.shop_price*$discount*0.01}</span>
                     <span id="market_price_title">原价：</span><span class="linethr" id="shop_price">{$goods.shop_price}</span>
                 </empty>
                 
@@ -322,9 +321,15 @@
                                 <div class="similer-product">
                                     <img src="{$v.goods_id|goods_thum_images=400,400}">
                                     <span class="similar-product-text">{$v[goods_name]}</span>
-                                    <span class="similar-product-price">
-                                        ¥<span class="big-price">{$v[shop_price]*$discount*0.01}</span>
-                                    </span>
+                                    <empty name="$user_id">
+                                        <span class="similar-product-price">
+                                            ¥<span class="big-price">{$v[shop_price]}</span>
+                                        </span>
+                                    <else>
+                                        <span class="similar-product-price">
+                                            ¥<span class="big-price">{$v[shop_price]*$discount}</span>
+                                        </span>
+                                    </empty>
                                 </div>
                             </a>
                         </li>
@@ -1120,8 +1125,8 @@
             $("#goods_price").html(integral + '+' +exchange_integral + '积分'); //变动价格显示
             $("#price").html("<em>￥</em>" + integral + '+' +exchange_integral + '积分'); //积分显示
         }else{
-            $("#goods_price").html(goods_price*'{$discount}'*0.01); //变动价格显示
-            $("#price").html("<em>￥</em>" + goods_price*'{$discount}'*0.01); //变动价格显示
+            $("#goods_price").html(goods_price); //变动价格显示
+            $("#price").html("<em>￥</em>" + goods_price*'{$discount}'); //变动价格显示
         }
         $('#market_price_title').html('原价：');
         $('#spec_store_count').html(store_count);
