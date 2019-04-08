@@ -362,7 +362,7 @@
     <!--&lt;!&ndash;<p class="deel"><a href="{:U('Mobile/User/order_del',array('order_id'=>$order.order_id))}">删除订单</a></p>&ndash;&gt;-->
     <!--</div>-->
     <div class="fr s">
-        <if condition="$order['pay_btn'] eq 1">
+        <if condition="$order['pay_btn'] eq 2">
             <a href="{:U('Mobile/Cart/cart4',array('order_id'=>$order['order_id']))}">立即付款</a>
         </if>
         <if condition="$order['receive_btn'] eq 1">

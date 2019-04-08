@@ -363,99 +363,64 @@ class Cart extends MobileBase {
     /**
      * 上传凭证
      */
-    // function upload(Request $request){
-    //     // $info = I('post.');dump($info);die;
-    //     // if(empty($this->user_id)){
-    //     //     $this->redirect('User/login');
-    //     // }
-    //     // $info = I('post.');
-    //     // if(empty($info['pay'])){
-    //     //     $this->error('请选择支付方式');
-    //     // }
-    //     // if(empty($info['number'])){
-    //     //     $this->error('请填写卡号或账号');
-    //     // }elseif(!is_numeric($info['number'])){
-    //     //     $this->error('请填写正确的卡号或账号');
-    //     // }
-    //     $file = $this->request->file('file');
-    //     if(empty($file)){
-    //         $this->error('请上传凭证');
-    //     }
-
-    //     $name = $file->getInfo('name');
-    //     $exten = substr($name,strrpos($name,'.')); //上传文件后缀名
-    //     $img_name = md5(mt_rand(0,100000).time()); //文件名
-    //     $img_path = ROOT_PATH.'public'.DS.'upload'.DS.'proof'.Date('Ymd');
-    //     if(!is_dir($img_path)){
-    //         mkdir($img_path,0777,true);
-    //     }
-    //     $img_src = $img_path.DS.$img_name.$exten;
-    //     $pay_img = $file->validate(['ext' => 'jpg,png']);
-    //     $pay_img->move($img_path,$img_name);
-    //     //插入数据库
-    //     Db::name('user_pay_log')->insert([
-    //         'user_id' => $this->user_id,
-    //         'order_id'  => $info['order_id'],
-    //         'pay_way'   => '0',
-    //         'image' =>  $img_src,
-    //         'add_time'  =>  time(),
-    //         'status'    =>  '0'
-    //     ]);
-    //     //上传验证
-    //     $result = $this->validate(
-    //         ['file' => $file],
-    //         ['file'=> 'require|image:100,100,png'],
-    //         ['file.require' => '请选择上传文件','file.image'=> '必须是100*100的PNG格式文件']
-    //     );
-    //     if($info){
-    //         $this->success('文件上传成功');
-    //     }else{
-    //         $this->error('文件上传失败');
-    //     }
-    // }
-    public function upload(){
+    function upload(Request $request){
+        if(empty($this->user_id)){
+            $this->redirect('User/login');
+        }
         $info = I('post.');
-        $image = $info['newImageData'];
-        $image = json_decode($image,true);
-
-        if(!$image){
-            return json(array('code'=>0,'msg'=>'没有上传图片'));
-        }
-
-        $img_name = md5(mt_rand(0,100000).time()); //文件名
-        $image = explode(',',$image);
-        $image = $image[1];
-        dump($image);
-
-        $path = 'public'.DS.'upload'.DS.'pay'.DS.Date('Ymd');
-        if(!is_dir($path)){ //判断目录是否存在 不存在就创建
-            mkdir($path,0777,true);
-        }
-
-        $imageSrc = $path.DS.$imageName;
-
-        //图片写入文件
-        $img = file_put_contents($imageSrc, base64_decode($image));
-        if($img){
-            $data = json_encode($data);
+        $order_id = M('order')->where('order_sn',$info['order_sn'])->value('order_id');
+        //判断该订单号是否已经提交凭证
+        $is_img = M('user_pay_log')->where('order_id',$order_id)->value('image');
+        if($is_img){
+            $this->success('凭证已经上传',"Cart/pay_success?order_id=$order_id",'',1);
+        }else{
+            $file = $this->request->file('file');
+            if(empty($file)){
+                $this->error('请上传凭证');
+            }
+    
+            $name = $file->getInfo('name');
+            $exten = substr($name,strrpos($name,'.')); //上传文件后缀名
+            $img_name = md5(mt_rand(0,100000).time()); //文件名
+            $img_path = ROOT_PATH.'public'.DS.'upload'.DS.'proof'.DS.Date('Ymd');
+            if(!is_dir($img_path)){
+                mkdir($img_path,0777,true);
+            }
+            $img_src = $img_path.DS.$img_name.$exten;
+            $pay_img = $file->validate(['ext' => 'jpg,png']);
+            $pay_img->move($img_path,$img_name);
             //插入数据库
-            $ins = Db::name('user_pay_log')->insert([
+            $bool = Db::name('user_pay_log')->insert([
                 'user_id' => $this->user_id,
-                'order_id'  => $info['order_id'],
+                'order_id'  => $order_id,
                 'pay_way'   => '0',
-                'image' =>  $imageSrc,
+                'image' =>  $img_src,
                 'add_time'  =>  time(),
                 'status'    =>  '0'
             ]);
+
         }
 
-        if($ins){
-            return json(array('code'=>200, 'msg'=>'上传成功'));
+        //上传验证
+        $result = $this->validate(
+            ['file' => $file],
+            ['file'=> 'require|image:100,100,png'],
+            ['file.require' => '请选择上传凭证','file.image'=> '必须是100*100的PNG格式文件']
+        );
+        if($bool){
+            $this->success('凭证上传成功',"Cart/pay_success?order_id=$order_id");
         }else{
-            return json(array('code'=>0, 'msg'=>'上传失败'));
+            $this->error('凭证上传失败');
         }
     }
+    //凭证上传成功
+    public function pay_success(){
+        $order_id = I('order_id/d');
+        $order = Db::name('order')->where("order_id", $order_id)->find();
+        $this->assign('order', $order);
 
+        return $this->fetch('success');
+    }
 
     /**
      * ajax 将商品加入购物车

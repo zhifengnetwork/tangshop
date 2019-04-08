@@ -187,7 +187,7 @@ class Order extends MobileBase
         if ($order['prom_type'] == 5) {   //虚拟订单
             $this->redirect(U('virtual/virtual_order', ['order_id' => $id]));
         }
-
+        // dump($order);die;
         $this->assign('order', $order);
         if($order['receive_btn']){
             //待收货详情

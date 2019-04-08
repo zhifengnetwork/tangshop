@@ -216,27 +216,7 @@
             </span>
         </div>
     </div>
-
-    <!-- 支付方式 -->
-    <!-- <div class="maleri30">
-        <foreach name="pay_list" item="list">
-        <input type="radio" name="pay" value="$list['pay_name']">{$list.pay_name}
-        <span>{$list.pay_card}</span><br /></foreach>
-    </div> -->
-
-    <!-- 支付方式 -->
-    <!-- <div class="zfBox">
-        <div class="header">
-            <span>支付方式：</span>
-            <select name="zfselect" id="s">
-
-                <option value="weixin">微信</option>
-                <option value="zhifubao">支付宝</option>
-                <option value="zhongguo">中国银行</option>
-
-            </select>
-        </div>
-    </div> -->
+    
 
     <!-- 根据支付方式不一样，显示不同的内容  -->
 
@@ -252,13 +232,11 @@
             <img src="{$list.pay_code}" style="width:300px;height:300px;background: blue;margin-top: 50px;border-radius:.1rem" />
         </div></if>
         <if condition="$list.id gt 2" >
-        <!-- <h1>d{$list.id}</h1> -->
         <div id="d{$list.id}" class="d3" style="display:none;">
             <p style="color:red;font-size:.6rem">*请前往当地银行打款</p>
             <div style="margin-top:20px">
                 <span>银行：</span><span id="d{$list.id}span1">{$list.pay_name}</span><span onClick='copy("d{$list.id}span1")'>复制</span>
             </div>
-            <!-- <div><span>户主：</span><span id="span2">胖子</span><span onClick='copy("span2")'>复制</span></div> -->
             <div><span>卡号：</span><span id="d{$list.id}span2">{$list.pay_card}</span><span onClick='copy("d{$list.id}span2")'>复制</span></div>
         </div>
         </if>
@@ -290,9 +268,9 @@
             <div class="uploadWrap">
                 <div class="imageEchoBox" style="width:12rem;height:7rem;">
                     <img class="preViewImg" src="__STATIC__/images/tianjia.png"  />
-                    <!--上传图片 tyle='file'-->
-                    <a class="uploadFile2" href="#" style="width:100%;height: 2rem;line-height: 2rem;font-size:.6rem">上传凭证</a>
                     <input class="uploadFile" type="file" onchange="UpLoad(this)" name="file" id="" value="0" accept="image/*" />
+                    <!--上传图片 tyle='file'-->
+                    <a class="uploadFile2" href="javascript:void(0);" onClick="pay()" style="width:100%;height: 2rem;line-height: 2rem;font-size:.6rem">上传凭证</a>
                 </div>
 
 
