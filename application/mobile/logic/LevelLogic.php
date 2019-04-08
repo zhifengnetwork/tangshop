@@ -25,7 +25,6 @@ class LevelLogic
         if($user_level == 1){
             if($nums >= 3){
                 Db::name('users')->where('user_id',$user_id)->setInc('level');
-                // Db::query($sql);
                 Db::name('user_level_time')->data(['user_id'=>$user_id,'user_level'=>$user_level+1,'level_time'=>$time])->insert();
             }
         }else{
@@ -39,7 +38,6 @@ class LevelLogic
                     if(empty($nums['need_num'])){
                         break;
                     }
-                    dump($nums);
                 }else{
                     break;
                 }

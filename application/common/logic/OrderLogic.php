@@ -21,6 +21,7 @@ use app\common\model\SpecGoodsPrice;
 use app\common\logic\MessageTemplateLogic;
 use app\common\logic\MessageFactory;
 use app\mobile\logic\RangeLogic;
+use app\mobile\logic\LevelLogic;
 use think\Cache;
 use think\Db;
 /**
@@ -588,10 +589,15 @@ class OrderLogic
         switch ($act){
             case 'pay': //付款
                 $order_sn = Db::name('order')->where("order_id = $order_id")->getField("order_sn");
+                //改变线下支付记录表状态
+                M('user_pay_log')->where('order_id',$order_id)->update(['status'=>1]);
                 update_pay_status($order_sn,$ext); // 调用确认收货按钮
                 $range=new RangeLogic();
                 $result=$range->get_range($order_id);
-//                var_dump($result);die;
+                //升级
+                $level = new LevelLogic();
+                $user_id = M('order')->where('order_sn',$order_sn)->value('user_id');
+                $up = $level->upgrade($user_id);
                 return true;
             case 'pay_cancel': //取消付款
 				$update['pay_status'] = 0;
@@ -606,7 +612,8 @@ class OrderLogic
             case 'invalid': //作废订单
 				$update['order_status'] = 5;
 				$reduce = tpCache('shopping.reduce');
-				$order = Db::name('order')->where("order_id", $order_id)->find();
+                $order = Db::name('order')->where("order_id", $order_id)->find();
+                M('user_pay_log')->where('order_id',$order_id)->update(['status'=>2]);
 				if(($reduce == 1 || empty($reduce)) || ($reduce == 2 && $order['pay_status'] == 1)){
 					$this->alterReturnGoodsInventory($order);
 				}
@@ -663,7 +670,10 @@ class OrderLogic
                 }
             }
         }
+        //改变线下支付记录表状态
+        M('user_pay_log')->where('order_id',$order_id)->update(['status'=>0]);
         // 根据order表查看消费记录 给他会员等级升级 修改他的折扣 和 总金额
+
         Db::name('order')->where("order_id=$order_id")->save(array('pay_status'=>0));
 //        update_user_level($order['user_id']);
         $User =new \app\common\logic\User();
