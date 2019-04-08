@@ -256,10 +256,10 @@
         <div id="d{$list.id}" class="d3" style="display:none;">
             <p style="color:red;font-size:.6rem">*请前往当地银行打款</p>
             <div style="margin-top:20px">
-                <span>银行：</span><span id="span1">{$list.pay_name}</span><span onClick='copy("span1")'>复制</span>
+                <span>银行：</span><span id="d{$list.id}span1">{$list.pay_name}</span><span onClick='copy("d{$list.id}span1")'>复制</span>
             </div>
             <!-- <div><span>户主：</span><span id="span2">胖子</span><span onClick='copy("span2")'>复制</span></div> -->
-            <div><span>卡号：</span><span id="span2">{$list.pay_card}</span><span onClick='copy("span2")'>复制</span></div>
+            <div><span>卡号：</span><span id="d{$list.id}span2">{$list.pay_card}</span><span onClick='copy("d{$list.id}span2")'>复制</span></div>
         </div>
         </if>
         </foreach>
@@ -454,6 +454,7 @@ var ind = null;
         // 选择图片的按钮
         /*上传图片*/
         UpLoad=function (e) {
+            var newImageData = [];
             var that = $(e);
             if(e.files[0]) {
                 var f = e.files[0];
@@ -474,10 +475,10 @@ var ind = null;
                                 canvas.height = image.height; //计算等比缩小后图片宽高   
                                 var ctx = canvas.getContext('2d');
                                 ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
-                                var newImageData = canvas.toDataURL(fileType, 0.8); //重新生成图片
+                                newImageData = canvas.toDataURL(fileType, 0.8); //重新生成图片
                                 /* 图片 回显*/
                                 that.siblings(".preViewImg").attr("src", newImageData);
-                                console.log(newImageData);
+                                // console.log(newImageData);
 
                                 $("#canvas").hide();
                                 /*根据点击的下标 =>显示 '回显图片'*/
@@ -491,6 +492,18 @@ var ind = null;
                                 console.log(result);
                             }
                         }
+                        $.ajax({
+                            type: "POST",
+                            url: "{:U('Mobile/Cart/upload')}",
+                            dataType: 'json',
+                            data: newImageData,
+                            success: function(data){
+                                console.log('sss')
+                            },
+                            error: function(data){
+                                console.log('sgfkasfg')
+                            }
+                        })
                     }
                 } else {
                     alert("请选择图片");
