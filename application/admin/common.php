@@ -29,6 +29,11 @@
 	return $is_offline;
  }
 
+ function nickname($user_id){
+	$nickname = M('users')->where('user_id',$user_id)->value('nickname');
+	return $nickname;
+ }
+
 /**
  * 管理员操作记录
  * @param $log_info string 记录信息

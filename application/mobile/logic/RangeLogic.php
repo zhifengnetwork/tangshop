@@ -305,9 +305,11 @@ class RangeLogic
         $order_amount = M('order')->where('order_id',$order_id)->value('order_amount');
         //应获店补金额
         $persent = M('config')->where('name' , 'shop_repair')->value('value');
-        $repair = $order_amount*$persent/100;
+        $user_id = $order_amount*$persent/100;
+        $user_discount = Db::name('user_level')->where('level_id',$user_info['level'])->value('discount'); //折扣
         //存进数据库
-        M('bonus')->where('user_id',$user_id)->setInc('shop_repair',$repair);
+        $data=array('user_id'=>$user_id,'bonus'=>$user_id,'order_id'=>$order_id,'buy_discount'=>$user_discount,'reward_discount'=>$user_discount,'type'=>4,'add_time'=>time());
+        M('range_log')->insert($data);
         //看接下来如何处理
     }
 }

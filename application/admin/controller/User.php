@@ -38,6 +38,21 @@ class User extends Base
     }
 
     /**
+     * 奖金分红店补明细列表
+     */
+    public function repair_list()
+    {
+        $count = M('range_log')->count();
+        $page = new Page($count,10);
+        $list = M('range_log')->order('id desc')->limit($page->firstRow . ',' . $page->listRows)->select();
+        $this->assign('list',$list);    
+        $this->assign('page', $page->show());//赋值分页输出
+        $this->assign('pager', $page);
+        return $this->fetch();
+    }
+
+
+    /**
      * 审核会员列表
      * @return mixed
      */
