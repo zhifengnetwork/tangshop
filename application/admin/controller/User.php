@@ -923,13 +923,16 @@ class User extends Base
     public function withdrawals_update()
     {
         $id_arr = I('id/a');
+        $user_id = I('user_id/d');
         $data['status'] = $status = I('status');
         $data['remark'] = I('remark');
         if ($status == 1) $data['check_time'] = time();
         if ($status != 1) $data['refuse_time'] = time();
         $ids = implode(',', $id_arr);
         $r = Db::name('withdrawals')->whereIn('id', $ids)->update($data);
-        if ($r !== false) {
+        $money = Db::name('withdrawals')->whereIn('id', $ids)->value('money');//提现金额
+        $r2 = Db::name('users')->where('user_id',$user_id)->setDec('user_money',$money);
+        if ($r !== false && $r2 != false) {
             $this->ajaxReturn(array('status' => 1, 'msg' => "操作成功"), 'JSON');
         } else {
             $this->ajaxReturn(array('status' => 0, 'msg' => "操作失败"), 'JSON');

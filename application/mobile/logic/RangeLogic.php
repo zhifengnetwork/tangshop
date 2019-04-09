@@ -164,7 +164,8 @@ class RangeLogic
         $config = tpCache('basic');
         //那么这个人年分红金额为
         $cost=$cost*$config['dividend_ratio']/100;
-        //看如何处理这个分红
+        //看如何处理这个分红 存入用户余额
+        M('users')->where('user_id',$user_id)->setInc('user_money',$cost);
 
     }
 
@@ -174,16 +175,18 @@ class RangeLogic
     public function weekly_settlement(){
         //先处理时间
         $monday=strtotime(date('Y-m-d 00:00:00', (time() - ((date('w') == 0 ? 7 : date('w')) - 1) * 24 * 3600)));//本周一起始时间
-        $user_bonus=$this->get_user_bonus($monday);
-        //接下来如何处理这些奖金
-
+        $user_bonus=$this->get_user_bonus($monday);//dump($user_bonus);die;
+        //接下来如何处理这些奖金 存入对应用户余额
+        foreach($user_bonus as $k => $v){
+            M('users')->where('user_id',$v['user_id'])->setInc('user_money',$v['bonus']);
+        }
     }
 
     /**
      * 查询所有获奖的用户从本周一到现在获得的奖金
      */
     public function get_user_bonus($monday){
-        return M('range_log')->where('add_time','>',$monday)->field('user_id,sum(bonus) bonus')->group_by('user_id')->select();
+        return M('range_log')->where('type','in',array(1,3))->where('add_time','>',$monday)->field('user_id,sum(bonus) bonus')->group('user_id')->select();
     }
 
     /**
@@ -310,6 +313,23 @@ class RangeLogic
         //存进数据库
         $data=array('user_id'=>$user_id,'bonus'=>$user_id,'order_id'=>$order_id,'buy_discount'=>$user_discount,'reward_discount'=>$user_discount,'type'=>4,'add_time'=>time());
         M('range_log')->insert($data);
-        //看接下来如何处理
+    }
+
+    //店补年结算
+    public function cost_shop($user_id)
+    {
+        //拼接起始时间
+        $start_time=strtotime(date('Y-1-1 00:00:00',time()));
+        // if(is_numeric($user_id) && $user_id>0 && $start_time>0){
+        $total=M('range_log')->where(['user_id'=>$user_id,'type'=>4])->where('add_time','>',$start_time)->field('sum(bonus) as total')->select();
+        // }
+        $config = tpCache('basic');
+        //那么这个人年店补金额为
+        foreach($total as $k=>$v){
+            $cost = $v['total'];
+        }
+        $cost=$cost*$config['shop_repair']/100;
+        //看如何处理 存入用户余额
+        M('users')->where('user_id',$user_id)->setInc('user_money',$cost);
     }
 }

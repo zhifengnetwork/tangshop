@@ -28,6 +28,7 @@ use think\Verify;
 use think\Loader;
 use think\db;
 use think\Image;
+use app\mobile\logic\RangeLogic;
 
 class User extends MobileBase
 {
@@ -106,12 +107,15 @@ class User extends MobileBase
      */
     public function account()
     {
+        // $ra = new RangeLogic();
+        // $conf = $ra->weekly_settlement();
+        // dump($conf);die;
         $user = session('user');
         //获取账户资金记录
         $logic = new UsersLogic();
         $data = $logic->get_account_log($this->user_id, I('get.type'));
         $account_log = $data['result'];
-
+        // dump($user);die;
         $this->assign('user', $user);
         $this->assign('account_log', $account_log);
         $this->assign('page', $data['show']);
@@ -1164,15 +1168,15 @@ class User extends MobileBase
     public function withdrawals()
     {
         C('TOKEN_ON', true);
-        $cash_open=tpCache('cash.cash_open');
-        if($cash_open!=1){
-            $this->error('提现功能已关闭,请联系商家');
-        }
+        // $cash_open=tpCache('cash.cash_open');//
+        // if($cash_open!=1){
+        //     $this->error('提现功能已关闭,请联系商家');
+        // }
         if (IS_POST) {
             $cash_open=tpCache('cash.cash_open');
-            if($cash_open!=1){
-                $this->ajaxReturn(['status'=>0, 'msg'=>'提现功能已关闭,请联系商家']);
-            }
+            // if($cash_open!=1){
+            //     $this->ajaxReturn(['status'=>0, 'msg'=>'提现功能已关闭,请联系商家']);
+            // }
 
             $data = I('post.');
             $data['user_id'] = $this->user_id;
