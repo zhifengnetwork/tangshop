@@ -291,4 +291,23 @@ class RangeLogic
         }
         return array();
     }
+
+    //店补计算 年结算
+    public function shop_repair($user_id,$order_id)
+    {
+        //判断是否是合伙人
+        $user_info=$this->get_user_info($user_id);
+        if($user_info['level']!=4) return '这个会员不是合伙人';
+        //判断是否拥有线下门店
+        $is_offline = M('user_offline')->where('user_id',$user_id)->value('is_offline');
+        if(empty($is_offline) || $is_offline!=1) return '这个合伙人没有线下门店';
+        //购买时订单金额
+        $order_amount = M('order')->where('order_id',$order_id)->value('order_amount');
+        //应获店补金额
+        $persent = M('config')->where('name' , 'shop_repair')->value('value');
+        $repair = $order_amount*$persent/100;
+        //存进数据库
+        M('bonus')->where('user_id',$user_id)->setInc('shop_repair',$repair);
+        //看接下来如何处理
+    }
 }

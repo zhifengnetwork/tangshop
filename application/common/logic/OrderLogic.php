@@ -589,14 +589,18 @@ class OrderLogic
         switch ($act){
             case 'pay': //付款
                 $order_sn = Db::name('order')->where("order_id = $order_id")->getField("order_sn");
+                $user_id = M('order')->where('order_sn',$order_sn)->value('user_id');
                 //改变线下支付记录表状态
                 M('user_pay_log')->where('order_id',$order_id)->update(['status'=>1]);
                 update_pay_status($order_sn,$ext); // 调用确认收货按钮
                 $range=new RangeLogic();
                 $result=$range->get_range($order_id);
+                $repair = $range->shop_repair($user_id,$order_id);//店补
+                //获取本次订单指定商品数,并存库
+                $level_count = $range->get_order_level_num($order_id);
+                M('bonus')->where('user_id',$user_id)->setInc('goods_num',$level_count);
                 //升级
                 $level = new LevelLogic();
-                $user_id = M('order')->where('order_sn',$order_sn)->value('user_id');
                 $up = $level->upgrade($user_id);
                 return true;
             case 'pay_cancel': //取消付款

@@ -371,6 +371,7 @@ class Cart extends MobileBase {
         $order_id = M('order')->where('order_sn',$info['order_sn'])->value('order_id');
         //判断该订单号是否已经提交凭证
         $is_img = M('user_pay_log')->where('order_id',$order_id)->value('image');
+        // dump($is_img);die;
         if($is_img){
             $this->success('凭证已经上传',"Cart/pay_success?order_id=$order_id",'',1);
         }else{
@@ -378,15 +379,15 @@ class Cart extends MobileBase {
             if(empty($file)){
                 $this->error('请上传凭证');
             }
-    
             $name = $file->getInfo('name');
             $exten = substr($name,strrpos($name,'.')); //上传文件后缀名
             $img_name = md5(mt_rand(0,100000).time()); //文件名
-            $img_path = ROOT_PATH.'public'.DS.'upload'.DS.'proof'.DS.Date('Ymd');
-            if(!is_dir($img_path)){
+            // $img_path = ROOT_PATH.'public'.DS.'upload'.DS.'proof'.DS.Date('Ymd');
+            $img_path = 'public'.DS.'upload'.DS.'proof'.DS.Date('Ymd');
+            if(!is_dir(ROOT_PATH.$img_path)){
                 mkdir($img_path,0777,true);
             }
-            $img_src = $img_path.DS.$img_name.$exten;
+            $img_src = $_SERVER['HTTP_HOST'].DS.$img_path.DS.$img_name.$exten;
             $pay_img = $file->validate(['ext' => 'jpg,png']);
             $pay_img->move($img_path,$img_name);
             //插入数据库
@@ -398,7 +399,7 @@ class Cart extends MobileBase {
                 'add_time'  =>  time(),
                 'status'    =>  '0'
             ]);
-
+              
         }
 
         //上传验证
@@ -413,7 +414,8 @@ class Cart extends MobileBase {
             $this->error('凭证上传失败');
         }
     }
-    //凭证上传成功
+
+    //凭证上传成功跳转
     public function pay_success(){
         $order_id = I('order_id/d');
         $order = Db::name('order')->where("order_id", $order_id)->find();
