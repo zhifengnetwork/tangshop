@@ -395,7 +395,7 @@ class UsersLogic extends Model
      * @param string $head_pic
      * @return array
      */
-    public function reg($username,$password,$password2,$push_id = 0,$invite=array(),$nickname="",$head_pic=""){
+    public function reg($username,$password,$password2,$push_id = 0,$invite=array(),$leader_id="",$nickname="",$head_pic=""){
     	$is_validated = 0 ;
         if(check_email($username)){
             $is_validated = 1;
@@ -456,7 +456,10 @@ class UsersLogic extends Model
             }
 		}/*  else if(tpCache('basic.invite') ==1 && empty($invite)){
 		    return array('status'=>-1,'msg'=>'请填写正确的推荐人手机号');
-		} */
+        } */
+        if(!empty($leader_id)){
+            $map['first_leader'] = $leader_id;
+        }
 
         // 成为分销商条件  
         $distribut_condition = tpCache('distribut.condition'); 

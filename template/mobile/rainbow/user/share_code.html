@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>我的分享</title>
+        <link rel="stylesheet" type="text/css" href="__STATIC__/distribut/css/main.css"/>
+        <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+        <script src="__PUBLIC__/js/global.js"></script>
+        <style>
+            * {
+				/*防止-滑动报错*/
+				touch-action: pan-y;
+				-ms-touch-action: pan-y;
+				-webkit-touch-callout: pan-y;
+			}
+			.wrap {
+				position: relative;
+				
+				/*00*/
+				width: 100%;
+				height: 100vh;
+			}
+			/*按钮*/
+			/*.bottmBut {
+				width: 2rem;
+				height: .8rem;
+				font: .26rem/.8rem "PingFangMedium";
+				text-align: center;
+				background-color: #fff;
+			}*/
+			/*底部弹窗 wrap*/
+			.bottomAlertWrap {
+				display: none;
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				width: 7.5rem;
+				height: 100%;
+				z-index: 103;
+				background: rgba(0, 0, 0, .5);
+			}
+			/*底部弹窗 box */
+			.bottomAlertBox {
+				position: absolute;
+				bottom: -4.88rem;
+				left: 0;
+				width: 7.5rem;
+				height: auto;
+				border-radius: .06rem;
+				background-color: #fff;
+				
+			}
+			/*底部弹窗 box=> 内容*/
+			.BAlertContent {
+				width: 100%;
+				height: auto;
+				background-color: #ccc;
+			}
+			/*底部弹窗 box=> 项*/
+			.BACTerm {
+				position: relative;
+				box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				width: 100%;
+				height: .8rem;
+				/*font: .3rem/.8rem "PingFangMedium";*/
+				font-size: .3rem;
+				line-height: .8rem;
+				color: #333;
+				text-align: center;
+				letter-spacing: .02rem;
+				border-bottom: .01rem solid #ccc;
+				background-color: #fff;
+			}
+			/*（兄弟元素）最后一项，没有底部线*/
+			.BACTerm:last-child {
+				border-bottom: none;
+			}
+			/*背景图片*/
+			#pic {
+				width: 5rem;
+				height: 5rem;
+				/*position: relative;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, 70%);*/
+				border-radius: .6rem;
+				z-index: -20;
+				
+			}
+			
+			.close {
+				border: 1px solid #EEEEEE;
+				width: 2rem;
+				height: .8rem;
+				line-height: .8rem;
+				display: inline-block;
+				text-align: center;
+				position: absolute;
+				left: 50%;
+				right: 50%;
+				transform: translate(-50%, -20%);
+				border-radius: .06rem;
+			}
+			.cancelYF {
+				margin-top: .06rem;
+			}
+			.down{
+				
+				display: block;
+				background: white;
+			}
+            .fx_qrcodes{
+                position: absolute;
+                text-align: center;
+                width: 100%;
+                height: 100%;
+            }
+            .fx_qrcodes img{
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body style="position: relative;">
+        <div class="my_team_alon busniess_card_name">
+            <a class="p" href="">
+                <div class="team_head">
+                    <img src="{$user[head_pic]|default='__STATIC__/images/user68.jpg'}"/>
+                </div>
+                <div class="team_name_time">
+                    <span class="t_n">我是<em>【{$user.nickname}】</em></span>
+                    <span class="t_n" style="margin-top:10px;">我为自己代言</span>
+
+                </div>
+            </a>
+
+        </div>
+        <div class="wrap">
+
+            <!-- <div class="fx_qrcodes"> -->
+
+            <input id="text" type="text" value="{$data.url}" style="width:80%;" hidden  /><br />
+
+            <p style="position:absolute;top:130px;width: 100%; text-align:center;font-size: .3rem;color: white;font-family:'微软雅黑';">我的推广二维码</p>
+            
+            
+            <div id="qrcode" style="width:150px; height:150px;position: absolute;top: 0;left: 0;bottom: 0;right: 0;margin: auto;"></div>
+            
+            <textarea name="" id="codeNum" cols="30" rows="10" style="width: 0;height: 0;">{$data.url}</textarea>
+
+            <img  id="pic" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;margin: auto;z-index: -1;" src="__STATIC__/images/user68.jpg" onerror="this.src='__STATIC__/images/user68.jpg'" />
+
+            <img id="pic" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;margin: auto;z-index: -1;"/>
+            
+            <!-- <div id="copy" class="copy" data-clipboard-target="#codeNum" style="width: 1.5rem;height: .7rem; background: white;border-radius: .06rem;line-height: .7rem;text-align: center;font-family: '微软雅黑';position: absolute;bottom: 2rem;left:0;right: 0;margin: auto;">复制链接</div> -->
+        </div>
+
+        <!--底部弹窗（蒙版）body-->
+        <!-- <div class="bottomAlertWrap"> -->
+            <!--底部弹窗（框）-->
+            <!-- <div class="bottomAlertBox"> -->
+                <!--内容-->
+                <!-- <div class="BAlertContent">
+                    <p class="BACTerm styty" alt="0">换个样式</p>
+                    <a class="down BACTerm" alt="1" href="" download="downImg">保存到手机</a>
+                    <p class="BACTerm cancelYF" alt="2">取消</p>
+                </div>
+            </div>
+
+        </div> -->
+        <!-- </div> -->
+        <script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+		<script src="__PUBLIC__/qrcode/qrcode.js"></script>
+        <script>
+            var qrcode = new QRCode(document.getElementById("qrcode"), {
+				width: 150,
+				height: 150
+			});
+            function makeCode() {
+				var elText = document.getElementById("text");
+
+				if(!elText.value) {
+					alert("Input a text");
+					elText.focus();
+					return;
+				}
+
+				qrcode.makeCode(elText.value);
+			}
+
+
+			makeCode();
+
+			$("#text").
+			on("blur", function() {
+				makeCode();
+			}).
+			on("keydown", function(e) {
+				if(e.keyCode == 13) {
+					makeCode();
+				}
+			});
+			
+			
+			//保存二维码成图片
+			function getpic(){
+				var canvas2 = document.createElement("canvas");
+			    let _canvas = document.querySelector('div');
+			    var w = parseInt(window.getComputedStyle(_canvas).width);
+			    var h = parseInt(window.getComputedStyle(_canvas).height);
+			    //将canvas画布放大若干倍，然后盛放在较小的容器内，就显得不模糊了
+			    canvas2.width = w * 2;
+			    canvas2.height = h * 2;
+			    canvas2.style.width = w + "px";
+			    canvas2.style.height = h + "px";
+			    //可以按照自己的需求，对context的参数修改,translate指的是偏移量
+	               var context = canvas2.getContext("2d");
+	               context.translate(-0,-270);
+	               context.scale(2, 2);
+			       html2canvas(document.querySelector('div'), { canvas: canvas2 }).then(function(canvas) {
+			        //document.body.appendChild(canvas);
+			        //canvas转换成url，然后利用a标签的download属性，直接下载，绕过上传服务器再下载
+			        document.querySelector(".down").setAttribute('href', canvas.toDataURL());
+			    
+			    });
+			}
+
+            //点击按钮，复制二维码链接
+			$(".copy").click(function(){
+				
+                let e = document.getElementById("text").value;
+               //实例化clipboard
+               var clipboard = new ClipboardJS('#copy');
+              
+               clipboard.on("success", function(e){
+                   console.log(e);
+               });
+   
+               clipboard.on("error", function(e){
+                   console.log(e);
+               });
+                alert("复制成功")	;
+       
+   })
+        </script>
+        <!--本页面js-->
+		<script>
+			$(function() {
+				/**
+				 * 全局变量
+				 * **/
+				/*获取支付方式（后台）*/
+				var methodD = null;
+				/*点击出现-底部弹窗*/
+				$('.bottmBut').on('click', function() {
+					$('.bottomAlertWrap').show();
+					/*底部弹窗(出现)*/
+					$('.bottomAlertBox').animate({
+						'bottom': '0'
+					});
+					/*底部页面-不可以滑动*/
+					stop();
+				})
+				/*关闭遮罩层*/
+				$('.bottomAlertWrap').on('click', function() {
+					$('.bottomAlertWrap').hide();
+					/*底部弹窗(隐藏)*/
+					$('.bottomAlertBox').animate({
+						'bottom': -($('.bottomAlertBox').height())
+					});
+					/*底部页面-可以滑动*/
+					
+				})
+				/*选择-对应项*/
+				$('.BACTerm').on('click', function() {
+					/*获取对应项的值*/
+					methodD = $(this).attr('alt');
+					/*全部=>隐藏*/
+					$('.selectImage').hide();
+					/*当前=>显示*/
+					$('.selectImage').eq($(this).index()).show();
+					console.log(methodD);
+					/*利用 冒泡事件(不能使用 return false;)=> 关闭蒙版*/
+					if(methodD == 0) {
+						//切换背景代码
+						var random_bg = parseInt(6 * Math.random());
+						var bg = 'url(__PUBLIC__/images/qrcode/' + random_bg + '.jpg)';
+//						$("#pic").css("background-image", bg);
+                        document.getElementById("pic").src='__PUBLIC__/images/qrcode/' + random_bg + '.jpg'; 
+						console.log("ddd")
+//						调用截取二维码的方法
+				 		getpic();
+						
+					} 
+				})
+			})
+		</script>
+    </body>
+</html>

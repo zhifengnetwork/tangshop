@@ -20,6 +20,7 @@
     <form action="" method="post" id="regFrom" >
         <input type="hidden" name="auth_code" value="{$Think.config.AUTH_CODE}"/>
         <input type="hidden" name="is_bind" value="{$Request.param.is_bind}">
+        <input type="hidden" name="leader_id" value="{$leader_id}">
         <div class="lsu">
             <span class="ico ico-telephone"></span>
             <input type="text" name="username" id="username" value="" placeholder="请输入手机号"  class="c-form-txt-normal">

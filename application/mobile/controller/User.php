@@ -81,7 +81,7 @@ class User extends MobileBase
     {
         $MenuCfg = new MenuCfg();
         $menu_list = $MenuCfg->where('is_show', 1)->order('menu_id asc')->select();
-        $this->assign('menu_list', $menu_list);
+        $this->assign('menu_list', $menu_list);//dump($menu_list);die;
         //加个判断当有门店的时候不用提交申请
         $logic = new UsersLogic();
         $is_offline=$logic->get_is_offline($this->user_id);
@@ -284,15 +284,17 @@ class User extends MobileBase
             }else{
                 $invite = array();
             }
+            $leader_id = I('post.leader_id/d');
+
             if($is_bind_account && session("third_oauth")){ //绑定第三方账号
                 $thirdUser = session("third_oauth");
                 $head_pic = $thirdUser['head_pic'];
-                $data = $logic->reg($username, $password, $password2, 0, $invite ,$nickname , $head_pic);
+                $data = $logic->reg($username, $password, $password2, 0, $invite ,$leader_id,$nickname , $head_pic);
                 //用户注册成功后, 绑定第三方账号
                 $userLogic = new UsersLogic();
                 $data = $userLogic->oauth_bind_new($data['result']);
             }else{
-                $data = $logic->reg($username, $password, $password2,0,$invite);
+                $data = $logic->reg($username, $password, $password2,0,$invite,$leader_id);
             }
              
             
@@ -1560,6 +1562,25 @@ class User extends MobileBase
         $this->assign('paymentList', $paymentList);
         $this->assign('bank_img', $bank_img);
         $this->assign('bankCodeList', $bankCodeList);
+        return $this->fetch();
+    }
+
+    /**
+     * 分享二维码
+     */
+    public function share_code()
+    {
+        $leader_id = $this->user_id;//die;
+        if(empty($this->user_id)){
+            return $this->redirect('mobile/User/login');
+        }
+        if($this->user_id){
+            $data = array(
+                'code' => $leader_id,
+                'url' => 'http://'.$_SERVER['HTTP_HOST'].'/mobile/User/reg?leader_id='.$leader_id
+            );
+        }
+        $this->assign('data',$data);
         return $this->fetch();
     }
 
