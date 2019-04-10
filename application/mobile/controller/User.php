@@ -111,11 +111,11 @@ class User extends MobileBase
         // $conf = $ra->weekly_settlement();
         // dump($conf);die;
         $user = session('user');
+        $user = M('users')->where('user_id',$user['user_id'])->find();
         //获取账户资金记录
         $logic = new UsersLogic();
         $data = $logic->get_account_log($this->user_id, I('get.type'));
         $account_log = $data['result'];
-        // dump($user);die;
         $this->assign('user', $user);
         $this->assign('account_log', $account_log);
         $this->assign('page', $data['show']);
@@ -146,6 +146,19 @@ class User extends MobileBase
         $detail = Db::name('account_log')->where(['log_id'=>$log_id])->find();
         $this->assign('detail',$detail);
         return $this->fetch();
+    }
+    //奖金分红店补结算 测试用，上线删除
+    public function jiesuan()
+    {
+        $ra = new RangeLogic();
+        $zhou = $ra->weekly_settlement();
+        $fenhong = $ra->partner_team_dividend($this->user_id);
+        $dianbu = $ra->cost_shop($this->user_id);
+        if(true){
+            $this->ajaxReturn(array('status' => 1, 'msg' => "操作成功"));
+        }else{
+            $this->ajaxReturn(array('status' => 0, 'msg' => "操作失败"));
+        }
     }
     
     /**

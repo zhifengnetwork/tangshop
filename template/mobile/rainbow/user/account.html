@@ -110,11 +110,49 @@
                     </a>
                 </div>
             </div>
+            <div class="myorder p">
+                <div class="content30">
+                    <a onclick="testjiesuan()" href="JavaScript:void(0);">
+                        <div class="order">
+                            <div class="fl">
+                                <span>奖金分红店补结算(测试用)</span>
+                            </div>
+                            <div class="fr">
+                                <i class="Mright"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
 
         </div>
     </div>
     <!--底部导航-start-->
     <include file="public/footer_nav"/>
     <!--底部导航-end-->
+
+    <script type="text/javascript">
+        function testjiesuan()
+        {
+            $.ajax({
+                type: 'post',
+                url: "{:U('Mobile/User/jiesuan')}",
+                data:1,
+                dataType: "json",
+                success: function(data){
+                    console.log(data)
+                    if(data.status ==1){
+                        layer.alert(data.msg,{icon: 1});
+                        location.reload();
+                    }else{
+                        layer.alert(data.msg, {icon: 2});
+                    }
+                },error: function(data){
+                    console.log(data.msg);
+                    location.reload();
+                }
+            })
+        }
+    </script>
     </body>
     </html>
