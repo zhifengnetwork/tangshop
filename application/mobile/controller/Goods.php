@@ -105,7 +105,7 @@ class Goods extends MobileBase
         $count = count($filter_goods_id);
         $page = new Page($count, C('PAGESIZE'));
         if ($count > 0) {
-            $sort_asc = $sort_asc == 'asc' ? 'desc' : 'asc'; // 防注入
+            $sort_asc = $sort_asc == 'asc' ? 'asc' : 'desc'; // 防注入
             $sort_arr = ['sales_sum','shop_price','is_new','comment_count','sort'];
             if(!in_array($sort,$sort_arr)) $sort='sort'; // 防注入
 
