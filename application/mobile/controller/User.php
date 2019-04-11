@@ -297,8 +297,6 @@ class User extends MobileBase
             }else{
                 $invite = array();
             }
-            $leader_id = I('leader_id/d');
-            $this->assign('leader_id',$leader_id);
 
             if($is_bind_account && session("third_oauth")){ //绑定第三方账号
                 $thirdUser = session("third_oauth");
@@ -333,6 +331,8 @@ class User extends MobileBase
             $this->ajaxReturn($data);
             exit;
         }
+        $leader_id = I('leader_id/d');
+        $this->assign('leader_id',$leader_id);
         $this->assign('regis_sms_enable',$reg_sms_enable); // 注册启用短信：
         $this->assign('regis_smtp_enable',$reg_smtp_enable); // 注册启用邮箱：
         $sms_time_out = tpCache('sms.sms_time_out')>0 ? tpCache('sms.sms_time_out') : 120;
