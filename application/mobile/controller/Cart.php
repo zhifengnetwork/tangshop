@@ -384,8 +384,10 @@ class Cart extends MobileBase {
             $img_name = md5(mt_rand(0,100000).time()); //文件名
             $img_path = 'public/upload/proof/'.Date('Ymd');
             if(!is_dir(ROOT_PATH.$img_path)){
-                mkdir($img_path,0777,true);
+                mkdir(ROOT_PATH.$img_path,0777,true);
             }
+
+            // dump(ROOT_PATH.$img_path);die;
             $img_src = '/'.$img_path.'/'.$img_name.$exten;
             $pay_img = $file->validate(['ext' => 'jpg,png']);
             $pay_img->move(ROOT_PATH.$img_path,$img_name);
