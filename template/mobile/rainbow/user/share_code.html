@@ -149,8 +149,10 @@
             
             <div id="qrcode" style="width:250px; height:250px;position: absolute;top: 0;left: 0;bottom: 0;right: 0;margin: auto;"></div>
             
-            <textarea name="" id="codeNum" cols="30" rows="10" style="width: 0;height: 0;">{$data.url}</textarea>
-
+            <!-- <textarea name="" id="codeNum" cols="30" rows="10" style="width: 0;height: 0;">{$data.url}</textarea> -->
+			<div id="qrDiv" class="btn" style="display:none">{$data.url}</div>
+			 <div class="btn" id="imagQrDiv"></div>
+			 
             <!-- <img  id="pic" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;margin: auto;z-index: -1;" src="__STATIC__/images/user68.jpg" onerror="this.src='__STATIC__/images/user68.jpg'" /> -->
 
             <img id="pic" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;margin: auto;z-index: -1;"/>
@@ -174,77 +176,99 @@
         <!-- </div> -->
         <script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
 		<script src="__PUBLIC__/qrcode/qrcode.js"></script>
+		<script src="__PUBLIC__/qrcode/qrcode.min.js"></script>
         <script>
-            var qrcode = new QRCode(document.getElementById("qrcode"), {
-				width: 250,
-				height: 250
+            // var qrcode = new QRCode(document.getElementById("qrcode"), {
+			// 	width: 250,
+			// 	height: 250
+			// });
+            // function makeCode() {
+			// 	var elText = document.getElementById("text");
+
+			// 	if(!elText.value) {
+			// 		alert("Input a text");
+			// 		elText.focus();
+			// 		return;
+			// 	}
+
+			// 	qrcode.makeCode(elText.value);
+			// }
+
+
+			// makeCode();
+
+			// $("#text").
+			// on("blur", function() {
+			// 	makeCode();
+			// }).
+			// on("keydown", function(e) {
+			// 	if(e.keyCode == 13) {
+			// 		makeCode();
+			// 	}
+			// });
+			$("#qrDiv").qrcode({
+				width:250,
+				height:250,
+				text:$("#qrDiv").html()
 			});
-            function makeCode() {
-				var elText = document.getElementById("text");
 
-				if(!elText.value) {
-					alert("Input a text");
-					elText.focus();
-					return;
-				}
-
-				qrcode.makeCode(elText.value);
+			//从canvas提取图片image
+			function convertCanvasToImage(canvas){
+				//新image对象，可理解为DOM
+				var image = new Image();
+				// canvas.toDataURL 返回的是一串Base64编码的URL，当然,浏览器自己肯定支持
+				// 指定格式 PNG
+				image.src = canvas.toDataURL("image/png");
+				return image;
 			}
 
-
-			makeCode();
-
-			$("#text").
-			on("blur", function() {
-				makeCode();
-			}).
-			on("keydown", function(e) {
-				if(e.keyCode == 13) {
-					makeCode();
-				}
-			});
+			//获取网页中的canvas对象
+			var mycanvas1=document.getElementsByTagName('canvas')[0];
+			//将转换后的img标签插入到html中
+			var img=convertCanvasToImage(mycanvas1);
+			$('#imagQrDiv').append(img);//imagErDiv表示你要插入的容器id
 			
 			
 			//保存二维码成图片
-			function getpic(){
-				var canvas2 = document.createElement("canvas");
-			    let _canvas = document.querySelector('div');
-			    var w = parseInt(window.getComputedStyle(_canvas).width);
-			    var h = parseInt(window.getComputedStyle(_canvas).height);
-			    //将canvas画布放大若干倍，然后盛放在较小的容器内，就显得不模糊了
-			    canvas2.width = w * 2;
-			    canvas2.height = h * 2;
-			    canvas2.style.width = w + "px";
-			    canvas2.style.height = h + "px";
-			    //可以按照自己的需求，对context的参数修改,translate指的是偏移量
-	               var context = canvas2.getContext("2d");
-	               context.translate(-0,-270);
-	               context.scale(2, 2);
-			       html2canvas(document.querySelector('div'), { canvas: canvas2 }).then(function(canvas) {
-			        //document.body.appendChild(canvas);
-			        //canvas转换成url，然后利用a标签的download属性，直接下载，绕过上传服务器再下载
-			        document.querySelector(".down").setAttribute('href', canvas.toDataURL());
+			// function getpic(){
+			// 	var canvas2 = document.createElement("canvas");
+			//     let _canvas = document.querySelector('div');
+			//     var w = parseInt(window.getComputedStyle(_canvas).width);
+			//     var h = parseInt(window.getComputedStyle(_canvas).height);
+			//     //将canvas画布放大若干倍，然后盛放在较小的容器内，就显得不模糊了
+			//     canvas2.width = w * 2;
+			//     canvas2.height = h * 2;
+			//     canvas2.style.width = w + "px";
+			//     canvas2.style.height = h + "px";
+			//     //可以按照自己的需求，对context的参数修改,translate指的是偏移量
+	        //        var context = canvas2.getContext("2d");
+	        //        context.translate(-0,-270);
+	        //        context.scale(2, 2);
+			//        html2canvas(document.querySelector('div'), { canvas: canvas2 }).then(function(canvas) {
+			//         //document.body.appendChild(canvas);
+			//         //canvas转换成url，然后利用a标签的download属性，直接下载，绕过上传服务器再下载
+			//         document.querySelector(".down").setAttribute('href', canvas.toDataURL());
 			    
-			    });
-			}
+			//     });
+			// }
 
             //点击按钮，复制二维码链接
-			$(".copy").click(function(){
+			// $(".copy").click(function(){
 				
-                let e = document.getElementById("text").value;
-               //实例化clipboard
-               var clipboard = new ClipboardJS('#copy');
+            //     let e = document.getElementById("text").value;
+            //    //实例化clipboard
+            //    var clipboard = new ClipboardJS('#copy');
               
-               clipboard.on("success", function(e){
-                   console.log(e);
-               });
+            //    clipboard.on("success", function(e){
+            //        console.log(e);
+            //    });
    
-               clipboard.on("error", function(e){
-                   console.log(e);
-               });
-                alert("复制成功")	;
+            //    clipboard.on("error", function(e){
+            //        console.log(e);
+            //    });
+            //     alert("复制成功")	;
        
-   })
+   			// })
         </script>
         <!--本页面js-->
 		<script>
