@@ -386,6 +386,8 @@ class Cart extends MobileBase {
             if(!is_dir(ROOT_PATH.$img_path)){
                 mkdir(ROOT_PATH.$img_path,0777,true);
             }
+
+            // dump(ROOT_PATH.$img_path);die;
             $img_src = '/'.$img_path.'/'.$img_name.$exten;
             $pay_img = $file->validate(['ext' => 'jpg,png']);
             $pay_img->move(ROOT_PATH.$img_path,$img_name);
