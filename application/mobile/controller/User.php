@@ -81,6 +81,14 @@ class User extends MobileBase
     {
         $MenuCfg = new MenuCfg();
         $menu_list = $MenuCfg->where('is_show', 1)->order('menu_id asc')->select();
+//        var_dump($_SESSION);
+        if(isset($_SESSION['think']['user']['level']) && $_SESSION['user']['level']!=4){
+            foreach ($menu_list as $key=>$value){
+                if($value['menu_id']==18){
+                    unset($menu_list[$key]);
+                }
+            }
+        }
         $this->assign('menu_list', $menu_list);//dump($menu_list);die;
         //加个判断当有门店的时候不用提交申请
         $logic = new UsersLogic();
