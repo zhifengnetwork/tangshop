@@ -251,7 +251,7 @@ class User extends MobileBase
         }
         $reg_sms_enable = tpCache('sms.regis_sms_enable');
         $reg_smtp_enable = tpCache('sms.regis_smtp_enable');
-
+        $leader_id = I('leader_id/d');
         if (IS_POST) {
             $logic = new UsersLogic();
             //验证码检验
@@ -331,7 +331,7 @@ class User extends MobileBase
             $this->ajaxReturn($data);
             exit;
         }
-        $leader_id = I('leader_id/d');
+        
         $this->assign('leader_id',$leader_id);
         $this->assign('regis_sms_enable',$reg_sms_enable); // 注册启用短信：
         $this->assign('regis_smtp_enable',$reg_smtp_enable); // 注册启用邮箱：
