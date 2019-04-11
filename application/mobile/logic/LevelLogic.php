@@ -51,7 +51,8 @@ class LevelLogic
      */
     public function get_down($user_id)
     {
-        $d_info = Db::query("select `user_id` from `tp_users` where `first_leader` = $user_id");
+        // $d_info = Db::query("select `user_id` from `tp_users` where `first_leader` = $user_id");
+        $d_info = Db::query("select `user_id` from `tp_users` where `first_leader` = $user_id and `is_audit` = 0");
         if($d_info){
             $id_array =[];
             foreach($d_info as $k=>$v){

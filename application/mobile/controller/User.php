@@ -29,6 +29,7 @@ use think\Loader;
 use think\db;
 use think\Image;
 use app\mobile\logic\RangeLogic;
+use app\mobile\logic\LevelLogic;
 
 class User extends MobileBase
 {
@@ -79,6 +80,9 @@ class User extends MobileBase
 
     public function index()
     {
+        $le = new LevelLogic();
+        $down = $le->get_down(52);
+        dump($down);die;
         $MenuCfg = new MenuCfg();
         $menu_list = $MenuCfg->where('is_show', 1)->order('menu_id asc')->select();
         $this->assign('menu_list', $menu_list);//dump($menu_list);die;

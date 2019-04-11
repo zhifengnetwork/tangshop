@@ -27,6 +27,7 @@ use app\common\logic\MessageTemplateLogic;
 use app\common\logic\MessageFactory;
 use app\common\model\Withdrawals;
 use app\common\model\Users;
+use app\mobile\logic\LevelLogic;
 use think\Loader;
 
 class User extends Base
@@ -277,6 +278,10 @@ class User extends Base
         }else{
             //审核成功
             M('users')->where(['user_id'=>$uid])->save(['is_audit'=>0]);
+            //判断他爸是否可以升级
+            $leader_id = M('users')->where('user_id',$uid)->value('first_leader');
+            $up = new LevelLogic();
+            $up->upgrade($leader_id);
             $this->ajaxReturn(array('status'=>1,'msg'=>'审核成功'));
         }
     }
