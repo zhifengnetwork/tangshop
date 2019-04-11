@@ -17,6 +17,7 @@ namespace app\common\logic;
 
 use app\common\logic\wechat\MiniAppUtil;
 use app\common\model\UserAddress;
+use app\mobile\logic\LevelLogic;
 use think\Loader;
 use think\Model;
 use think\Page;
