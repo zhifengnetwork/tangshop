@@ -80,9 +80,6 @@ class User extends MobileBase
 
     public function index()
     {
-        $le = new LevelLogic();
-        $down = $le->get_down(52);
-        dump($down);die;
         $MenuCfg = new MenuCfg();
         $menu_list = $MenuCfg->where('is_show', 1)->order('menu_id asc')->select();
 //        var_dump($_SESSION);
