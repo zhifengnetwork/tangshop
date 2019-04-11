@@ -297,7 +297,8 @@ class User extends MobileBase
             }else{
                 $invite = array();
             }
-            $leader_id = I('post.leader_id/d');
+            $leader_id = I('leader_id/d');
+            $this->assgin('leader_id',$leader_id);
 
             if($is_bind_account && session("third_oauth")){ //绑定第三方账号
                 $thirdUser = session("third_oauth");
