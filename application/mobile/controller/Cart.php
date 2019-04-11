@@ -384,7 +384,7 @@ class Cart extends MobileBase {
             $img_name = md5(mt_rand(0,100000).time()); //文件名
             $img_path = 'public/upload/proof/'.Date('Ymd');
             if(!is_dir(ROOT_PATH.$img_path)){
-                mkdir($img_path,0777,true);
+                mkdir(ROOT_PATH.$img_path,0777,true);
             }
             $img_src = '/'.$img_path.'/'.$img_name.$exten;
             $pay_img = $file->validate(['ext' => 'jpg,png']);
@@ -400,13 +400,6 @@ class Cart extends MobileBase {
             ]);
               
         }
-
-        //上传验证
-        $result = $this->validate(
-            ['file' => $file],
-            ['file'=> 'require|image:100,100,png'],
-            ['file.require' => '请选择上传凭证','file.image'=> '必须是100*100的PNG格式文件']
-        );
         if($bool){
             $this->success('凭证上传成功',"Cart/pay_success?order_id=$order_id");
         }else{
