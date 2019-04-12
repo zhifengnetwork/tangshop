@@ -955,7 +955,8 @@ class CartLogic extends Model
 //        $goods_fee+=$save_price;
         if(isset($this->user_id) && !empty($this->user_id)){
             $save_price=$this->get_goods_cost($this->user_id);
-            $total_fee-=$save_price;
+//            var_dump($save_price);die;
+            $total_fee=$total_fee-$save_price;
             $goods_fee+=$save_price;
         }
 
@@ -1014,6 +1015,7 @@ class CartLogic extends Model
         $level_time1=$this->get_up_level_time($user_id,$user_level);
         //获取升级之后购买的指定商品数量
         $goods_num=$this->get_time_goods_num($user_id,$level_time1,1);
+//        return $goods_num;
         //当前购物车中指定商品的数量
         $buy_num=$this->get_upgrade_goods_num($user_id,1);
         //购物车中非指定商品原总价
@@ -1069,7 +1071,12 @@ class CartLogic extends Model
     //查询一个时间之后购买指定商品数量
     public function get_time_goods_num($user_id,$time,$is_upgrade){
         if(is_numeric($user_id) && $user_id>0 && $time!='' && in_array($is_upgrade,array(0,1))){
-            return M('order_goods')->alias('og')->join('order o','og.order_id = o.order_id')->join('goods g','g.goods_id = og.goods_id')->where('o.pay_time','>',$time)->where(['g.is_upgrade'=>$is_upgrade])->count();
+            $goods_num=M('order_goods')->alias('og')->join('order o','og.order_id = o.order_id')->join('goods g','g.goods_id = og.goods_id')->where('o.pay_time','>',$time)->where(['g.is_upgrade'=>$is_upgrade])->field('sum(og.goods_num) goods_num')->find();
+            if(isset($goods_num)){
+                return $goods_num['goods_num'];
+            }else{
+                return 0;
+            }
         }else{
             return 0;
         }
@@ -1105,7 +1112,11 @@ class CartLogic extends Model
     public function get_upgrade_goods_num($user_id,$is_upgrade){
         if(is_numeric($user_id) && $user_id>0){
             $goods_num=M('cart')->alias('c')->join('goods g','g.goods_id=c.goods_id')->where(['c.user_id'=>$user_id,'g.is_upgrade'=>$is_upgrade,'selected'=>1])->find();
-            return $goods_num['goods_num'];
+            if(isset($goods_num)){
+                return $goods_num['goods_num'];
+            }else{
+                return 0;
+            }
         }else{
             return 0;
         }
