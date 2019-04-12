@@ -18,49 +18,49 @@ return	array(
 						//array('name'=>'验证码设置','act'=>'index4','op'=>'System'),
 						array('name'=>'友情链接','act'=>'linkList','op'=>'Article'),
 						array('name'=>'清除缓存','act'=>'cleanCache','op'=>'System'),
-						array('name' => '运费模板', 'act'=>'index', 'op'=>'Freight'),
-						array('name' => '快递公司', 'act'=>'index', 'op'=>'Shipping'),
+//						array('name' => '运费模板', 'act'=>'index', 'op'=>'Freight'),
+//						array('name' => '快递公司', 'act'=>'index', 'op'=>'Shipping'),
 				)),
 
-				array('name' => '支付','child'=>array(
-					array('name' => '支付配置', 'act'=>'index', 'op'=>'Plugin'),
-				)),
+//				array('name' => '支付','child'=>array(
+//					array('name' => '支付配置', 'act'=>'index', 'op'=>'Plugin'),
+//				)),
 			
 
 
 			array('name' => '权限','child'=>array(
 						array('name' => '管理员列表', 'act'=>'index', 'op'=>'Admin'),
 						array('name' => '角色管理', 'act'=>'role', 'op'=>'Admin'),
-						array('name'=>'权限资源列表','act'=>'right_list','op'=>'System'),
+//						array('name'=>'权限资源列表','act'=>'right_list','op'=>'System'),
 						//array('name' => '管理员日志', 'act'=>'log', 'op'=>'Admin'),
-						array('name' => '供应商列表', 'act'=>'supplier', 'op'=>'Admin'),
+//						array('name' => '供应商列表', 'act'=>'supplier', 'op'=>'Admin'),
 				)),
 			
-				array('name' => '数据','child'=>array(
-						array('name' => '数据备份', 'act'=>'index', 'op'=>'Tools'),
-						array('name' => '数据还原', 'act'=>'restore', 'op'=>'Tools'),
-                        array('name' => '清空演示数据', 'act'=>'clear_demo_data', 'op'=>'Tools'),						
-						//array('name' => 'ecshop数据导入', 'act'=>'ecshop', 'op'=>'Tools'),
-						//array('name' => '淘宝csv导入', 'act'=>'taobao', 'op'=>'Tools'),
-						//array('name' => 'SQL查询', 'act'=>'log', 'op'=>'Admin'),
-				)),
+//				array('name' => '数据','child'=>array(
+//						array('name' => '数据备份', 'act'=>'index', 'op'=>'Tools'),
+//						array('name' => '数据还原', 'act'=>'restore', 'op'=>'Tools'),
+//                        array('name' => '清空演示数据', 'act'=>'clear_demo_data', 'op'=>'Tools'),
+//						//array('name' => 'ecshop数据导入', 'act'=>'ecshop', 'op'=>'Tools'),
+//						//array('name' => '淘宝csv导入', 'act'=>'taobao', 'op'=>'Tools'),
+//						//array('name' => 'SQL查询', 'act'=>'log', 'op'=>'Admin'),
+//				)),
 
 	)),
 		
-	'decorate'=>array('name'=>'装修','child'=>array(
-		array('name' => '模板','child'=>array(
-				// array('name' => '模板分类管理', 'act'=>'template_class', 'op'=>'block', 'admin_saas'=>1),
-				//array('name' => '首页装修', 'act'=>'templateList', 'op'=>'Template'),
-				// array('name' => '首页装修', 'act'=>'templateList', 'op'=>'block'),
-				// array('name' => '行业模板设置', 'act'=>'templateList2', 'op'=>'block',  'admin_saas'=>1),
-				// array('name' => '自定义页面', 'act'=>'pageList', 'op'=>'Block'),
-				// array('name' => '会员中心自定义', 'act'=>'user_center_menu', 'op'=>'System'),
-				array('name' => '模板切换', 'act'=>'change', 'op'=>'Template'),
-		)),
-		array('name' => '导航','child' => array(
-			array('name'=>'PC端导航栏','act'=>'navigationList','op'=>'System'),
-		)),
-	)),
+//	'decorate'=>array('name'=>'装修','child'=>array(
+//		array('name' => '模板','child'=>array(
+//				// array('name' => '模板分类管理', 'act'=>'template_class', 'op'=>'block', 'admin_saas'=>1),
+//				//array('name' => '首页装修', 'act'=>'templateList', 'op'=>'Template'),
+//				// array('name' => '首页装修', 'act'=>'templateList', 'op'=>'block'),
+//				// array('name' => '行业模板设置', 'act'=>'templateList2', 'op'=>'block',  'admin_saas'=>1),
+//				// array('name' => '自定义页面', 'act'=>'pageList', 'op'=>'Block'),
+//				// array('name' => '会员中心自定义', 'act'=>'user_center_menu', 'op'=>'System'),
+//				array('name' => '模板切换', 'act'=>'change', 'op'=>'Template'),
+//		)),
+//		array('name' => '导航','child' => array(
+//			array('name'=>'PC端导航栏','act'=>'navigationList','op'=>'System'),
+//		)),
+//	)),
 
 
 	'shop'=>array('name'=>'商城','child'=>array(
@@ -97,57 +97,57 @@ return	array(
 				array('name'=>'支付方式列表','act'=>'pay_list','op'=>'Payway'),
 			)),
 
-			array('name' => '文章','child'=>array(
-					array('name' => '文章列表', 'act'=>'articleList', 'op'=>'Article'),
-					array('name' => '文章分类', 'act'=>'categoryList', 'op'=>'Article'),
-					//array('name' => '帮助管理', 'act'=>'help_list', 'op'=>'Article'),
-					array('name'=>'友情链接','act'=>'linkList','op'=>'Article'),
-					array('name' => '会员协议', 'act'=>'agreement', 'op'=>'Article'),
-					//array('name' => '公告管理', 'act'=>'notice_list', 'op'=>'Article'),
-					array('name' => '专题列表', 'act'=>'topicList', 'op'=>'Topic'),
-			)),
+//			array('name' => '文章','child'=>array(
+//					array('name' => '文章列表', 'act'=>'articleList', 'op'=>'Article'),
+//					array('name' => '文章分类', 'act'=>'categoryList', 'op'=>'Article'),
+//					//array('name' => '帮助管理', 'act'=>'help_list', 'op'=>'Article'),
+//					array('name'=>'友情链接','act'=>'linkList','op'=>'Article'),
+//					array('name' => '会员协议', 'act'=>'agreement', 'op'=>'Article'),
+//					//array('name' => '公告管理', 'act'=>'notice_list', 'op'=>'Article'),
+//					array('name' => '专题列表', 'act'=>'topicList', 'op'=>'Topic'),
+//			)),
 
-			array('name' => '新闻','child'=>array(
-					array('name' => '新闻列表', 'act'=>'newsList', 'op'=>'News'),
-					array('name' => '新闻分类', 'act'=>'categoryList', 'op'=>'News'),
-			)),
+//			array('name' => '新闻','child'=>array(
+//					array('name' => '新闻列表', 'act'=>'newsList', 'op'=>'News'),
+//					array('name' => '新闻分类', 'act'=>'categoryList', 'op'=>'News'),
+//			)),
 	)),
 		
-	'marketing'=>array('name'=>'营销','child'=>array(
-			array('name' => '促销活动','child' => array(
-					array('name' => '抢购管理', 'act'=>'flash_sale', 'op'=>'Promotion'),
-					array('name' => '团购管理', 'act'=>'group_buy_list', 'op'=>'Promotion'),
-					array('name' => '优惠促销', 'act'=>'prom_goods_list', 'op'=>'Promotion'),
-					array('name' => '订单促销', 'act'=>'prom_order_list', 'op'=>'Promotion'),
-					// array('name' => '预售管理','act'=>'index', 'op'=>'PreSell'),
-					// array('name' => '拼团管理','act'=>'index', 'op'=>'Team'),
-					// array('name' => '搭配购管理','act'=>'index', 'op'=>'Combination'),
-			)),
-			array('name' => '优惠积分','child' => array(
-					array('name' => '优惠券','act'=>'index', 'op'=>'Coupon'),
-					array('name' => '积分兑换','act'=>'index', 'op'=>'IntegralMall'),
-			)),
-	)),
+//	'marketing'=>array('name'=>'营销','child'=>array(
+//			array('name' => '促销活动','child' => array(
+//					array('name' => '抢购管理', 'act'=>'flash_sale', 'op'=>'Promotion'),
+//					array('name' => '团购管理', 'act'=>'group_buy_list', 'op'=>'Promotion'),
+//					array('name' => '优惠促销', 'act'=>'prom_goods_list', 'op'=>'Promotion'),
+//					array('name' => '订单促销', 'act'=>'prom_order_list', 'op'=>'Promotion'),
+//					// array('name' => '预售管理','act'=>'index', 'op'=>'PreSell'),
+//					// array('name' => '拼团管理','act'=>'index', 'op'=>'Team'),
+//					// array('name' => '搭配购管理','act'=>'index', 'op'=>'Combination'),
+//			)),
+//			array('name' => '优惠积分','child' => array(
+//					array('name' => '优惠券','act'=>'index', 'op'=>'Coupon'),
+//					array('name' => '积分兑换','act'=>'index', 'op'=>'IntegralMall'),
+//			)),
+//	)),
 		
-	'distribution'=>array('name'=>'分销','child'=>array(
-			array('name' => '分销管理','child' => array(
-					// array('name' => '分销商品', 'act'=>'goods_list', 'op'=>'Distribut'),
-					// array('name' => '分销商列表', 'act'=>'distributor_list', 'op'=>'Distribut'),
-					// array('name' => '分销关系', 'act'=>'tree', 'op'=>'Distribut'),
-					// array('name' => '分销商等级', 'act'=>'grade_list', 'op'=>'Distribut'),
-					array('name' => '分销设置', 'act'=>'distribut', 'op'=>'System'),
-					// array('name' => '分成日志', 'act'=>'rebate_log', 'op'=>'Distribut'),
-			)),
-	     
-    	    array('name' => '微信接入','child' => array(
-    	        array('name' => '公众号配置', 'act'=>'index', 'op'=>'Wechat'),
-    	        array('name' => '微信菜单管理', 'act'=>'menu', 'op'=>'Wechat'),
-    	        array('name' => '自动回复', 'act'=>'auto_reply', 'op'=>'Wechat'),
-                array('name' => '粉丝列表', 'act'=>'fans_list', 'op'=>'Wechat'),
-                array('name' => '模板消息', 'act'=>'template_msg', 'op'=>'Wechat'),
-                array('name' => '素材管理', 'act'=>'materials', 'op'=>'Wechat'),
-    	    )),
-	)),
+//	'distribution'=>array('name'=>'分销','child'=>array(
+//			array('name' => '分销管理','child' => array(
+//					// array('name' => '分销商品', 'act'=>'goods_list', 'op'=>'Distribut'),
+//					// array('name' => '分销商列表', 'act'=>'distributor_list', 'op'=>'Distribut'),
+//					// array('name' => '分销关系', 'act'=>'tree', 'op'=>'Distribut'),
+//					// array('name' => '分销商等级', 'act'=>'grade_list', 'op'=>'Distribut'),
+//					array('name' => '分销设置', 'act'=>'distribut', 'op'=>'System'),
+//					// array('name' => '分成日志', 'act'=>'rebate_log', 'op'=>'Distribut'),
+//			)),
+//
+//    	    array('name' => '微信接入','child' => array(
+//    	        array('name' => '公众号配置', 'act'=>'index', 'op'=>'Wechat'),
+//    	        array('name' => '微信菜单管理', 'act'=>'menu', 'op'=>'Wechat'),
+//    	        array('name' => '自动回复', 'act'=>'auto_reply', 'op'=>'Wechat'),
+//                array('name' => '粉丝列表', 'act'=>'fans_list', 'op'=>'Wechat'),
+//                array('name' => '模板消息', 'act'=>'template_msg', 'op'=>'Wechat'),
+//                array('name' => '素材管理', 'act'=>'materials', 'op'=>'Wechat'),
+//    	    )),
+//	)),
 
  	'member'=>array('name'=>'会员','child'=>array(
 		array('name' => '会员管理','child'=>array(
@@ -157,7 +157,7 @@ return	array(
 			array('name'=>'门店审核','act'=>'shopList','op'=>'User'),
 		)),
 		array('name' => '充值提现','child'=>array(
-			array('name'=>'充值记录','act'=>'recharge','op'=>'User'),
+//			array('name'=>'充值记录','act'=>'recharge','op'=>'User'),
 			array('name'=>'奖金分红店补明细','act'=>'repair_list','op'=>'User'),
 			array('name'=>'提现申请','act'=>'withdrawals','op'=>'User'),
 			array('name'=>'提现设置','act'=>'cash','op'=>'System'),
@@ -168,25 +168,25 @@ return	array(
 		// )),
 	)),
 
-	'store'=>array('name'=>'门店','child'=>array(
-		array('name' => '门店管理','child'=>array(
-			array('name'=>'门店列表','act'=>'index','op'=>'Shop'),
-		)),
-	)),
-
-	'data'=>array('name'=>'数据','child'=>array(
-			array('name' => '统计','child' => array(
-					array('name' => '销售概况', 'act'=>'index', 'op'=>'Report'),
-					array('name' => '销售排行', 'act'=>'saleTop', 'op'=>'Report'),
-					array('name' => '会员排行', 'act'=>'userTop', 'op'=>'Report'),
-					array('name' => '销售明细', 'act'=>'saleList', 'op'=>'Report'),
-					array('name' => '会员统计', 'act'=>'user', 'op'=>'Report'),
-					array('name' => '运营概览', 'act'=>'finance', 'op'=>'Report'),
-					array('name' => '平台支出记录','act'=>'expense_log','op'=>'Report'),
-			)),
-            array('name' => 'App','child' => array(
-				array('name' => '安卓APP管理', 'act'=>'index', 'op'=>'MobileApp'),
-                array('name' => '苹果APP管理', 'act'=>'ios_audit', 'op'=>'MobileApp'),
-			))
-	)),
+//	'store'=>array('name'=>'门店','child'=>array(
+//		array('name' => '门店管理','child'=>array(
+//			array('name'=>'门店列表','act'=>'index','op'=>'Shop'),
+//		)),
+//	)),
+//
+//	'data'=>array('name'=>'数据','child'=>array(
+//			array('name' => '统计','child' => array(
+//					array('name' => '销售概况', 'act'=>'index', 'op'=>'Report'),
+//					array('name' => '销售排行', 'act'=>'saleTop', 'op'=>'Report'),
+//					array('name' => '会员排行', 'act'=>'userTop', 'op'=>'Report'),
+//					array('name' => '销售明细', 'act'=>'saleList', 'op'=>'Report'),
+//					array('name' => '会员统计', 'act'=>'user', 'op'=>'Report'),
+//					array('name' => '运营概览', 'act'=>'finance', 'op'=>'Report'),
+//					array('name' => '平台支出记录','act'=>'expense_log','op'=>'Report'),
+//			)),
+//            array('name' => 'App','child' => array(
+//				array('name' => '安卓APP管理', 'act'=>'index', 'op'=>'MobileApp'),
+//                array('name' => '苹果APP管理', 'act'=>'ios_audit', 'op'=>'MobileApp'),
+//			))
+//	)),
 );
