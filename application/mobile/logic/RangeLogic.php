@@ -186,7 +186,7 @@ class RangeLogic
      * 查询所有获奖的用户从本周一到现在获得的奖金
      */
     public function get_user_bonus($monday){
-        return M('range_log')->where('type','in',array(1,3))->where('add_time','>',$monday)->field('user_id,sum(bonus) bonus')->group('user_id')->select();
+        return M('range_log')->where('type','in',array(1,2,3))->where('add_time','>',$monday)->field('user_id,sum(bonus) bonus')->group('user_id')->select();
     }
 
     /**
