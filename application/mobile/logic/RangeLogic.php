@@ -41,7 +41,7 @@ class RangeLogic
             $compare_level=$user_info['level'];
             //看有没有上级
             $user_info['parents']=trim(substr($user_info['parents'],2),',');
-            if($user_info['parents']=='') exit();
+            // if($user_info['parents']=='') exit();
             if(in_array($user_info['level'],array(1,2,3))){
                 if($upgrade_num==0 || $user_info['level']==1){
                     //没有指定商品正常处理

@@ -595,13 +595,19 @@ class OrderLogic
                 update_pay_status($order_sn,$ext); // 调用确认收货按钮
                 $range=new RangeLogic();
                 $result=$range->get_range($order_id);
-                $repair = $range->shop_repair($user_id,$order_id);//店补
+                $range->shop_repair($user_id,$order_id);//店补
                 //获取本次订单指定商品数,并存库
                 $level_count = $range->get_order_level_num($order_id);
-                M('bonus')->where('user_id',$user_id)->setInc('goods_num',$level_count);
+                $is_has = M('bonus')->where('user_id',$user_id)->find();
+                if(isset($is_has)){
+                    M('bonus')->where('user_id',$user_id)->setInc('goods_num',$level_count);
+                }else{
+                    M('bonus')->insert(['user_id'=>$user_id,'goods_num'=>$level_count]);
+                }
                 //升级
                 $level = new LevelLogic();
                 $up = $level->upgrade($user_id);
+                // dump($up);die;
                 return true;
             case 'pay_cancel': //取消付款
 				$update['pay_status'] = 0;

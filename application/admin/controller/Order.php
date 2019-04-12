@@ -1020,20 +1020,20 @@ exit("请联系TPshop官网客服购买高级版支持此功能");
                 $commonOrder->setOrderById($order_id);
                 $res =  $commonOrder->orderActionLog(I('note'),$convert_action,$this->admin_id);
             }
-             $a = $orderLogic->orderProcessHandle($order_id,$action,array('note'=>I('note'),'admin_id'=>0));
-            //  dump($action);die;
-        	 if($res !== false && $a !== false){
-                 if ($action == 'remove') {
+            $a = $orderLogic->orderProcessHandle($order_id,$action,array('note'=>I('note'),'admin_id'=>0));
+        	if($res !== false && $a !== false){
+                if ($action == 'remove') {
                      $this->ajaxReturn(['status' => 1, 'msg' => '操作成功', 'url' => U('Order/index')]);
                  }
                  $this->ajaxReturn(['status' => 1,'msg' => '操作成功','url' => U('Order/detail',array('order_id'=>$order_id))]);
-        	 }else{
+        	}else{
                  if ($action == 'remove') {
                      $this->ajaxReturn(['status' => 0, 'msg' => '操作失败', 'url' => U('Order/index')]);
                  }
         	 	$this->ajaxReturn(['status' => 0,'msg' => '操作失败','url' => U('Order/index')]);
-        	 }
+        	}
         }else{
+            dump('safgsaf');
         	$this->ajaxReturn(['status' => 0,'msg' => '参数错误','url' => U('Order/index')]);
         }
     }

@@ -97,10 +97,10 @@
                 </span>
                     <?php
                         $order_status = order_status($order['order_sn']);
-                        if($order.pay_btn && ($order_status == 1)) {
+                        if($order['pay_btn'] ==1 && ($order_status == 1)) {
                     ?>
                         <a class="shop-rebuy" href="{:U('/Mobile/Order/order_detail',array('id'=>$order['order_id']))}">审核中</a>
-                    <?php } elseif ($order.pay_btn && ($order_status == 0)) {?>
+                    <?php } elseif ($order['pay_btn'] ==1 && ($order_status == 0)) {?>
                         <a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart4',array('order_id'=>$order['order_id']))}">立即付款</a>
                     <?php } ?>
                 
