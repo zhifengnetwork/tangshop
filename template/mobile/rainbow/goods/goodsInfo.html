@@ -521,7 +521,7 @@
                     <div class="fon_or fl">
                         <h2 class="similar-product-text">{$goods.goods_name}</h2>
                         <input type="hidden" id="goods_name" name="goods_id" value="{$goods.goods_id}">
-                        <div class="price_or" id="goods_price"><span>￥</span><span>{$goods.shop_price}</span></div>
+                        <div class="price_or" id="goods_price"><span>￥</span><span>{$goods.shop_price*$discount}</span></div>
                         <div class="dqkc_or"><span>剩余库存：</span><span id="spec_store_count">{$goods.store_count}</span></div>
                         <div class="dqkc_or buy_limit" style="display: none"><span>限购：</span><span id="buy_limit">{$goods.virtual_limit}</span></div>
                         <div class="price_or team-pies p" style="display: none"><span class="confinetime">该商品拼团中</span><a class="pb_buy team_button">点击前往</a></div>
@@ -1125,7 +1125,7 @@
             $("#goods_price").html(integral + '+' +exchange_integral + '积分'); //变动价格显示
             $("#price").html("<em>￥</em>" + integral + '+' +exchange_integral + '积分'); //积分显示
         }else{
-            $("#goods_price").html(goods_price); //变动价格显示
+            $("#goods_price").html(goods_price*'{$discount}'); //变动价格显示
             $("#price").html("<em>￥</em>" + goods_price*'{$discount}'); //变动价格显示
         }
         $('#market_price_title').html('原价：');
