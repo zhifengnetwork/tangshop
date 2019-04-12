@@ -95,6 +95,9 @@ class User extends MobileBase
         $logic = new UsersLogic();
         $is_offline=$logic->get_is_offline($this->user_id);
         $this->assign('is_offline',$is_offline);
+        //团队人数
+        $count = $this->get_down_num($this->user_id);
+        $this->assign('count',$count);
         return $this->fetch();
     }
 
@@ -116,11 +119,9 @@ class User extends MobileBase
      */
     public function account()
     {
-        // $ra = new RangeLogic();
-        // $conf = $ra->weekly_settlement();
-        // dump($conf);die;
         $user = session('user');
         $user = M('users')->where('user_id',$user['user_id'])->find();
+        
         //获取账户资金记录
         $logic = new UsersLogic();
         $data = $logic->get_account_log($this->user_id, I('get.type'));
@@ -136,8 +137,25 @@ class User extends MobileBase
         return $this->fetch();
     }
 
+    //获取下线数量
+    public function get_down_num($user_id)
+    {
+        //获取下级id列表
+        $d_info = Db::query("select `user_id`, `first_leader`,`parents` from `tp_users` where ('first_leader' = $user_id or parents like '%,$user_id,%') and `is_audit` = 0");
+        if($d_info){
+            $id_array =[];
+            foreach($d_info as $k=>$v){
+                array_push($id_array ,$v['user_id']);
+            }
+        }
+        $count = count($id_array);
+        return $count;
+    }
+
     public function account_list()
     {
+        // $ra = new RangeLogic();
+        // $zhou = $ra->weekly_settlement();//die;
     	$type = I('type','all');
     	$usersLogic = new UsersLogic;
     	$result = $usersLogic->account($this->user_id, $type);

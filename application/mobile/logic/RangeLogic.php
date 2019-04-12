@@ -166,6 +166,8 @@ class RangeLogic
         $cost=$cost*$config['dividend_ratio']/100;
         //看如何处理这个分红 存入用户余额
         M('users')->where('user_id',$user_id)->setInc('user_money',$cost);
+        $data = ['user_id'=>$user_id,'user_money'=>$cost,'desc'=>'年分红'];
+        M('account_log')->insert($data);
 
     }
 
@@ -175,10 +177,12 @@ class RangeLogic
     public function weekly_settlement(){
         //先处理时间
         $monday=strtotime(date('Y-m-d 00:00:00', (time() - ((date('w') == 0 ? 7 : date('w')) - 1) * 24 * 3600)));//本周一起始时间
-        $user_bonus=$this->get_user_bonus($monday);//dump($user_bonus);die;
+        $user_bonus=$this->get_user_bonus($monday);dump($user_bonus);//die;
         //接下来如何处理这些奖金 存入对应用户余额
         foreach($user_bonus as $k => $v){
             M('users')->where('user_id',$v['user_id'])->setInc('user_money',$v['bonus']);
+            $data = ['user_id'=>$v['user_id'],'user_money'=>$v['bonus'],'desc'=>'周奖金'];
+            M('account_log')->insert($data);
         }
     }
 
@@ -331,5 +335,7 @@ class RangeLogic
         $cost=$cost*$config['shop_repair']/100;
         //看如何处理 存入用户余额
         M('users')->where('user_id',$user_id)->setInc('user_money',$cost);
+        $data = ['user_id'=>$user_id,'user_money'=>$cost,'desc'=>'年店补'];
+        M('account_log')->insert($data);
     }
 }
