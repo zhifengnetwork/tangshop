@@ -1543,3 +1543,16 @@ function get_discount()
     
     return $dis_info;
 }
+/**
+ * 获取订单状态
+ */
+function order_status($order_sn)
+{
+    $order_id = M('order')->where('order_sn',$order_sn)->value('order_id');
+    $list = M('user_pay_log')->where('order_id',$order_id)->find();
+    if($list){
+        return 1;
+    }else{
+        return 0;
+    }
+}

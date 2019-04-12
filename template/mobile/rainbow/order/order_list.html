@@ -95,34 +95,37 @@
                     <span class="red">￥{$order['total_amount']}</span><span class="threel" id="goodsnum">共{$order.count_goods_num}件</span>
                     <!--if condition="$list['pay_code'] eq 'cod'"><i class="tits-ions qxatten-ions">货到付款</i></if -->
                 </span>
-                        <if condition="$order.pay_btn eq 1">
-                            <a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart4',array('order_id'=>$order['order_id']))}">立即付款</a>
+                    <?php
+                        $order_status = order_status($order['order_sn']);
+                        if($order.pay_btn && ($order_status == 1)) {
+                    ?>
+                        <a class="shop-rebuy" href="{:U('/Mobile/Order/order_detail',array('id'=>$order['order_id']))}">审核中</a>
+                    <?php } elseif ($order.pay_btn && ($order_status == 0)) {?>
+                        <a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart4',array('order_id'=>$order['order_id']))}">立即付款</a>
+                    <?php } ?>
+                
+                    <if condition="$order.cancel_btn eq 1">
+                        <if condition="$order.pay_status eq 0">
+                            <a class="shop-rebuy " onClick="cancel_order({$order.order_id})">取消订单</a>
                         </if>
-                        <if condition="$order.pay_btn eq 1">
-                            <a class="shop-rebuy paysoon" href="">审核中，请等待</a>
+                        <if condition="$order.pay_status eq 1">
+                            <a class="shop-rebuy" href="{:U('Order/refund_order', ['order_id'=>$order['order_id']])}">取消订单</a>
                         </if>
-                        <if condition="$order.cancel_btn eq 1">
-                            <if condition="$order.pay_status eq 0">
-                                <a class="shop-rebuy " onClick="cancel_order({$order.order_id})">取消订单</a>
-                            </if>
-                            <if condition="$order.pay_status eq 1">
-                                <a class="shop-rebuy" href="{:U('Order/refund_order', ['order_id'=>$order['order_id']])}">取消订单</a>
-                            </if>
-                        </if>
-                        <if condition="$order.receive_btn eq 1 && order.pay_status eq 1">
-                            <a class="shop-rebuy paysoon" onclick="orderConfirm({$order.order_id})">确认收货</a>
-                        </if>
-                        <if condition="$order.comment_btn eq 1">
-                            <a class="shop-rebuy" href="{:U('/Mobile/Order/comment')}">评价</a>
-                        </if>
-                        <if condition="$order.shipping_btn eq 1 && $order.shipping_name neq '' ">
-                            <a class="shop-rebuy" href="{:U('Mobile/Order/express',array('order_id'=>$order['order_id']))}">查看物流</a>
-                        </if>
-                    </div>
+                    </if>
+                    <if condition="$order.receive_btn eq 1 && order.pay_status eq 1">
+                        <a class="shop-rebuy paysoon" onclick="orderConfirm({$order.order_id})">确认收货</a>
+                    </if>
+                    <if condition="$order.comment_btn eq 1">
+                        <a class="shop-rebuy" href="{:U('/Mobile/Order/comment')}">评价</a>
+                    </if>
+                    <if condition="$order.shipping_btn eq 1 && $order.shipping_name neq '' ">
+                        <a class="shop-rebuy" href="{:U('Mobile/Order/express',array('order_id'=>$order['order_id']))}">查看物流</a>
+                    </if>
                 </div>
             </div>
-        </volist>
-    </div>
+        </div>
+    </volist>
+</div>
     <!--订单列表-e-->
 <script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
 <script type="text/javascript">
