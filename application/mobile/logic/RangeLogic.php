@@ -75,6 +75,7 @@ class RangeLogic
                             $data=array('user_id'=>$value,'bonus'=>$bonus,'order_id'=>$order_id,'buy_discount'=>$compare_user_discount,'reward_discount'=>$up_user_discount,'add_time'=>time());
 //                            var_dump($data);die;
                             M('range_log')->insert($data);
+                            $this->set_bonus_log($value,$bonus,'极差奖金',$order_id);
                             if($user_level==2){
                                 //提高比较等级
                                 $compare_level=$user_level;
@@ -156,6 +157,12 @@ class RangeLogic
         }
     }
 
+    //奖金日志
+    public function set_bonus_log($user_id,$user_money,$desc,$order_id){
+        $data=['user_id'=>$user_id,'user_money'=>$user_money,'desc'=>$desc,'change_time'=>time(),'order_id'=>$order_id];
+        return M('account_log')->insert($data);
+    }
+
 
 
 
@@ -181,7 +188,7 @@ class RangeLogic
         $cost=$cost*$config['dividend_ratio']/100;
         //看如何处理这个分红 存入用户余额
         M('users')->where('user_id',$user_id)->setInc('user_money',$cost);
-        $data = ['user_id'=>$user_id,'user_money'=>$cost,'desc'=>'年分红'];
+        $data = ['user_id'=>$user_id,'user_money'=>$cost,'desc'=>'年分红','change_time'=>time()];
         M('account_log')->insert($data);
 
     }
@@ -196,7 +203,7 @@ class RangeLogic
         //接下来如何处理这些奖金 存入对应用户余额
         foreach($user_bonus as $k => $v){
             M('users')->where('user_id',$v['user_id'])->setInc('user_money',$v['bonus']);
-            $data = ['user_id'=>$v['user_id'],'user_money'=>$v['bonus'],'desc'=>'周奖金'];
+            $data = ['user_id'=>$v['user_id'],'user_money'=>$v['bonus'],'desc'=>'周奖金','change_time'=>time()];
             M('account_log')->insert($data);
         }
     }
@@ -233,7 +240,14 @@ class RangeLogic
     public function partner_bonus($type,$partner_id,$bonus,$order_id,$user_discount,$partner_discount){
         if(in_array($type,array(2,3))){
             $data=array('user_id'=>$partner_id,'bonus'=>$bonus,'order_id'=>$order_id,'buy_discount'=>$user_discount,'reward_discount'=>$partner_discount,'type'=>$type,'add_time'=>time());
-            return M('range_log')->insert($data);
+            if(M('range_log')->insert($data)){
+                if($type == 2){
+                    $desc='一次性奖金';
+                }else{
+                    $desc='直推合伙人百分比奖金';
+                }
+                $this->set_bonus_log($partner_id,$bonus,$desc,$order_id);
+            }
         }
     }
     //查询上级是不是在合伙人等级的时候直推的
@@ -269,6 +283,7 @@ class RangeLogic
                 $bonus=$order_amount/$user_discount*($compare_user_discount-$up_user_discount);
                 $data=array('user_id'=>$value,'bonus'=>$bonus,'order_id'=>$order_id,'buy_discount'=>$compare_user_discount,'reward_discount'=>$up_user_discount,'add_time'=>time());
                 M('range_log')->insert($data);
+                $this->set_bonus_log($value,$bonus,"极差奖金",$order_id);
                 if($user_level==2){
                     //提高比较等级
                     $compare_level=$user_level;
@@ -356,7 +371,7 @@ class RangeLogic
         $cost=$cost*$config['shop_repair']/100;
         //看如何处理 存入用户余额
         M('users')->where('user_id',$user_id)->setInc('user_money',$cost);
-        $data = ['user_id'=>$user_id,'user_money'=>$cost,'desc'=>'年店补'];
+        $data = ['user_id'=>$user_id,'user_money'=>$cost,'desc'=>'年店补','change_time'=>time()];
         M('account_log')->insert($data);
     }
 }
