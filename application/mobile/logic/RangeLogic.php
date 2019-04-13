@@ -41,7 +41,7 @@ class RangeLogic
             $compare_level=$user_info['level'];
             //看有没有上级
             $user_info['parents']=trim(substr($user_info['parents'],2),',');
-            // if($user_info['parents']=='') exit();
+             if($user_info['parents']=='') return 0;
             if(in_array($user_info['level'],array(1,2,3))){
                 if($upgrade_num==0 || $user_info['level']==1){
                     //没有指定商品正常处理
@@ -286,7 +286,13 @@ class RangeLogic
     //获取本次订单中有多少升级指定商品
     public function get_order_level_num($order_id){
         if(is_numeric($order_id) && $order_id>0){
-            return M('order_goods')->alias('og')->join('goods g','og.goods_id=g.goods_id')->where(['is_upgrade'=>1,'og.order_id'=>$order_id])->count();
+            $goods_num=M('order_goods')->alias('og')->join('goods g','og.goods_id=g.goods_id')->where(['is_upgrade'=>1,'og.order_id'=>$order_id])->field('sum(og.goods_num) goods_num')->find();
+            if(isset($goods_num)){
+                return $goods_num['goods_num'];
+            }else{
+                return 0;
+            }
+
         }else{
             return 0;
         }
