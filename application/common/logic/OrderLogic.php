@@ -593,6 +593,8 @@ class OrderLogic
                 //改变线下支付记录表状态
                 M('user_pay_log')->where('order_id',$order_id)->update(['status'=>1]);
                 update_pay_status($order_sn,$ext); // 调用确认收货按钮
+                $update['order_status'] = 1;
+                Db::name('order')->where("order_id=$order_id")->save($update);
                 $range=new RangeLogic();
                 $result=$range->get_range($order_id);
                 $range->shop_repair($user_id,$order_id);//店补

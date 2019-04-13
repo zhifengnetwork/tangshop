@@ -293,7 +293,7 @@ a.green:hover { color: #FFF; background-color: #1BBC9D; border-color: #16A086; }
 	        <dd class="opt" style="margin-left:10px">
 	         	<foreach name="$order.adminOrderButton" item="vo" key="k">
                		<if condition="$k eq 'pay_cancel'">
-                        <a class="ncap-btn-big ncap-btn-green" onclick="verifyForm('order-action','{:U('Admin/order/order_action',array('type'=>$k))}');" >{$vo}</a>
+                        <!--<a class="ncap-btn-big ncap-btn-green" onclick="verifyForm('order-action','{:U('Admin/order/order_action',array('type'=>$k))}');" >{$vo}</a>-->
                		<elseif condition="$k eq 'delivery'"/>
                         <if condition="$order.shop_id eq 0">
                			    <a class="ncap-btn-big ncap-btn-green" href="{:U('Order/delivery_info',array('order_id'=>$order['order_id']))}">{$vo}</a>
