@@ -597,19 +597,21 @@ class OrderLogic
                 Db::name('order')->where("order_id=$order_id")->save($update);
                 $range=new RangeLogic();
                 $result=$range->get_range($order_id);
-                $range->shop_repair($user_id,$order_id);//店补
-                //获取本次订单指定商品数,并存库
-                $level_count = $range->get_order_level_num($order_id);
-                $is_has = M('bonus')->where('user_id',$user_id)->find();
-                if(isset($is_has)){
-                    M('bonus')->where('user_id',$user_id)->setInc('goods_num',$level_count);
-                }else{
-                    M('bonus')->insert(['user_id'=>$user_id,'goods_num'=>$level_count]);
+                $range->shop_repair($user_id,$order_id);//店补结算
+                //判断等级是VIP以上的，获取本次订单指定商品数,并存库
+                $now_level = M('users')->where('user_id',$user_id)->value('level');
+                if($now_level > 1){
+                    $level_count = $range->get_order_level_num($order_id);
+                    $is_has = M('bonus')->where('user_id',$user_id)->find();
+                    if(isset($is_has)){
+                        M('bonus')->where('user_id',$user_id)->setInc('goods_num',$level_count);
+                    }else{
+                        M('bonus')->insert(['user_id'=>$user_id,'goods_num'=>$level_count]);
+                    }
                 }
                 //升级
                 $level = new LevelLogic();
                 $up = $level->upgrade($user_id);
-                // dump($up);die;
                 return true;
             case 'pay_cancel': //取消付款
 				$update['pay_status'] = 0;

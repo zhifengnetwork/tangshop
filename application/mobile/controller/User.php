@@ -82,15 +82,16 @@ class User extends MobileBase
     {
         $MenuCfg = new MenuCfg();
         $menu_list = $MenuCfg->where('is_show', 1)->order('menu_id asc')->select();
-//        var_dump($_SESSION);
-        if(isset($_SESSION['think']['user']['level']) && $_SESSION['user']['level']!=4){
+    
+        $level = M('users')->where('user_id',$this->user_id)->value('level');
+        if(isset($level) && $level != 4){
             foreach ($menu_list as $key=>$value){
                 if($value['menu_id']==18){
                     unset($menu_list[$key]);
                 }
             }
         }
-        $this->assign('menu_list', $menu_list);//dump($menu_list);die;
+        $this->assign('menu_list', $menu_list);
         //加个判断当有门店的时候不用提交申请
         $logic = new UsersLogic();
         $is_offline=$logic->get_is_offline($this->user_id);
@@ -174,6 +175,16 @@ class User extends MobileBase
         $this->assign('detail',$detail);
         return $this->fetch();
     }
+
+    //奖金分红店补结算 测试用，上线删除
+    public function repair_list()
+    {
+        $user_id = $this->user_id;
+        $list = M('range_log')->where('user_id',$user_id)->select();
+        $this->assign('list',$list);
+        return $this->fetch();
+    }
+
     //奖金分红店补结算 测试用，上线删除
     public function jiesuan()
     {
