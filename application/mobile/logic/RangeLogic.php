@@ -33,8 +33,20 @@ class RangeLogic
             //获取升级指定商品数量
             $upgrade_num=$this->get_order_level_num($order_id);
             //获取在这个等级买过的指定升级产品
-            $level_time=$cartLogic->get_up_level_time($order_info['user_id'],$user_info['level']);
-            $buy_upgrade_num=$cartLogic->get_time_goods_num($order_info['user_id'],$level_time,1);
+            $vip_upgrade_num=$cartLogic->get_vip_upgrade_num($order_info['user_id']);
+            if($user_info['level']==3){
+                //获取等级为2升级的商品数
+                $level_num=$cartLogic->get_up_level_num(3);
+                $buy_upgrade_num=$vip_upgrade_num-$level_num;
+            }elseif($user_info['level']==4){
+                $level_num=$cartLogic->get_up_level_num(3);
+                $level_up_num=$cartLogic->get_up_level_num(4);
+                $buy_upgrade_num=$vip_upgrade_num-$level_num-$level_up_num;
+            }else{
+                $buy_upgrade_num=$vip_upgrade_num;
+            }
+//            $level_time=$cartLogic->get_up_level_time($order_info['user_id'],$user_info['level']);
+//            $buy_upgrade_num=$cartLogic->get_time_goods_num($order_info['user_id'],$level_time,1);
             //获取当前用户的折扣
             $user_discount=$cartLogic->get_level_discount($user_info['level']);
             //对比的等级
@@ -143,6 +155,9 @@ class RangeLogic
             }
         }
     }
+
+
+
 
     /**
      *分红  年结算

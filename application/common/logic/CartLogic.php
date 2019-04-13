@@ -1014,7 +1014,19 @@ class CartLogic extends Model
         $save_money=0;
         $level_time1=$this->get_up_level_time($user_id,$user_level);
         //获取升级之后购买的指定商品数量
-        $goods_num=$this->get_time_goods_num($user_id,$level_time1,1);
+        $vip_upgrade_num=$this->get_vip_upgrade_num($user_id);
+        if($user_level==3){
+            //获取等级为2升级的商品数
+            $level_num=$this->get_up_level_num(3);
+            $goods_num=$vip_upgrade_num-$level_num;
+        }elseif($user_level==4){
+            $level_num=$this->get_up_level_num(3);
+            $level_up_num=$this->get_up_level_num(4);
+            $goods_num=$vip_upgrade_num-$level_num-$level_up_num;
+        }else{
+            $goods_num=$vip_upgrade_num;
+        }
+//        $goods_num=$this->get_time_goods_num($user_id,$level_time1,1);
 //        return $goods_num;
         //当前购物车中指定商品的数量
         $buy_num=$this->get_upgrade_goods_num($user_id,1);
@@ -1053,6 +1065,19 @@ class CartLogic extends Model
             }
         }
         return $save_money;
+    }
+    //获取该用户从vip等级之后已经买的特定升级商品数
+    public function get_vip_upgrade_num($user_id){
+        if(is_numeric($user_id) && $user_id>0){
+            $result=M('bonus')->where(['user_id'=>$user_id])->find();
+            if(isset($result) && !empty($result)){
+                return $result['goods_num'];
+            }else{
+                return 0;
+            }
+        }else{
+            return 0;
+        }
     }
     //查询指定商品的单价
     public function get_upgrade_goods_price(){
