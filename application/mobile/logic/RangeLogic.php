@@ -75,7 +75,7 @@ class RangeLogic
                             $data=array('user_id'=>$value,'bonus'=>$bonus,'order_id'=>$order_id,'buy_discount'=>$compare_user_discount,'reward_discount'=>$up_user_discount,'add_time'=>time());
 //                            var_dump($data);die;
                             M('range_log')->insert($data);
-                            $this->set_bonus_log($value,$bonus,'极差奖金',$order_id);
+                            $this->set_bonus_log($value,$bonus,'极差奖金',$order_id,$order_info['order_sn']);
                             if($user_level==2){
                                 //提高比较等级
                                 $compare_level=$user_level;
@@ -158,8 +158,8 @@ class RangeLogic
     }
 
     //奖金日志
-    public function set_bonus_log($user_id,$user_money,$desc,$order_id){
-        $data=['user_id'=>$user_id,'user_money'=>$user_money,'desc'=>$desc,'change_time'=>time(),'order_id'=>$order_id];
+    public function set_bonus_log($user_id,$user_money,$desc,$order_id,$order_sn){
+        $data=['user_id'=>$user_id,'user_money'=>$user_money,'desc'=>$desc,'change_time'=>time(),'order_id'=>$order_id,'order_sn'=>$order_sn];
         return M('account_log')->insert($data);
     }
 
@@ -239,6 +239,7 @@ class RangeLogic
     //直推合伙人奖金2000  /   5%进货消费
     public function partner_bonus($type,$partner_id,$bonus,$order_id,$user_discount,$partner_discount){
         if(in_array($type,array(2,3))){
+            $order_info=$this->get_order_info($order_id);
             $data=array('user_id'=>$partner_id,'bonus'=>$bonus,'order_id'=>$order_id,'buy_discount'=>$user_discount,'reward_discount'=>$partner_discount,'type'=>$type,'add_time'=>time());
             if(M('range_log')->insert($data)){
                 if($type == 2){
@@ -246,7 +247,7 @@ class RangeLogic
                 }else{
                     $desc='直推合伙人百分比奖金';
                 }
-                $this->set_bonus_log($partner_id,$bonus,$desc,$order_id);
+                $this->set_bonus_log($partner_id,$bonus,$desc,$order_id,$order_info['order_sn']);
             }
         }
     }
@@ -267,6 +268,7 @@ class RangeLogic
 
     //极差分红
     public function extreme_dividend($user_parents,$compare_level,$order_amount,$user_discount,$order_id){
+        $order_info=$this->get_order_info($order_id);
         $cartLogic=new CartLogic();
         $user_parents=strrev($user_parents);
         $parents=explode(',',$user_parents);
@@ -283,7 +285,7 @@ class RangeLogic
                 $bonus=$order_amount/$user_discount*($compare_user_discount-$up_user_discount);
                 $data=array('user_id'=>$value,'bonus'=>$bonus,'order_id'=>$order_id,'buy_discount'=>$compare_user_discount,'reward_discount'=>$up_user_discount,'add_time'=>time());
                 M('range_log')->insert($data);
-                $this->set_bonus_log($value,$bonus,"极差奖金",$order_id);
+                $this->set_bonus_log($value,$bonus,"极差奖金",$order_id,$order_info['order_sn']);
                 if($user_level==2){
                     //提高比较等级
                     $compare_level=$user_level;
