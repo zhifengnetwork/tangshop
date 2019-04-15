@@ -133,7 +133,6 @@
 </div>
     <!--订单列表-e-->
 <script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
-<!-- <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script> -->
 <script type="text/javascript">
     /**
      * 取消订单
@@ -208,9 +207,8 @@
     // }
     // 删除全部消息
     function deletedMessageall(order_id) {
-        confirm('所选消息删除后将无法找回！', {
-            btn: ['是','否']
-        }),
+        if(!confirm("所选消息删除后将无法找回！"))
+            return false;
         $.ajax({
             type: "post",
             url: "{:U('Mobile/Order/deletedMessage')}",
@@ -218,18 +216,18 @@
             dataType: 'json',
             success: function (data) {
                 if (data.status == 1) {
-                    layer.open(data.msg, {icon: 1});
-                    
-                    // $('#message_' + order_id).remove()
-                    // setTimeout(function() {location.reload();}, 2000);
+                    layer.open({content:data.msg});
+                    setTimeout(function() {location.reload();}, 2000);
                 } else {
-                    layer.open(data.msg, {icon: 2});
+                    layer.open({content:data.msg});
+                    setTimeout(function() {location.reload();}, 2000);
                 }
             },
             error: function () {
-                layer.open('网络错误，请稍后再试', {icon: 2});
-            },
-        })
+                layer.open({content:'网络错误，请稍后再试',time:3});
+                setTimeout(function() {location.reload();}, 2000);
+            }
+        });
     }
 </script>
 </body>
