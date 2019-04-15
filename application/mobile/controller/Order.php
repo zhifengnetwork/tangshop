@@ -293,6 +293,16 @@ class Order extends MobileBase
 
         $this->ajaxReturn($return);
     }
+    //ajax删除已取消订单
+    public function deletedMessage($order_id)
+    {
+        $del_id = I('order_id');
+        $res = M('order')->where('order_id',$del_id)->update(['deleted'=>1]);
+        if($res){
+            return $this->ajaxReturn(['status'=>1,'msg'=>'操作成功']);
+        }
+        return $this->ajaxReturn(['status'=>-1,'msg'=>'操作失败']);
+    }
 
     /**
      * 申请退货

@@ -112,6 +112,11 @@
                             <a class="shop-rebuy" href="{:U('Order/refund_order', ['order_id'=>$order['order_id']])}">取消订单</a>
                         </if>
                     </if>
+
+                    <if condition="$order['order_status_detail'] eq 已取消">
+                        <a class="shop-rebuy" onclick="deletedMessageall({$order.order_id})">删除记录</a>
+                    </if>
+
                     <if condition="$order.receive_btn eq 1 && order.pay_status eq 1">
                         <a class="shop-rebuy paysoon" onclick="orderConfirm({$order.order_id})">确认收货</a>
                     </if>
@@ -128,6 +133,7 @@
 </div>
     <!--订单列表-e-->
 <script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<!-- <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script> -->
 <script type="text/javascript">
     /**
      * 取消订单
@@ -185,6 +191,45 @@
                 }
             }
         });
+    }
+
+    // 删除
+    // function deletedAllMsg() {
+    //     var arr = new Array();
+    //     $("input[name=msg_id]").each(function(){
+    //         if ($(this).is(":checked")) 
+    //             arr.push($(this).val()) 
+    //     });
+    //     if (arr.length > 0) {
+    //         deletedMessageall(arr.join(','))
+    //     } else {
+    //         layer.alert("至少选一项", {icon: 2, time: 2000})
+    //     }
+    // }
+    // 删除全部消息
+    function deletedMessageall(order_id) {
+        confirm('所选消息删除后将无法找回！', {
+            btn: ['是','否']
+        }),
+        $.ajax({
+            type: "post",
+            url: "{:U('Mobile/Order/deletedMessage')}",
+            data: {order_id: order_id},
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.open(data.msg, {icon: 1});
+                    
+                    // $('#message_' + order_id).remove()
+                    // setTimeout(function() {location.reload();}, 2000);
+                } else {
+                    layer.open(data.msg, {icon: 2});
+                }
+            },
+            error: function () {
+                layer.open('网络错误，请稍后再试', {icon: 2});
+            },
+        })
     }
 </script>
 </body>
