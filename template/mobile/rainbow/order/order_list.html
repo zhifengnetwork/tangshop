@@ -4,58 +4,58 @@
     <div class="maleri30">
         <ul class="">
             <li <if condition="$Request.param.type eq ''">class="red"</if>>
-                <a href="{:U('/Mobile/Order/order_list')}" class="tab_head">全部订单</a>
+            <a href="{:U('/Mobile/Order/order_list')}" class="tab_head">全部订单</a>
             </li>
             <li id="WAITPAY" <if condition="$Request.param.type eq 'WAITPAY'">class="red"</if>">
-                <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITPAY'))}" class="tab_head" >待付款</a>
+            <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITPAY'))}" class="tab_head" >待付款</a>
             </li>
             <li id="WAITSEND" <if condition="$Request.param.type eq 'WAITSEND'">class="red"</if>>
-                <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITSEND'))}"  class="tab_head">待发货</a>
+            <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITSEND'))}"  class="tab_head">待发货</a>
             </li>
             <!--<li id="WAITRECEIVE"><a href="{:U('/Mobile/User/order_list',array('type'=>'WAITRECEIVE'))}"  class="tab_head <if condition="$Request.param.type eq 'WAITRECEIVE'">on</if>">待收货</a></li>-->
             <li id="WAITCCOMMENT"  <if condition="$Request.param.type eq 'FINISH'">class="red"</if>>
-                <a href="{:U('/Mobile/Order/order_list',array('type'=>'FINISH'))}" class="tab_head">已完成</a>
+            <a href="{:U('/Mobile/Order/order_list',array('type'=>'FINISH'))}" class="tab_head">已完成</a>
             </li>
         </ul>
     </div>
 </div>
 
-    <!--订单列表-s-->
-    <div class="ajax_return">
-        <if condition="count($order_list) eq 0">
-            <!--没有内容时-s--->
-            <div class="comment_con p">
-                <div class="none">
-                    <img src="__STATIC__/images/none2.png">
-                    <br><br>
-                    抱歉未查到数据！
-                    <div class="paiton">
-                        <div class="maleri30">
-                            <a class="soon" href="/"><span>去逛逛</span></a>
-                        </div>
+<!--订单列表-s-->
+<div class="ajax_return">
+    <if condition="count($order_list) eq 0">
+        <!--没有内容时-s--->
+        <div class="comment_con p">
+            <div class="none">
+                <img src="__STATIC__/images/none2.png">
+                <br><br>
+                抱歉未查到数据！
+                <div class="paiton">
+                    <div class="maleri30">
+                        <a class="soon" href="/"><span>去逛逛</span></a>
                     </div>
                 </div>
             </div>
-            <!--没有内容时-e--->
-        </if>
-        <volist name="order_list" id="order">
-            <div class="mypackeg ma-to-20 getmore">
-                <div class="packeg p">
-                    <div class="maleri30">
-                        <div class="fl">
-                            <h1><span></span><span class="bgnum"></span></h1>
-                            <p class="bgnum"><span>订单编号:</span><span>{$order.order_sn}</span></p>
-                        </div>
-                        <div class="fr">
-                            <span>{$order['order_status_detail']}</span>
-                        </div>
+        </div>
+        <!--没有内容时-e--->
+    </if>
+    <volist name="order_list" id="order">
+        <div class="mypackeg ma-to-20 getmore">
+            <div class="packeg p">
+                <div class="maleri30">
+                    <div class="fl">
+                        <h1><span></span><span class="bgnum"></span></h1>
+                        <p class="bgnum"><span>订单编号:</span><span>{$order.order_sn}</span></p>
+                    </div>
+                    <div class="fr">
+                        <span>{$order['order_status_detail']}</span>
                     </div>
                 </div>
-                <div class="shop-mfive p">
-                    <div class="maleri30">
-                        <volist name="order.order_goods" id="goods">
-                            <div class="sc_list se_sclist paycloseto">
-                                <a href="{:U('/Mobile/Order/order_detail',array('id'=>$order['order_id']))}">
+            </div>
+            <div class="shop-mfive p">
+                <div class="maleri30">
+                    <volist name="order.order_goods" id="goods">
+                        <div class="sc_list se_sclist paycloseto">
+                            <a href="{:U('/Mobile/Order/order_detail',array('id'=>$order['order_id']))}">
                                 <div class="shopimg fl">
                                     <img src="{$goods[goods_id]|goods_thum_images=200,200}">
                                 </div>
@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="qxatten  wiconfine">
                                         <p class="weight"><span>数量</span>&nbsp;<span>{$goods[goods_num]}</span></p>
-                                       
+
                                     </div>
                                     <div class="buttondde">
                                         <notempty name="goods['return_goods']">
@@ -83,13 +83,13 @@
                                         </notempty>
                                     </div>
                                 </div>
-                                </a>
-                            </div>
-                        </volist>
-                    </div>
+                            </a>
+                        </div>
+                    </volist>
                 </div>
-                <div class="shop-rebuy-price p">
-                    <div class="maleri30">
+            </div>
+            <div class="shop-rebuy-price p">
+                <div class="maleri30">
                 <span class="price-alln">
                     <!--<span class="red">￥{$list['order_amount']}</span><span class="threel">共{$list.goods_list|count}件</span>-->
                     <span class="red">￥{$order['total_amount']}</span><span class="threel" id="goodsnum">共{$order.count_goods_num}件</span>
@@ -99,11 +99,11 @@
                         $order_status = order_status($order['order_sn']);
                         if($order['pay_btn'] ==1 && ($order_status == 1)) {
                     ?>
-                        <a class="shop-rebuy" href="{:U('/Mobile/Order/order_detail',array('id'=>$order['order_id']))}">审核中</a>
+                    <a class="shop-rebuy" href="{:U('/Mobile/Order/order_detail',array('id'=>$order['order_id']))}">审核中</a>
                     <?php } elseif ($order['pay_btn'] ==1 && ($order_status == 0)) {?>
-                        <a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart4',array('order_id'=>$order['order_id']))}">立即付款</a>
+                    <a class="shop-rebuy paysoon" href="{:U('Mobile/Cart/cart4',array('order_id'=>$order['order_id']))}">立即付款</a>
                     <?php } ?>
-                
+
                     <if condition="$order.cancel_btn eq 1">
                         <if condition="$order.pay_status eq 0">
                             <a class="shop-rebuy " onClick="cancel_order({$order.order_id})">取消订单</a>
@@ -131,9 +131,8 @@
         </div>
     </volist>
 </div>
-    <!--订单列表-e-->
+<!--订单列表-e-->
 <script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
-<!-- <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script> -->
 <script type="text/javascript">
     /**
      * 取消订单
@@ -208,31 +207,27 @@
     // }
     // 删除全部消息
     function deletedMessageall(order_id) {
-        layer.confirm('该条消息删除后将无法找回！', {
-            btn: ['是','否']
-        }, function() {
-            $.ajax({
-                type: "post",
-                url: "{:U('Mobile/Order/deletedMessage')}",
-                data: {order_id: order_id},
-                dataType: 'json',
-                success: function (data) {
-                    if (data.status == 1) {
-                        layer.open(data.msg, {icon: 1});
-
-                        // $('#message_' + order_id).remove()
-                        // setTimeout(function() {location.reload();}, 2000);
-                    } else {
-                        layer.open(data.msg, {icon: 2});
-                    }
-                },
-                error: function () {
-                    layer.open('网络错误，请稍后再试', {icon: 2});
-                },
-            })
-        }, function(tmp){
-            layer.close(tmp);
-        })
+        if(!confirm("所选消息删除后将无法找回！"))
+            return false;
+        $.ajax({
+            type: "post",
+            url: "{:U('Mobile/Order/deletedMessage')}",
+            data: {order_id: order_id},
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.open({content:data.msg});
+                    setTimeout(function() {location.reload();}, 2000);
+                } else {
+                    layer.open({content:data.msg});
+                    setTimeout(function() {location.reload();}, 2000);
+                }
+            },
+            error: function () {
+                layer.open({content:'网络错误，请稍后再试',time:3});
+                setTimeout(function() {location.reload();}, 2000);
+            }
+        });
     }
 </script>
 </body>
