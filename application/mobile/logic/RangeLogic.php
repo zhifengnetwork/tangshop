@@ -182,12 +182,15 @@ class RangeLogic
         $team=$this->get_my_team($user_id);
         if(empty($team)) exit('团队还在组建中');
         //团队总销售额
+//        var_dump($team);
         $cost=0;
         //拼接起始时间
         $start_time=strtotime(date('Y-1-1 00:00:00',time()));
         foreach($team as $key=>$value){
+//            echo $value."<hr />";
             $cost+=$this->get_sales_volume($value,$start_time);
         }
+//        echo $start_time."```".$cost;die;
         $config = tpCache('basic');
         //那么这个人年分红金额为
         $cost=$cost*$config['dividend_ratio']/100;
@@ -228,7 +231,7 @@ class RangeLogic
      */
     public function get_sales_volume($user_id,$start_time){
         if(is_numeric($user_id) && $user_id>0 && $start_time>0){
-            $total=M('order')->where(['user_id'=>$user_id,'pay_status'=>1])->where('pay_time','>',$start_time)->field('sum(order_amount) as total')->select();
+            $total=M('order')->where(['user_id'=>$user_id,'pay_status'=>1])->where('pay_time','>',$start_time)->field('sum(order_amount) as total')->find();
             return $total['total'];
         }
         return 0;
