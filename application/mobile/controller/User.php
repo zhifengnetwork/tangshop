@@ -193,6 +193,7 @@ class User extends MobileBase
         $zhou = $ra->weekly_settlement();
         $fenhong = $ra->partner_team_dividend($this->user_id);
         $dianbu = $ra->cost_shop($this->user_id);
+//        var_dump($fenhong);die;
         if(true){
             $this->ajaxReturn(array('status' => 1, 'msg' => "操作成功"));
         }else{
