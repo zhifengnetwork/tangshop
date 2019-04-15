@@ -597,6 +597,7 @@ class OrderLogic
                 Db::name('order')->where("order_id=$order_id")->save($update);
                 $range=new RangeLogic();
                 $result=$range->get_range($order_id);
+//                var_dump($result);die;
                 $range->shop_repair($user_id,$order_id);//店补结算
                 //判断等级是VIP以上的，获取本次订单指定商品数,并存库
                 $now_level = M('users')->where('user_id',$user_id)->value('level');

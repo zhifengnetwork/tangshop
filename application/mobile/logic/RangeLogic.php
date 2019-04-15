@@ -35,7 +35,7 @@ class RangeLogic
             //获取在这个等级买过的指定升级产品
             $vip_upgrade_num=$cartLogic->get_vip_upgrade_num($order_info['user_id']);
             if($user_info['level']==3){
-                //获取等级为2升级的商品数
+                //获取等级为3升级的商品数
                 $level_num=$cartLogic->get_up_level_num(3);
                 $buy_upgrade_num=$vip_upgrade_num-$level_num;
             }elseif($user_info['level']==4){
@@ -52,7 +52,9 @@ class RangeLogic
             //对比的等级
             $compare_level=$user_info['level'];
             //看有没有上级
+//            dump($user_info['parents']);echo "````";
             $user_info['parents']=trim(substr($user_info['parents'],2),',');
+//            var_dump($user_info['parents']);die;
              if($user_info['parents']=='') return 0;
             if(in_array($user_info['level'],array(1,2,3))){
                 if($upgrade_num==0 || $user_info['level']==1){
@@ -93,6 +95,7 @@ class RangeLogic
                     $upgrade_price=$cartLogic->get_upgrade_goods_price();
                     //指定商品会使得用户达到升级条件
                     $level_num=$cartLogic->get_up_level_num($user_info['level']+1);
+//                    return $buy_upgrade_num."```".$upgrade_num."``````".$level_num;die;
                     if($buy_upgrade_num+$upgrade_num>$level_num){
                         //超过了升一级的数量   再看看是否超过了下一级
                         //升一级之后的折扣
@@ -141,7 +144,9 @@ class RangeLogic
                         }
                     }else{
                         //没有升级  正常处理
-                        $this->extreme_dividend($user_info['parents'],$user_info['level'],$order_info['order_amount'],$user_discount,$order_id);
+//                        echo $user_info['parents'];
+                        $res=$this->extreme_dividend($user_info['parents'],$user_info['level'],$order_info['order_amount'],$user_discount,$order_id);
+//                        var_dump($res);
                     }
 
                 }
@@ -270,8 +275,10 @@ class RangeLogic
     public function extreme_dividend($user_parents,$compare_level,$order_amount,$user_discount,$order_id){
         $order_info=$this->get_order_info($order_id);
         $cartLogic=new CartLogic();
-        $user_parents=strrev($user_parents);
+//        $user_parents=strrev($user_parents);
         $parents=explode(',',$user_parents);
+        $parents=array_reverse($parents);
+//        return $parents;
         foreach($parents as $key=>$value){
             //获取等级进行对比
             $user_level=$cartLogic->get_user_level($value);
