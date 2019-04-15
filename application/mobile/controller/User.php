@@ -142,14 +142,15 @@ class User extends MobileBase
     public function get_down_num($user_id)
     {
         //获取下级id列表
-        $d_info = Db::query("select `user_id`, `first_leader`,`parents` from `tp_users` where ('first_leader' = $user_id or parents like '%,$user_id,%') and `is_audit` = 0");
-        if($d_info){
-            $id_array =[];
-            foreach($d_info as $k=>$v){
-                array_push($id_array ,$v['user_id']);
-            }
-        }
-        $count = count($id_array);
+        // $d_info = Db::query("select `user_id`, `first_leader`,`parents` from `tp_users` where ('first_leader' = $user_id or parents like '%,$user_id,%') and `is_audit` = 0");
+        // if($d_info){
+        //     $id_array =[];
+        //     foreach($d_info as $k=>$v){
+        //         array_push($id_array ,$v['user_id']);
+        //     }
+        // }
+        $down = M('users')->where('first_leader',$user_id)->select();
+        $count = count($down);
         return $count;
     }
 
