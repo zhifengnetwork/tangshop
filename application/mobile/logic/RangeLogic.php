@@ -344,7 +344,7 @@ class RangeLogic
         return array();
     }
 
-    //店补计算 年结算
+    //店补计算
     public function shop_repair($user_id,$order_id)
     {
         //判断是否是合伙人
@@ -356,12 +356,14 @@ class RangeLogic
         //购买时订单金额
         $order_amount = M('order')->where('order_id',$order_id)->value('order_amount');
         //应获店补金额
-        $persent = M('config')->where('name' , 'shop_repair')->value('value');
-        $user_id = $order_amount*$persent/100;
+        $config = tpCache('basic');
+        // $persent = M('config')->where('name' , 'shop_repair')->value('value');
+        $user_repair = $order_amount*$config['shop_repair']/100;
         $user_discount = Db::name('user_level')->where('level_id',$user_info['level'])->value('discount'); //折扣
         //存进数据库
-        $data=array('user_id'=>$user_id,'bonus'=>$user_id,'order_id'=>$order_id,'buy_discount'=>$user_discount,'reward_discount'=>$user_discount,'type'=>4,'add_time'=>time());
-        M('range_log')->insert($data);
+        $data=array('user_id'=>$user_id,'bonus'=>$user_repair,'order_id'=>$order_id,'buy_discount'=>$user_discount,'reward_discount'=>$user_discount,'type'=>4,'add_time'=>time());
+        // dump($data);die;
+        Db::name('range_log')->insert($data);
     }
 
     //店补年结算
@@ -377,7 +379,7 @@ class RangeLogic
         foreach($total as $k=>$v){
             $cost = $v['total'];
         }
-        $cost=$cost*$config['shop_repair']/100;
+        // $cost=$cost*$config['shop_repair']/100;
         //看如何处理 存入用户余额
         M('users')->where('user_id',$user_id)->setInc('user_money',$cost);
         $data = ['user_id'=>$user_id,'user_money'=>$cost,'desc'=>'年店补','change_time'=>time()];
