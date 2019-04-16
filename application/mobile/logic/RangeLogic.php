@@ -377,21 +377,31 @@ class RangeLogic
         // if(is_numeric($user_id) && $user_id>0 && $start_time>0){
         //先找需要结算店补的用户
         $users=$this->get_all_shop_users();
-//        var_dump($users);
-        $users=implode(',',$users);
-        $total=M('range_log')->where(['type'=>4])->where('user_id','in',$users)->where('add_time','>',$start_time)->field('sum(bonus) as total')->select();
+//        var_dump($users);die;
+//        $users=implode(',',$users);
+//        $config = tpCache('basic');
+        foreach ($users as $key=>$value){
+            $total=M('range_log')->where(['type'=>4,'user_id'=>$value])->where('add_time','>',$start_time)->field('sum(bonus) as total')->select();
+//            var_dump($total);die;
+            if(isset($total[0]['total'])){
+                $cost=$total[0]['total'];
+                //看如何处理 存入用户余额
+                M('users')->where('user_id',$value)->setInc('user_money',$cost);
+                $data = ['user_id'=>$value,'user_money'=>$cost,'desc'=>'年店补','change_time'=>time()];
+                M('account_log')->insert($data);
+            }
+        }
+//        $total=M('range_log')->where(['type'=>4])->where('user_id','in',$users)->where('add_time','>',$start_time)->field('sum(bonus) as total')->select();
 //        var_dump($total);die;
         // }
-        $config = tpCache('basic');
+
         //那么这个人年店补金额为
-        foreach($total as $k=>$v){
-            $cost = $v['total'];
-        }
+//        foreach($total as $k=>$v){
+//            $cost = $v['total'];
+//        }
+
         // $cost=$cost*$config['shop_repair']/100;
-        //看如何处理 存入用户余额
-        M('users')->where('user_id',$user_id)->setInc('user_money',$cost);
-        $data = ['user_id'=>$user_id,'user_money'=>$cost,'desc'=>'年店补','change_time'=>time()];
-        M('account_log')->insert($data);
+
     }
     //寻找所有的有店铺的用户
     public function get_all_shop_users(){
