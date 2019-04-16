@@ -12,8 +12,8 @@ return	array(
 						
 						//array('name'=>'支付方式','act'=>'index1','op'=>'System'),
 						array('name'=>'地区&配送','act'=>'region','op'=>'Tools'),
-						array('name'=>'短信模板','act'=>'index','op'=>'SmsTemplate'),
-						array('name'=>'消息通知','act'=>'index','op'=>'MessageTemplate'),
+						// array('name'=>'短信模板','act'=>'index','op'=>'SmsTemplate'),
+						// array('name'=>'消息通知','act'=>'index','op'=>'MessageTemplate'),
 						//array('name'=>'接口对接','act'=>'index3','op'=>'System'),
 						//array('name'=>'验证码设置','act'=>'index4','op'=>'System'),
 						array('name'=>'友情链接','act'=>'linkList','op'=>'Article'),

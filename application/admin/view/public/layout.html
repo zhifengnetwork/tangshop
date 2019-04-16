@@ -63,20 +63,20 @@
     	$('input[name*='+name+']').prop('checked', $(obj).checked);
     }
 
-    function get_help(obj){
+    // function get_help(obj){
 
-		window.open("http://www.tp-shop.cn/");
-		return false;
+	// 	window.open("http://www.tp-shop.cn/");
+	// 	return false;
 
-        layer.open({
-            type: 2,
-            title: '帮助手册',
-            shadeClose: true,
-            shade: 0.3,
-            area: ['70%', '80%'],
-            content: $(obj).attr('data-url'),
-        });
-    }
+    //     layer.open({
+    //         type: 2,
+    //         title: '帮助手册',
+    //         shadeClose: true,
+    //         shade: 0.3,
+    //         area: ['70%', '80%'],
+    //         content: $(obj).attr('data-url'),
+    //     });
+    // }
 
     function delAll(obj,name){
     	var a = [];
