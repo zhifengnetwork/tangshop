@@ -31,11 +31,11 @@ class System extends Base
 		$group_list = [
             'shop_info' => '店铺信息',
             'basic'     => '基本设置',
-            'sms'       => '短信设置',
+            // 'sms'       => '短信设置',
             'shopping'  => '购物流程设置',
-            'smtp'      => '邮件设置',
+            // 'smtp'      => '邮件设置',
             'water'     => '水印设置',
-            'push'      => '推送设置',
+            // 'push'      => '推送设置',
 //            'oss'       => '对象存储',
 //            'express'	=> '物流设置',
 //            'poster'	=> '海报设置'
