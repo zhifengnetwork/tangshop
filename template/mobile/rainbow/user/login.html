@@ -35,14 +35,14 @@
     </div>
 <!--登录表单-e-->
     <!--第三方登陆-s-->
-    <div class="thirdlogin">
+    <!-- <div class="thirdlogin">
         <h4>第三方登陆</h4>
         <div class="third-login-list">
-        <tpshop sql="select * from __PREFIX__plugin where type='login' AND status = 1" item="v" key="k">
+        <tpshop sql="select * from __PREFIX__plugin where type='login' AND status = 1" item="v" key="k"> -->
             <!--<if condition="$v['code'] eq 'weixin' AND is_weixin() neq 1">
                 <a class="item-ico ico-wechat-login" href="{:U('LoginApi/login',array('oauth'=>'weixin'))}" target="_blank" title="weixin"></a>
        </if>-->
-            <if condition="$v['code'] eq 'qqq' AND is_qq() neq 1">
+            <!-- <if condition="$v['code'] eq 'qqq' AND is_qq() neq 1">
                 <a class="item-ico ico-qq-login" href="{:U('LoginApi/login',array('oauth'=>'qq'))}" target="_blank" title="QQ"></a>
             </if>
             <if condition="$v['code'] eq 'alipay' AND is_alipay() neq 1 AND is_weixin() neq 1">
@@ -53,9 +53,9 @@
             </if>
         </tpshop>
         </div>
-    </div>
+    </div> -->
      <!--第三方登陆-e-->
-</div>
+<!-- </div> -->
 
 
 <script type="text/javascript">

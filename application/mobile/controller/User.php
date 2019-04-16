@@ -177,15 +177,7 @@ class User extends MobileBase
         return $this->fetch();
     }
 
-    //奖金分红店补结算 测试用，上线删除
-    public function repair_list()
-    {
-        $user_id = $this->user_id;
-        $list = M('range_log')->where('user_id',$user_id)->select();
-        $this->assign('list',$list);
-        return $this->fetch();
-    }
-
+    
     //奖金分红店补结算 测试用，上线删除
     public function jiesuan()
     {

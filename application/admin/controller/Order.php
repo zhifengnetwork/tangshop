@@ -26,6 +26,7 @@ use app\common\util\TpshopException;
 use think\AjaxPage;
 use think\Page;
 use think\Db;
+use app\mobile\logic\RangeLogic;
 
 class Order extends Base {
     public  $order_status;
@@ -50,6 +51,9 @@ class Order extends Base {
      *订单首页
      */
     public function index(){
+        // $le = new RangeLogic();
+        // $test = $le->shop_repair(52,719);
+        // dump($test);die;
         return $this->fetch();
     }
 
