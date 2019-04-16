@@ -118,7 +118,7 @@
     <!--菜单-end-->
 
     <!--秒杀-start-->
-    <div class="floor secondkill">
+    <!-- <div class="floor secondkill">
         <div class="content">
             <div class="time p">
                 <div class="djs lightning fl">
@@ -136,9 +136,9 @@
                 <if condition="count($flash_sale_list) eq nll">
                     <div style="text-align: center;">暂无抢购商品。。。。</div>
                 </if>
-                <foreach name="flash_sale_list" item="v">
+                <foreach name="flash_sale_list" item="v"> -->
                     <!--<a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id],'item_id'=>$v[item_id]))}">-->
-                    <a href="{:U('Mobile/Activity/flash_sale_list')}">
+                    <!-- <a href="{:U('Mobile/Activity/flash_sale_list')}">
                         <div class="timerBox shopnum">
                             <img src="{$v[goods_id]|goods_thum_images=200,200}"/>
                             <p>￥<span>{$v[price]}</span>元</p>
@@ -147,7 +147,7 @@
                 </foreach>
             </div>
         </div>
-    </div>
+    </div> -->
     <!--秒杀-end-->
 
     <!--广告位-start-->
