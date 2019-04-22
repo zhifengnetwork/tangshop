@@ -58,11 +58,11 @@ class PlaceOrder
         $this->order = new Order();
     }
 
-    public function addNormalOrder()
+    public function addNormalOrder($action)
     {
         $this->check();
         $this->queueInc();
-        $this->addOrder();
+        $this->addOrder($action);
         $this->addOrderGoods();
         $this->addShopOrder();
 
@@ -96,7 +96,7 @@ class PlaceOrder
         $this->setPromId($teamActivity['team_id']);
         $this->check();
         $this->queueInc();
-        $this->addOrder();
+        $this->addOrder('');
         $this->addOrderGoods();
         Hook::listen('user_add_order', $this->order);//下单行为
         if($teamActivity['team_type'] != 2){
@@ -122,7 +122,7 @@ class PlaceOrder
         $this->setPromId($preSell['pre_sell_id']);
         $this->check();
         $this->queueInc();
-        $this->addOrder();
+        $this->addOrder('');
         $this->addOrderGoods();
         $reduce = tpCache('shopping.reduce');
         Hook::listen('user_add_order', $this->order);//下单行为
@@ -224,7 +224,7 @@ class PlaceOrder
      * 插入订单表
      * @throws TpshopException
      */
-    private function addOrder()
+    private function addOrder($action)
     {
         $OrderLogic = new OrderLogic();
         $user = $this->pay->getUser();
@@ -246,7 +246,7 @@ class PlaceOrder
             'integral' => $this->pay->getPayPoints(), //'使用积分',
             'integral_money' => $this->pay->getIntegralMoney(),//'使用积分抵多少钱',
             'total_amount' => $this->pay->getTotalAmount(),// 订单总额
-            'order_amount' => $this->pay->getOrderAmount(),//'应付款金额',
+            'order_amount' => $this->pay->getOrderAmount($action),//'应付款金额',
             'add_time' => time(), // 下单时间
         ];
         if($orderData["order_amount"] < 0){

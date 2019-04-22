@@ -96,7 +96,47 @@ class RangeLogic
                     //指定商品会使得用户达到升级条件
                     $level_num=$cartLogic->get_up_level_num($user_info['level']+1);
 //                    return $buy_upgrade_num."```".$upgrade_num."``````".$level_num;die;
-                    if($buy_upgrade_num+$upgrade_num>$level_num){
+                    if($upgrade_num>=$level_num){
+                        //超过了升一级的数量   再看看是否超过了下一级
+                        //升一级之后的折扣
+                        $up1_discount=$cartLogic->get_level_discount($user_info['level']+1);
+                        if($user_info['level']==2){
+                            //已经升3级了看有没有升4级
+                            $up_level_num=$cartLogic->get_up_level_num($user_info['level']+2);
+                            if($upgrade_num>=$level_num+$up_level_num){
+                                //连升两级的情况处理
+                                //升两级之后的折扣
+                                $up2_discount=$cartLogic->get_level_discount($user_info['level']+2);
+                                //第三部分  第二次升级后购买的商品   这时候已经升到最大级了  只看看自己的上级是不是可以获得奖励
+                                $last_amount=$upgrade_num*$upgrade_price*$up2_discount/100;
+                                //先看看是不是合伙人
+                                $is_partner=$this->get_is_partner($user_info['first_leader'],$user_info['reg_time']);
+                                //如果是在合伙人等级直推了 增加2000奖金  并奖励5%升级到合伙人之后购买的商品金额
+                                if($is_partner){
+                                    $this->partner_bonus(2,$user_info['first_leader'],2000,$order_id,$up2_discount,$up2_discount);
+                                    $this->partner_bonus(3,$user_info['first_leader'],$last_amount*5/100,$order_id,$up2_discount,$up2_discount);
+                                }
+                            }else{
+                                //第二部分   买的商品不够升级
+                                $second_amount=$upgrade_num*$upgrade_price*$up1_discount/100;
+                                $this->extreme_dividend($user_info['parents'],$user_info['level']+1,$second_amount,$up1_discount,$order_id);
+                            }
+                        }else{
+                            //已经升到满级了
+                            //第一部分  从销售员升到合伙人
+                            $first_amount=($level_num-$buy_upgrade_num)*$upgrade_price*$user_discount/100;
+                            $this->extreme_dividend($user_info['panren'],$user_info['level'],$first_amount,$user_discount,$order_id);
+                            //第二部分   已经满级了   只看要不要给上级奖励
+                            $last_amount=($buy_upgrade_num+$upgrade_num-$level_num)*$upgrade_price*$up1_discount/100;
+                            //先看看是不是合伙人
+                            $is_partner=$this->get_is_partner($user_info['first_leader'],$user_info['reg_time']);
+                            //如果是在合伙人等级直推了 增加2000奖金  并奖励5%升级到合伙人之后购买的商品金额
+                            if($is_partner){
+                                $this->partner_bonus(2,$user_info['first_leader'],2000,$order_id,$up1_discount,$up1_discount);
+                                $this->partner_bonus(3,$user_info['first_leader'],$last_amount*5/100,$order_id,$up1_discount,$up1_discount);
+                            }
+                        }
+                    }elseif($buy_upgrade_num+$upgrade_num>$level_num){
                         //超过了升一级的数量   再看看是否超过了下一级
                         //升一级之后的折扣
                         $up1_discount=$cartLogic->get_level_discount($user_info['level']+1);

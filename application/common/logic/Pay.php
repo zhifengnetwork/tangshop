@@ -413,10 +413,14 @@ class Pay
      * 获取订单应付金额
      * @return int
      */
-    public function getOrderAmount()
+    public function getOrderAmount($action)
     {
         $carLogic=new CartLogic();
-        $save_price=$carLogic->get_goods_cost($this->user['user_id']);
+        if($action=='buy_now'){
+            $save_price=$carLogic->buy_now_cost($this->user['user_id'],$this->totalNum);
+        }else{
+            $save_price=$carLogic->get_goods_cost($this->user['user_id']);
+        }
         return number_format($this->orderAmount-$save_price, 2, '.', '');
     }
 
@@ -506,6 +510,25 @@ class Pay
     {
         $carLogic=new CartLogic();
         $save_price=$carLogic->get_goods_cost($this->user['user_id']);
+        return [
+            'shipping_price' => round($this->shippingPrice, 2),
+            'coupon_price' => round($this->couponPrice, 2),
+            'user_money' => round($this->userMoney, 2),
+            'integral_money' => $this->integralMoney,
+            'pay_points' => $this->payPoints,
+            'order_amount' => round($this->orderAmount-$save_price, 2),
+            'total_amount' => round($this->totalAmount-$save_price, 2),
+            'goods_price' => round($this->goodsPrice-$save_price, 2),
+            'total_num' => $this->totalNum,
+            'order_prom_amount' => round($this->orderPromAmount, 2),
+        ];
+    }
+
+    public function toNowArray()
+    {
+
+        $carLogic=new CartLogic();
+        $save_price=$carLogic->buy_now_cost($this->user['user_id'],$this->totalNum);
         return [
             'shipping_price' => round($this->shippingPrice, 2),
             'coupon_price' => round($this->couponPrice, 2),

@@ -193,8 +193,8 @@ class TeamOrder
         }
         if ($this->pay->getCouponPrice() > 0) {
             //这个判断只是用于第二次支付时，优惠券面额大于应付金额。
-            if($this->pay->getOrderAmount() < 0){
-                $this->order['coupon_price'] = $this->pay->getCouponPrice() + $this->pay->getOrderAmount();
+            if($this->pay->getOrderAmount('') < 0){
+                $this->order['coupon_price'] = $this->pay->getCouponPrice() + $this->pay->getOrderAmount('');
             }else{
                 $this->order['coupon_price'] = $this->pay->getCouponPrice();
             }
@@ -207,10 +207,10 @@ class TeamOrder
             $this->order['integral'] = $this->order['integral'] + $this->pay->getPayPoints();
         }
         //小于零的情况为第二次支付时，优惠券面额大于应付金额。
-        if($this->pay->getOrderAmount() < 0){
+        if($this->pay->getOrderAmount('') < 0){
             $this->order['order_amount'] = 0.00;
         }else{
-            $this->order['order_amount'] = $this->pay->getOrderAmount();
+            $this->order['order_amount'] = $this->pay->getOrderAmount('');
         }
         $this->order['total_amount'] = $this->pay->getTotalAmount();
         return $this->order;

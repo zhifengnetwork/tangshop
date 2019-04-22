@@ -1383,7 +1383,7 @@ exit("请联系TPshop官网客服购买高级版支持此功能");
             //################################修改订单费用
             $order['goods_price']    = $pay->getGoodsPrice(); // 商品总价
             $order['shipping_price'] = $pay->getShippingPrice();//物流费
-            $order['order_amount']   = $pay->getOrderAmount(); // 应付金额
+            $order['order_amount']   = $pay->getOrderAmount(''); // 应付金额
             $order['total_amount']   = $pay->getTotalAmount(); // 订单总价
             $o = M('order')->where('order_id='.$order_id)->save($order);
             $commonOrder = new \app\common\logic\Order();

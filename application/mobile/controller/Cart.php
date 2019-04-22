@@ -150,11 +150,13 @@ class Cart extends MobileBase {
             $cartLogic->setGoodsBuyNum($goods_num);
             $buyGoods = [];
             try{
+//                var_dump($_SESSION);die;
                 $buyGoods = $cartLogic->buyNow();
             }catch (TpshopException $t){
                 $error = $t->getErrorArr();
                 $this->error($error['msg']);
             }
+//            print_r($buyGoods);die;
             $cartList['cartList'][0] = $buyGoods;
             $cartGoodsTotalNum = $goods_num;
             $setRedirectUrl = new UsersLogic();
@@ -240,12 +242,16 @@ class Cart extends MobileBase {
             if ($_REQUEST['act'] == 'submit_order') {
                 $placeOrder = new PlaceOrder($pay);
                 $placeOrder->setMobile($mobile)->setUserAddress($address)->setConsignee($consignee)->setInvoiceTitle($invoice_title)
-                    ->setUserNote($user_note)->setTaxpayer($taxpayer)->setInvoiceDesc($invoice_desc)->setPayPsw($pay_pwd)->setTakeTime($take_time)->addNormalOrder();
+                    ->setUserNote($user_note)->setTaxpayer($taxpayer)->setInvoiceDesc($invoice_desc)->setPayPsw($pay_pwd)->setTakeTime($take_time)->addNormalOrder($action);
                 $cartLogic->clear();
                 $order = $placeOrder->getOrder();
                 $this->ajaxReturn(['status' => 1, 'msg' => '提交订单成功', 'result' => $order['order_sn']]);
             }
-            $this->ajaxReturn(['status' => 1, 'msg' => '计算成功', 'result' => $pay->toArray()]);
+            if($cartLogic->is_upgrade_goods($goods_id)){
+                $this->ajaxReturn(['status' => 1, 'msg' => '计算成功', 'result' => $pay->toNowArray()]);
+            }else{
+                $this->ajaxReturn(['status' => 1, 'msg' => '计算成功', 'result' => $pay->toArray()]);
+            }
         } catch (TpshopException $t) {
             $error = $t->getErrorArr();
             $this->ajaxReturn($error);

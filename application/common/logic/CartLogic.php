@@ -211,7 +211,107 @@ class CartLogic extends Model
         $buyGoods['cut_fee'] = $cart->getCutFeeAttr(0, $buyGoods);
         $buyGoods['goods_fee'] = $cart->getGoodsFeeAttr(0, $buyGoods);
         $buyGoods['total_fee'] = $cart->getTotalFeeAttr(0, $buyGoods);
+        //看购买的是不是指定商品
+        if($this->is_upgrade_goods($buyGoods['goods_id'])){
+            $save_price=$this->buy_now_cost($this->user_id,$buyGoods['goods_num']);
+            $buyGoods['total_fee']=$buyGoods['total_fee']-$save_price;
+            $buyGoods['goods_fee']=$save_price;
+        }
         return $buyGoods;
+    }
+
+    public function is_upgrade_goods($goods_id){
+        if(is_numeric($goods_id) && $goods_id>0){
+            return M('goods')->where(['goods_id'=>$goods_id,'is_upgrade'=>1])->count();
+        }
+        return 0;
+    }
+
+    /**
+     * 直接购买算升级折扣
+     * @param $user_id
+     * @return float|int|string
+     */
+    public function buy_now_cost($user_id,$buy_num){
+        //先看当前用户等级  如果是普通会员或者合伙人就不用继续了
+        $user_level=$this->get_user_level($user_id);
+        if(in_array($user_level,array(1,4))){
+            return 0;
+        }
+//        return $user_level;
+        //获取指定商品的单价   平台同时只有一种指定商品存在
+        $upgrade_goods_price=$this->get_upgrade_goods_price();
+//        $upgrade_cost=0;//指定商品的总价格
+        $save_money=0;
+        //获取升级之后购买的指定商品数量
+        $vip_upgrade_num=$this->get_vip_upgrade_num($user_id);
+        if($user_level==3){
+            //获取等级为2升级的商品数
+            $level_num=$this->get_up_level_num(3);
+            $goods_num=$vip_upgrade_num-$level_num;
+        }elseif($user_level==4){
+            $level_num=$this->get_up_level_num(3);
+            $level_up_num=$this->get_up_level_num(4);
+            $goods_num=$vip_upgrade_num-$level_num-$level_up_num;
+        }else{
+            $goods_num=$vip_upgrade_num;
+        }
+//        $goods_num=$this->get_time_goods_num($user_id,$level_time1,1);
+//        return $goods_num;
+        //当前购买指定商品的数量
+//        $buy_num=$this->get_upgrade_goods_num($user_id,1);
+        //购物车中非指定商品原总价
+//        $goods_cost=$this->get_cart_goods_price($user_id,0);
+        $goods_cost=0;
+        if($user_level==2){
+            //升到销售员需要购买的数量
+            $level_num=$this->get_up_level_num(3);
+//            return $goods_num."```".$buy_num."````".$level_num;die;
+            $level_num1=$this->get_up_level_num(4);
+            $discount2=$this->get_level_discount(2);
+            $discount3=$this->get_level_discount(3);
+            if($buy_num>=$level_num){
+                if($buy_num>=$level_num1){
+                    $discount4=$this->get_level_discount(4);
+                    //指定商品升级之后优惠的金额
+                    $upgrade_cost=$buy_num*($discount2-$discount4)/100*$upgrade_goods_price;
+                    $save_money=$upgrade_cost+$goods_cost*($discount2-$discount4);
+                }else{
+                    $upgrade_cost=$buy_num*($discount2-$discount3)/100*$upgrade_goods_price;
+                    $save_money=$upgrade_cost+$goods_cost*($discount2-$discount3);
+                }
+            }elseif($goods_num+$buy_num>$level_num){
+                //从销售员升到合伙人需要的数量
+//                $level_num1=$this->get_up_level_num(4);
+//                return $level_num1+$level_num;die;
+//                $discount2=$this->get_level_discount(2);
+//                $discount3=$this->get_level_discount(3);
+                if($goods_num+$buy_num>$level_num+$level_num1){
+                    $discount4=$this->get_level_discount(4);
+//                    $upgrade_cost=($level_num-$goods_num)*$discount2/100*$upgrade_goods_price+$level_num1*$discount3/100*$upgrade_goods_price+($goods_num+$buy_num-$level_num-$level_num1)*$discount4/100;
+                    //指定商品升级之后优惠的金额
+                    $upgrade_cost=$level_num1*($discount2-$discount3)/100*$upgrade_goods_price+($goods_num+$buy_num-$level_num-$level_num1)*($discount2-$discount4)/100*$upgrade_goods_price;
+                    $save_money=$upgrade_cost+$goods_cost*($discount2-$discount4);
+                }else{
+//                    return $upgrade_goods_price.'````'.$level_num1.'`````'.$goods_cost;die;
+                    $upgrade_cost=($goods_num+$buy_num-$level_num)*($discount2-$discount3)/100*$upgrade_goods_price;
+                    $save_money=$upgrade_cost+$goods_cost*($discount2-$discount3);
+                }
+            }
+        }else{
+            //从lv3升级到lv4需要购买指定商品的数量
+            $level_num=$this->get_up_level_num(4);
+            $discount3=$this->get_level_discount(3);
+            $discount4=$this->get_level_discount(4);
+            if($buy_num>=$level_num){
+                $upgrade_cost=$buy_num*($discount3-$discount4)/100*$upgrade_goods_price;
+                $save_money=$upgrade_cost+$goods_cost*($discount3-$discount4);
+            }elseif($goods_num+$buy_num>$level_num){
+                $upgrade_cost=($goods_num+$buy_num-$level_num)*($discount3-$discount4)/100*$upgrade_goods_price;
+                $save_money=$upgrade_cost+$goods_cost*($discount3-$discount4);
+            }
+        }
+        return $save_money;
     }
 
     /**
@@ -1002,12 +1102,14 @@ class CartLogic extends Model
 //
 //    }
 //解决购买指定商品数量超过升级数量之后
+//20190422  购物新需求  一次性购买升级指定商品数量超过升级数量（不包含升级之后已买的数量）享受升级之后的折扣
     public function get_goods_cost($user_id){
         //先看当前用户等级  如果是普通会员或者合伙人就不用继续了
         $user_level=$this->get_user_level($user_id);
         if(in_array($user_level,array(1,4))){
             return 0;
         }
+//        return $user_level;
         //获取指定商品的单价   平台同时只有一种指定商品存在
         $upgrade_goods_price=$this->get_upgrade_goods_price();
 //        $upgrade_cost=0;//指定商品的总价格
@@ -1036,12 +1138,25 @@ class CartLogic extends Model
             //升到销售员需要购买的数量
             $level_num=$this->get_up_level_num(3);
 //            return $goods_num."```".$buy_num."````".$level_num;die;
-            if($goods_num+$buy_num>$level_num){
+            $level_num1=$this->get_up_level_num(4);
+            $discount2=$this->get_level_discount(2);
+            $discount3=$this->get_level_discount(3);
+            if($buy_num>=$level_num){
+                if($buy_num>=$level_num1+$level_num){
+                    $discount4=$this->get_level_discount(4);
+                    //指定商品升级之后优惠的金额
+                    $upgrade_cost=$buy_num*($discount2-$discount4)/100*$upgrade_goods_price;
+                    $save_money=$upgrade_cost+$goods_cost*($discount2-$discount4);
+                }else{
+                    $upgrade_cost=$buy_num*($discount2-$discount3)/100*$upgrade_goods_price;
+                    $save_money=$upgrade_cost+$goods_cost*($discount2-$discount3);
+                }
+            }elseif($goods_num+$buy_num>$level_num){
                 //从销售员升到合伙人需要的数量
-                $level_num1=$this->get_up_level_num(4);
+//                $level_num1=$this->get_up_level_num(4);
 //                return $level_num1+$level_num;die;
-                $discount2=$this->get_level_discount(2);
-                $discount3=$this->get_level_discount(3);
+//                $discount2=$this->get_level_discount(2);
+//                $discount3=$this->get_level_discount(3);
                 if($goods_num+$buy_num>$level_num+$level_num1){
                     $discount4=$this->get_level_discount(4);
 //                    $upgrade_cost=($level_num-$goods_num)*$discount2/100*$upgrade_goods_price+$level_num1*$discount3/100*$upgrade_goods_price+($goods_num+$buy_num-$level_num-$level_num1)*$discount4/100;
@@ -1057,9 +1172,12 @@ class CartLogic extends Model
         }else{
             //从lv3升级到lv4需要购买指定商品的数量
             $level_num=$this->get_up_level_num(4);
-            if($goods_num+$buy_num>$level_num){
-                $discount3=$this->get_level_discount(3);
-                $discount4=$this->get_level_discount(4);
+            $discount3=$this->get_level_discount(3);
+            $discount4=$this->get_level_discount(4);
+            if($buy_num>=$level_num){
+                $upgrade_cost=$buy_num*($discount3-$discount4)/100*$upgrade_goods_price;
+                $save_money=$upgrade_cost+$goods_cost*($discount3-$discount4);
+            }elseif($goods_num+$buy_num>$level_num){
                 $upgrade_cost=($goods_num+$buy_num-$level_num)*($discount3-$discount4)/100*$upgrade_goods_price;
                 $save_money=$upgrade_cost+$goods_cost*($discount3-$discount4);
             }
