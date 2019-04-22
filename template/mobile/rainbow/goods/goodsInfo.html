@@ -56,7 +56,7 @@
                 </a>
             </div>
             <div class="scunde p">
-                <span class="red" id="price">￥{$goods.shop_price*$discount}</span>
+                <span class="red" id="price">￥{$goods.shop_price*$discount|round=###,2}</span>
                 <empty name="$user_id">
                     <span id="market_price_title">原价：</span><span class="linethr" id="shop_price">{$goods.market_price}</span>
                 <else />
@@ -327,7 +327,7 @@
                                         </span>
                                     <else>
                                         <span class="similar-product-price">
-                                            ¥<span class="big-price">{$v[shop_price]*$discount}</span>
+                                            ¥<span class="big-price">{$v[shop_price]*$discount|round=###,2}</span>
                                         </span>
                                     </empty>
                                 </div>
@@ -521,7 +521,7 @@
                     <div class="fon_or fl">
                         <h2 class="similar-product-text">{$goods.goods_name}</h2>
                         <input type="hidden" id="goods_name" name="goods_id" value="{$goods.goods_id}">
-                        <div class="price_or" id="goods_price"><span>￥</span><span>{$goods.shop_price*$discount}</span></div>
+                        <div class="price_or" id="goods_price"><span>￥</span><span>{$goods.shop_price*$discount|round=###,2}</span></div>
                         <div class="dqkc_or"><span>剩余库存：</span><span id="spec_store_count">{$goods.store_count}</span></div>
                         <div class="dqkc_or buy_limit" style="display: none"><span>限购：</span><span id="buy_limit">{$goods.virtual_limit}</span></div>
                         <div class="price_or team-pies p" style="display: none"><span class="confinetime">该商品拼团中</span><a class="pb_buy team_button">点击前往</a></div>
@@ -1122,11 +1122,11 @@
         }
         var integral = round(goods_price - (exchange_integral / point_rate),2);
         if(exchange_integral > 0){
-            $("#goods_price").html(integral + '+' +exchange_integral + '积分'); //变动价格显示
-            $("#price").html("<em>￥</em>" + integral + '+' +exchange_integral + '积分'); //积分显示
+            // $("#goods_price").html(integral + '+' +exchange_integral + '积分'); //变动价格显示
+            // $("#price").html("<em>￥</em>" + integral + '+' +exchange_integral + '积分'); //积分显示
         }else{
-            $("#goods_price").html(goods_price*'{$discount}'); //变动价格显示
-            $("#price").html("<em>￥</em>" + goods_price*'{$discount}'); //变动价格显示
+            $("#goods_price").html(round(goods_price*'{$discount}',2)); //变动价格显示
+            $("#price").html("<em>￥</em>" + round(goods_price*'{$discount}',2)); //变动价格显示
         }
         $('#market_price_title').html('原价：');
         $('#spec_store_count').html(store_count);
