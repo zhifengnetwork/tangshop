@@ -21,9 +21,10 @@ class LevelLogic
         $user_level = M('users')->where('user_id',$user_id)->value('level');
         $max_level = Db::name('user_level')->max('level_id');//最大等级
         $time = time();
+        $tuijian = Db::name('config')->where('name','upgrade_conditions')->value('value');
 
         if($user_level == 1){
-            if($nums >= 3){
+            if($nums >= $tuijian){
                 Db::name('users')->where('user_id',$user_id)->setInc('level');
                 Db::name('user_level_time')->data(['user_id'=>$user_id,'user_level'=>$user_level+1,'level_time'=>$time])->insert();
                 $this->change_discount($user_id);
