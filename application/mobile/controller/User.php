@@ -76,6 +76,10 @@ class User extends MobileBase
             'WAITCCOMMENT' => '待评价', //订单查询状态 待评价
         );
         $this->assign('order_status_coment', $order_status_coment);
+
+        //更新等级状态
+        $up_level = new LevelLogic();
+        $up_level->upgrade($this->user_id);
     }
 
     public function index()
