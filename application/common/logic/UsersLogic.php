@@ -481,7 +481,7 @@ class UsersLogic extends Model
         $user_id = Db::name('users')->insertGetId($map);
         //判断他以及全家祖宗无数辈是否可以升级
         // $leader_id = M('users')->where('user_id',$user_id)->value('first_leader');
-        // $up = new LevelLogic();
+        $up = new LevelLogic();
         $up->upgrade($user_id);
 
         if($user_id === false)
