@@ -26,22 +26,22 @@
   </div>
   <form action="{:U('Goods/addEditCategory')}" method="post" class="form-horizontal" id="category_form">
     <div class="ncap-form-default">
-      <!--<dl class="row">-->
-        <!--<dt class="tit">-->
-          <!--<label for="t_mane"><em>*</em>分类名称</label>-->
-        <!--</dt>-->
-        <!--<dd class="opt">-->
-          <!--<input type="text" placeholder="名称" class="input-txt" name="name" value="{$goods_category_info.name|}">-->
-          <!--<span class="err" id="err_name" style="color:#F00; display:none;"></span>-->
-          <!--<p class="notic"></p>-->
-        <!--</dd>-->
-      <!--</dl>-->
+      <dl class="row" style="display: none;">
+        <dt class="tit">
+          <label for="t_mane"><em>*</em>分类名称</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" placeholder="名称" class="input-txt" id="pc_name" name="name" value="{$goods_category_info.name|}">
+          <span class="err" id="err_name" style="color:#F00; display:none;"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
       <dl class="row">
         <dt class="tit">
           <label for="t_mane"><em>*</em>分类名称</label>
         </dt>
         <dd class="opt">
-          <input type="text" placeholder="分类名称" class="input-txt" name="mobile_name" value="{$goods_category_info.mobile_name}">
+          <input type="text" placeholder="分类名称" class="input-txt" id="mobile_name" name="mobile_name" value="{$goods_category_info.mobile_name}">
           <span class="err" id="err_mobile_name" style="color:#F00; display:none;"></span>
           <p class="notic"></p>
         </dd>
@@ -150,7 +150,7 @@
           <p class="notic">用于商城分销,微信三级分销。</p>
         </dd>
       </dl>                         
-      <div class="bot"><a id="submitBtn" class="ncap-btn-big ncap-btn-green" href="JavaScript:void(0);" onClick="ajax_submit_form('category_form','{:U('Goods/addEditCategory?is_ajax=1')}');">确认提交</a></div>
+      <div class="bot"><a id="submitBtn" class="ncap-btn-big ncap-btn-green" href="JavaScript:void(0);" onClick="res()">确认提交</a></div>
     </div>
     <input type="hidden" name="id" value="{$goods_category_info.id}">
   </form>
@@ -182,6 +182,11 @@ function img_call_back(fileurl_tmp)
   $("#image").val(fileurl_tmp);
   $("#img_a").attr('href', fileurl_tmp);
   $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+}
+function res() {
+  var pc_name=$("#mobile_name").val();
+  $('#pc_name').val(pc_name);
+  ajax_submit_form('category_form','{:U('Goods/addEditCategory?is_ajax=1')}');
 }
 </script>
 </body>
