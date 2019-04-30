@@ -479,10 +479,10 @@ class UsersLogic extends Model
             $map['is_audit']=2;
         }
         $user_id = Db::name('users')->insertGetId($map);
-        //判断他爸是否可以升级
-        $leader_id = M('users')->where('user_id',$user_id)->value('first_leader');
+        //判断他以及全家祖宗无数辈是否可以升级
+        // $leader_id = M('users')->where('user_id',$user_id)->value('first_leader');
         $up = new LevelLogic();
-        $up->upgrade($leader_id);
+        $up->upgrade($user_id);
 
         if($user_id === false)
             return array('status'=>-1,'msg'=>'注册失败');
