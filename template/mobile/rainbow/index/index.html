@@ -191,69 +191,79 @@
     <!--广告位-end-->
 
     <!--新品上市-start-->
-    <div class="floor newshop">
+    <!--<div class="floor newshop">-->
+    <div class="floor guesslike m-b-0">
         <div class="banner banner_imgs">
             <img src="__STATIC__/images/tp-zuinews.png" alt="新品上市"/>
         </div>
         <div class="advertisement">
-            <div class="content">
-                <div class="le re fl">
-                    <adv  limit="1" item="v" pid="303">
-                        <a href="{$v[ad_link]}" >
-                            <div class="td">
-                                <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>
-                            </div>
-                        </a>
-                    </adv>
-                </div>
-                <div class="le lefhe fr">
-                    <adv  limit="2" item="v" pid="304">
-                        <a href="{$v[ad_link]}" >
-                            <div class="td">
-                                <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>
-                            </div>
-                        </a>
-                    </adv>
-                </div>
+            <!--<div class="content">-->
+                <!--<div class="le re fl">-->
+                    <!--<adv  limit="1" item="v" pid="303">-->
+                        <!--<a href="{$v[ad_link]}" >-->
+                            <!--<div class="td">-->
+                                <!--<img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>-->
+                            <!--</div>-->
+                        <!--</a>-->
+                    <!--</adv>-->
+                <!--</div>-->
+                <!--<div class="le lefhe fr">-->
+                    <!--<adv  limit="2" item="v" pid="304">-->
+                        <!--<a href="{$v[ad_link]}" >-->
+                            <!--<div class="td">-->
+                                <!--<img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>-->
+                            <!--</div>-->
+                        <!--</a>-->
+                    <!--</adv>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div id="N_ItemList">
+                <ul class="product single_item info">
+                </ul>
             </div>
         </div>
     </div>
     <!--新品上市-end-->
 
     <!--热销商品-start-->
-    <div class="floor hotshop index_hot">
+    <!--<div class="floor hotshop index_hot">-->
+    <div class="floor guesslike m-b-0">
         <div class="banner banner_imgs">
             <img src="__STATIC__/images/tp-huosp.png" alt="热销商品"/>
         </div>
         <div class="hotsome">
-            <div class="bloc hottop">
-                <adv  limit="1" item="v" pid="305">
-                    <div class="le fl">
-                        <a href="{$v[ad_link]}" >
-                            <div class="td">
-                                <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>
-                            </div>
-                        </a>
-                    </div>
-                </adv>
-                <adv  limit="1" item="v" pid="306">
-                    <div class="le fr">
-                        <a href="{$v[ad_link]}" >
-                            <div class="td">
-                                <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>
-                            </div>
-                        </a>
-                    </div>
-                </adv>
-            </div>
-            <div class="bloc">
-                <div class="le foura">
-                    <adv  limit="4" item="v" pid="307">
-                        <a href="{$v[ad_link]}" >
-                            <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>
-                        </a>
-                    </adv>
-                </div>
+            <!--<div class="bloc hottop">-->
+                <!--<adv  limit="1" item="v" pid="305">-->
+                    <!--<div class="le fl">-->
+                        <!--<a href="{$v[ad_link]}" >-->
+                            <!--<div class="td">-->
+                                <!--<img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>-->
+                            <!--</div>-->
+                        <!--</a>-->
+                    <!--</div>-->
+                <!--</adv>-->
+                <!--<adv  limit="1" item="v" pid="306">-->
+                    <!--<div class="le fr">-->
+                        <!--<a href="{$v[ad_link]}" >-->
+                            <!--<div class="td">-->
+                                <!--<img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>-->
+                            <!--</div>-->
+                        <!--</a>-->
+                    <!--</div>-->
+                <!--</adv>-->
+            <!--</div>-->
+            <!--<div class="bloc">-->
+                <!--<div class="le foura">-->
+                    <!--<adv  limit="4" item="v" pid="307">-->
+                        <!--<a href="{$v[ad_link]}" >-->
+                            <!--<img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>-->
+                        <!--</a>-->
+                    <!--</adv>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div id="H_ItemList">
+                <ul class="product single_item info">
+                </ul>
             </div>
         </div>
     </div>
@@ -308,7 +318,8 @@
         }
     }
     setInterval(GetRTime2,1000);
-
+    ajax_news();
+    ajax_hot();
     /**
      * 继续加载猜您喜欢
      * */
@@ -329,6 +340,32 @@
                     before_request = 1;
                 }else{
                     $('.get_more').hide();
+                }
+            }
+        });
+    }
+// var before_request1=1;
+    // var page1=0;
+    function ajax_news(){
+        $.ajax({
+            type : "get",
+            url:"/index.php?m=Mobile&c=Index&a=ajaxGetNew",
+            success: function(data)
+            {
+                if(data){
+                    $("#N_ItemList>ul").append(data);
+                }
+            }
+        });
+    }
+    function ajax_hot(){
+        $.ajax({
+            type : "get",
+            url:"/index.php?m=Mobile&c=Index&a=ajaxGetHot",
+            success: function(data)
+            {
+                if(data){
+                    $("#H_ItemList>ul").append(data);
                 }
             }
         });
