@@ -64,9 +64,11 @@
 
         var username = window.localStorage.getItem('key_username');
         var password = window.localStorage.getItem('key_password');
-        if(username=='' || password==''){
+        // console.log(username)
+        // console.log(password)
+        // if(username=='' || password==''){
             submitverify();
-        }
+        // }
     })
     function verify(){
         $('#verify_code_img').attr('src','/index.php?m=Mobile&c=User&a=verify&r='+Math.random());
@@ -86,8 +88,8 @@
         var username = window.localStorage.getItem('key_username');
         var password = window.localStorage.getItem('key_password');
         var referurl = $('#referurl').val();
-        console.log(username)
-        console.log(password)
+        // console.log(username)
+        // console.log(password)
         if ((!username && typeof username != "undefined" && username != 0) || (!password && typeof password != "undefined" && password != 0)){
             console.log(123)
             var username = $.trim($('#username').val());
@@ -131,6 +133,8 @@
                         window.localStorage.setItem('key_password', password);
                         window.location.href = '/index.php/mobile';
                     }else{
+                        window.localStorage.setItem('key_username', username);
+                        window.localStorage.setItem('key_password', password);
                         window.location.href = url;
                     }
                 }else{
