@@ -212,7 +212,7 @@ class CartLogic extends Model
         $buyGoods['goods_fee'] = $cart->getGoodsFeeAttr(0, $buyGoods);
         $buyGoods['total_fee'] = $cart->getTotalFeeAttr(0, $buyGoods);
         //看购买的是不是指定商品
-        if($this->is_upgrade_goods($buyGoods['goods_id'])){
+        if($this->is_upgrade_goods($this->goods['goods_id'])){
             $save_price=$this->buy_now_cost($this->user_id,$buyGoods['goods_num']);
             $buyGoods['total_fee']=$buyGoods['total_fee']-$save_price;
             $buyGoods['goods_fee']=$save_price;
