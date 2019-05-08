@@ -66,9 +66,11 @@
         var password = window.localStorage.getItem('key_password');
         // console.log(username)
         // console.log(password)
-        // if(username=='' || password==''){
+        if((!username && typeof username != "undefined" && username != 0) && (!password && typeof password != "undefined" && password != 0)){
+
+        }else{
             submitverify();
-        // }
+        }
     })
     function verify(){
         $('#verify_code_img').attr('src','/index.php?m=Mobile&c=User&a=verify&r='+Math.random());
@@ -91,7 +93,7 @@
         // console.log(username)
         // console.log(password)
         if ((!username && typeof username != "undefined" && username != 0) || (!password && typeof password != "undefined" && password != 0)){
-            console.log(123)
+            // console.log(123)
             var username = $.trim($('#username').val());
             var password = $.trim($('#password').val());
             var remember = $('#remember').val();
