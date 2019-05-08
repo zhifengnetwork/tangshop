@@ -402,26 +402,26 @@
         <div class="fl">
             <ul>
                 <li>
-                    <if condition="(!empty($tpshop_config['basic_im_choose'])) && ($tpshop_config['basic_im_choose'] eq 1)">
-                        <!--im客服-->
-                        <a class="kf" href="{:U('supplier/index',array('goods_id'=>$goods['goods_id']))}">
-                            <i></i>
-                            <p>客服</p>
-                        </a>
-                        <elseif condition="(!empty($tpshop_config['basic_im_choose'])) && ($tpshop_config['basic_im_choose'] eq 2)" />
-                        <!--小能客服-->
-                        <a href="javascript:;">
-                            <i></i>
-                            <p>客服</p>
-                        </a>
-                        <else />
-                        <!--早先客服-->
-                        <!--<a href="tel:{$tpshop_config['shop_info_phone']}">tencent://message/?uin={$tpshop_config['shop_info_qq']}&Site=TPshop商城&Menu=yes-->
-                        <a href="mqqwpa://im/chat?chat_type=wpa&uin={$tpshop_config['shop_info_qq']}&version=1&src_type=web&web_src=">
-                            <i></i>
-                            <p>客服</p>
-                        </a>
-                    </if>
+                    <!--<if condition="(!empty($tpshop_config['basic_im_choose'])) && ($tpshop_config['basic_im_choose'] eq 1)">-->
+                        <!--&lt;!&ndash;im客服&ndash;&gt;-->
+                        <!--<a class="kf" href="{:U('supplier/index',array('goods_id'=>$goods['goods_id']))}">-->
+                            <!--<i></i>-->
+                            <!--<p>客服</p>-->
+                        <!--</a>-->
+                        <!--<elseif condition="(!empty($tpshop_config['basic_im_choose'])) && ($tpshop_config['basic_im_choose'] eq 2)" />-->
+                        <!--&lt;!&ndash;小能客服&ndash;&gt;-->
+                        <!--<a href="javascript:;">-->
+                            <!--<i></i>-->
+                            <!--<p>客服</p>-->
+                        <!--</a>-->
+                        <!--<else />-->
+                        <!--&lt;!&ndash;早先客服&ndash;&gt;-->
+                        <!--&lt;!&ndash;<a href="tel:{$tpshop_config['shop_info_phone']}">tencent://message/?uin={$tpshop_config['shop_info_qq']}&Site=TPshop商城&Menu=yes&ndash;&gt;-->
+                        <!--<a href="mqqwpa://im/chat?chat_type=wpa&uin={$tpshop_config['shop_info_qq']}&version=1&src_type=web&web_src=">-->
+                            <!--<i></i>-->
+                            <!--<p>客服</p>-->
+                        <!--</a>-->
+                    <!--</if>-->
                 </li>
                 <li>
                     <a href="{:U('Mobile/Cart/index')}" >
