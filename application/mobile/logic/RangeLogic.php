@@ -100,21 +100,36 @@ class RangeLogic
                         //超过了升一级的数量   再看看是否超过了下一级
                         //升一级之后的折扣
                         $up1_discount=$cartLogic->get_level_discount($user_info['level']+1);
+                        //优惠顾客一次性购买指定商品数量等于升级数量的折扣
+                        $other_discount=$cartLogic->get_other_discount(2);
                         if($user_info['level']==2){
                             //已经升3级了看有没有升4级
                             $up_level_num=$cartLogic->get_up_level_num($user_info['level']+2);
-                            if($upgrade_num>=$level_num+$up_level_num){
+                            if($upgrade_num==$level_num){
+                                //第二部分   买的商品不够升级
+                                $second_amount=$upgrade_num*$upgrade_price*$other_discount/100;
+                                $this->extreme_dividend($user_info['parents'],$user_info['level']+1,$second_amount,$other_discount,$order_id);
+                            }elseif($upgrade_num>$level_num){
                                 //连升两级的情况处理
                                 //升两级之后的折扣
-                                $up2_discount=$cartLogic->get_level_discount($user_info['level']+2);
-                                //第三部分  第二次升级后购买的商品   这时候已经升到最大级了  只看看自己的上级是不是可以获得奖励
-                                $last_amount=$upgrade_num*$upgrade_price*$up2_discount/100;
-                                //先看看是不是合伙人
-                                $is_partner=$this->get_is_partner($user_info['first_leader'],$user_info['reg_time']);
-                                //如果是在合伙人等级直推了 增加2000奖金  并奖励5%升级到合伙人之后购买的商品金额
-                                if($is_partner){
-                                    $this->partner_bonus(2,$user_info['first_leader'],2000,$order_id,$up2_discount,$up2_discount);
-                                    $this->partner_bonus(3,$user_info['first_leader'],$last_amount*5/100,$order_id,$up2_discount,$up2_discount);
+                                if($upgrade_num>=$level_num+$up_level_num){
+                                    $up2_discount=$cartLogic->get_level_discount($user_info['level']+2);
+                                    //第三部分  第二次升级后购买的商品   这时候已经升到最大级了  只看看自己的上级是不是可以获得奖励
+                                    $last_amount=$upgrade_num*$upgrade_price*$up2_discount/100;
+                                    //先看看是不是合伙人
+                                    $is_partner=$this->get_is_partner($user_info['first_leader'],$user_info['reg_time']);
+                                    //如果是在合伙人等级直推了 增加2000奖金  并奖励5%升级到合伙人之后购买的商品金额
+                                    if($is_partner){
+                                        $this->partner_bonus(2,$user_info['first_leader'],2000,$order_id,$up2_discount,$up2_discount);
+                                        $this->partner_bonus(3,$user_info['first_leader'],$last_amount*5/100,$order_id,$up2_discount,$up2_discount);
+                                    }
+                                }else{
+                                    //第一部分   享有指定折扣的数据
+                                    $second_amount=$level_num*$upgrade_price*$other_discount/100;
+                                    $this->extreme_dividend($user_info['parents'],$user_info['level']+1,$second_amount,$other_discount,$order_id);
+                                    //第二部分   超过升级数量的商品
+                                    $second_amount=($upgrade_num-$level_num)*$upgrade_price*$up1_discount/100;
+                                    $this->extreme_dividend($user_info['parents'],$user_info['level']+1,$second_amount,$up1_discount,$order_id);
                                 }
                             }else{
                                 //第二部分   买的商品不够升级
@@ -328,12 +343,13 @@ class RangeLogic
             if($user_level>$compare_level){
                 //分情况讨论 处理前一个比自己等级高的会员极差奖励
                 //获取这个会员的折扣
+                if($user_level==$compare_level)
                 $up_user_discount=$cartLogic->get_level_discount($user_level);
                 //获取compare_level的折扣
-                $compare_user_discount=$cartLogic->get_level_discount($compare_level);
+//                $compare_user_discount=$cartLogic->get_level_discount($compare_level);
                 //算极差奖励
-                $bonus=$order_amount/$user_discount*($compare_user_discount-$up_user_discount);
-                $data=array('user_id'=>$value,'bonus'=>$bonus,'order_id'=>$order_id,'buy_discount'=>$compare_user_discount,'reward_discount'=>$up_user_discount,'add_time'=>time());
+                $bonus=$order_amount/$user_discount*($user_discount-$up_user_discount);
+                $data=array('user_id'=>$value,'bonus'=>$bonus,'order_id'=>$order_id,'buy_discount'=>$user_discount,'reward_discount'=>$up_user_discount,'add_time'=>time());
                 M('range_log')->insert($data);
                 $this->set_bonus_log($value,$bonus,"极差奖金",$order_id,$order_info['order_sn']);
                 if($user_level==2){

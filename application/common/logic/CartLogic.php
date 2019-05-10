@@ -214,6 +214,7 @@ class CartLogic extends Model
         //看购买的是不是指定商品
         if($this->is_upgrade_goods($this->goods['goods_id'])){
             $save_price=$this->buy_now_cost($this->user_id,$buyGoods['goods_num']);
+//            var_dump($save_price);die;
             $buyGoods['total_fee']=$buyGoods['total_fee']-$save_price;
             $buyGoods['goods_fee']=$save_price;
         }
@@ -266,18 +267,24 @@ class CartLogic extends Model
         if($user_level==2){
             //升到销售员需要购买的数量
             $level_num=$this->get_up_level_num(3);
-//            return $goods_num."```".$buy_num."````".$level_num;die;
+
             $level_num1=$this->get_up_level_num(4);
             $discount2=$this->get_level_discount(2);
             $discount3=$this->get_level_discount(3);
-            if($buy_num>=$level_num){
-                if($buy_num>=$level_num1){
+            //获取优惠顾客一次性购买等于升级数量指定商品的折扣
+            $other_discount=$this->get_other_discount(2);
+//            return $other_discount."```".$buy_num."````".$level_num;die;
+            if($buy_num==$level_num){
+                $upgrade_cost=$buy_num*($discount2-$other_discount)/100*$upgrade_goods_price;
+                $save_money=$upgrade_cost+$goods_cost*($discount2-$discount3);
+            }elseif($buy_num>$level_num){
+                if($buy_num>=$level_num1+$level_num){
                     $discount4=$this->get_level_discount(4);
                     //指定商品升级之后优惠的金额
                     $upgrade_cost=$buy_num*($discount2-$discount4)/100*$upgrade_goods_price;
                     $save_money=$upgrade_cost+$goods_cost*($discount2-$discount4);
                 }else{
-                    $upgrade_cost=$buy_num*($discount2-$discount3)/100*$upgrade_goods_price;
+                    $upgrade_cost=$level_num*($discount2-$other_discount)/100*$upgrade_goods_price+($buy_num-$level_num)*($discount2-$discount3)/100*$upgrade_goods_price;
                     $save_money=$upgrade_cost+$goods_cost*($discount2-$discount3);
                 }
             }elseif($goods_num+$buy_num>$level_num){
@@ -1134,6 +1141,8 @@ class CartLogic extends Model
         $buy_num=$this->get_upgrade_goods_num($user_id,1);
         //购物车中非指定商品原总价
         $goods_cost=$this->get_cart_goods_price($user_id,0);
+        //优惠顾客一次性购买指定商品数量等于升级数量的折扣
+        $other_discount=$this->get_other_discount(2);
         if($user_level==2){
             //升到销售员需要购买的数量
             $level_num=$this->get_up_level_num(3);
@@ -1141,14 +1150,17 @@ class CartLogic extends Model
             $level_num1=$this->get_up_level_num(4);
             $discount2=$this->get_level_discount(2);
             $discount3=$this->get_level_discount(3);
-            if($buy_num>=$level_num){
+            if($buy_num==$level_num){
+                $upgrade_cost=$buy_num*($discount2-$other_discount)/100*$upgrade_goods_price;
+                $save_money=$upgrade_cost+$goods_cost*($discount2-$discount3);
+            }elseif ($buy_num>$level_num){
                 if($buy_num>=$level_num1+$level_num){
                     $discount4=$this->get_level_discount(4);
                     //指定商品升级之后优惠的金额
                     $upgrade_cost=$buy_num*($discount2-$discount4)/100*$upgrade_goods_price;
                     $save_money=$upgrade_cost+$goods_cost*($discount2-$discount4);
                 }else{
-                    $upgrade_cost=$buy_num*($discount2-$discount3)/100*$upgrade_goods_price;
+                    $upgrade_cost=$level_num*($discount2-$other_discount)/100*$upgrade_goods_price+($buy_num-$level_num)*($discount2-$discount3)/100*$upgrade_goods_price;
                     $save_money=$upgrade_cost+$goods_cost*($discount2-$discount3);
                 }
             }elseif($goods_num+$buy_num>$level_num){
@@ -1232,6 +1244,14 @@ class CartLogic extends Model
         }else{
             return 0;
         }
+    }
+    //查询2级会员一次性购买等于升级产品数量的折扣
+    public function get_other_discount($level){
+        if($level==2){
+            $discount=M('user_level')->where(['level_id'=>3])->find();
+            return $discount['describe'];
+        }
+        return 0;
     }
     //查询用户等级
     public function get_user_level($user_id){
