@@ -346,7 +346,7 @@ class Goods extends Base {
 
     //商品保存
     public function save(){
-        $data = input('post.');
+        $data = input('post.');//dump($data);die;
         $spec_item = input('item/a');
         $validate = Loader::validate('Goods');// 数据验证
         if (!$validate->batch()->check($data)) {
@@ -354,6 +354,14 @@ class Goods extends Base {
             $error_msg = array_values($error);
             $return_arr = ['status' => 0, 'msg' => $error_msg[0], 'result' => $error];
             $this->ajaxReturn($return_arr);
+        }
+
+        if ($data['is_upgrade']){
+            $has_upgrade = Db::name('goods')->where('is_upgrade',1)->find();//查询是否已经有指定商品了
+            if (isset($has_upgrade)){
+                $return_arr = ['status' => 666, 'msg' => '已有指定商品','result' => $error];
+                return $this->ajaxReturn($return_arr);
+            }
         }
         if ($data['goods_id'] > 0) {
             $goods = \app\common\model\Goods::get($data['goods_id']);

@@ -730,7 +730,10 @@
                                 location.href = "{:U('Goods/goodsList')}";
                             }
                         });
-                    } else {
+                    }else if(data.status == 666){
+                        layer.msg(data.msg, {icon: 2,time: 3000})
+                    }
+                    else {
                         $('#submit').attr('disabled',false);
                         $.each(data.result, function (index, item) {
                             $('span.err').show();
