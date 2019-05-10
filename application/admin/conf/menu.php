@@ -16,7 +16,7 @@ return	array(
 						// array('name'=>'消息通知','act'=>'index','op'=>'MessageTemplate'),
 						//array('name'=>'接口对接','act'=>'index3','op'=>'System'),
 						//array('name'=>'验证码设置','act'=>'index4','op'=>'System'),
-						array('name'=>'友情链接','act'=>'linkList','op'=>'Article'),
+//						array('name'=>'友情链接','act'=>'linkList','op'=>'Article'),
 						array('name'=>'清除缓存','act'=>'cleanCache','op'=>'System'),
 //						array('name' => '运费模板', 'act'=>'index', 'op'=>'Freight'),
 //						array('name' => '快递公司', 'act'=>'index', 'op'=>'Shipping'),

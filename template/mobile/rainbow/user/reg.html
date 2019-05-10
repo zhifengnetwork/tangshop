@@ -177,6 +177,8 @@
     //提交表单
     function checkSubmit()
     {
+        var password = $.trim($('#password').val());
+
         check_confirm_password()
         if(flag == false){
             return ;
@@ -198,6 +200,8 @@
             data:$('#regFrom').serialize(),
             success:function(data){
                 if(data.status == 1){
+                    window.localStorage.setItem('key_username', mobile);
+                    window.localStorage.setItem('key_password', password);
                     location.href='/index.php/Mobile/User/index';
                 }else{
                     showErrorMsg(data.msg);

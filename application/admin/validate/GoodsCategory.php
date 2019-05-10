@@ -28,8 +28,8 @@ class GoodsCategory extends Validate
     protected $message = [
         'name.require' => '分类名称必须填写',
         'name.unique' => '分类名称重复',
-        'mobile_name.require' => '手机分类名称必须填写',
-        'mobile_name.unique' => '手机分类名称重复',
+        'mobile_name.require' => '分类名称必须填写',
+        'mobile_name.unique' => '分类名称重复',
         'sort_order.number' => '排序必须为数字',
         'sort_order.require' => '排序必须填写',
         'commission_rate.number' => '分佣比例必须为数字',

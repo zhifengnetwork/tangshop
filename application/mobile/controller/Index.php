@@ -275,6 +275,40 @@ class Index extends MobileBase {
         $this->assign('favourite_goods',$favourite_goods);
     	return $this->fetch();
     }
+
+    public function ajaxGetNew(){
+//        $p = I('p/d',1);
+        $where = [
+            'is_new' => 1,
+            'exchange_integral'=>0,  //积分商品不显示
+            'is_on_sale' => 1,
+            'virtual_indate' => ['exp', ' = 0 OR virtual_indate > ' . time()]
+        ];
+        $favourite_goods = Db::name('goods')->where($where)->order('sort DESC')->limit(2)->cache(true,TPSHOP_CACHE_TIME)->select();//新品
+
+        $dis_info = get_discount();
+        $this->assign('user_id',$dis_info['user_id']);
+        $this->assign('discount',$dis_info['discount']);
+        $this->assign('favourite_goods',$favourite_goods);
+    	return $this->fetch('ajaxGetMore');
+    }
+
+    public function ajaxGetHot(){
+//        $p = I('p/d',1);
+        $where = [
+            'is_hot' => 1,
+            'exchange_integral'=>0,  //积分商品不显示
+            'is_on_sale' => 1,
+            'virtual_indate' => ['exp', ' = 0 OR virtual_indate > ' . time()]
+        ];
+        $favourite_goods = Db::name('goods')->where($where)->order('sort DESC')->limit(2)->cache(true,TPSHOP_CACHE_TIME)->select();//新品
+
+        $dis_info = get_discount();
+        $this->assign('user_id',$dis_info['user_id']);
+        $this->assign('discount',$dis_info['discount']);
+        $this->assign('favourite_goods',$favourite_goods);
+    	return $this->fetch('ajaxGetMore');
+    }
     
     //微信Jssdk 操作类 用分享朋友圈 JS
     public function ajaxGetWxConfig()
