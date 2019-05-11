@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>我的团队</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+    <!--750/100的rem适配-->
+    <script src="__STATIC__/js/rem.js"></script>
+    <style>
+        body,div,dl,dt,dd,ul,li,h1,h2,h3,h4,h5,h6,input,form,a,p,textarea,img{
+            margin:0;
+            padding:0;
+        }
+        body{
+            font-size: 0.24rem;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            -webkit-tap-highlight-color: transparent;
+            background: #f5f5f5;
+        }
+        li{
+            list-style-type: none;
+        }
+        a{
+            text-decoration: none;
+            display: block;
+            color: #000000;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: normal;
+        }
+        /*public head*/
+
+        .lb_headWrap {
+            position: relative;
+            /*position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 20;*/
+            position: relative;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            width: 100%;
+            height: .88rem;
+            font-size: .3rem;
+            line-height: .88rem;
+            text-align: center;
+            color: #232326;
+            letter-spacing: .02rem;
+        }
+        /*头部 底部线*/
+
+        .lb_headWrap_line {
+            border-bottom: .01rem solid #ccc;
+        }
+
+        .lb_headWrap_back_white {
+            background-color: #f8fafb;
+            color: #0d0d0e;
+        }
+        /*返回icon box*/
+
+        .lb_headWrap_return {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: .6rem;
+            height: 100%;
+        }
+
+        .lb_headWrap_return_img {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            width: .19rem;
+            height: .34rem;
+        }
+
+
+        .team{
+            text-align: center;
+        }
+        .team_title{
+            font-size: .3rem;
+            line-height: 1rem;
+        }
+        .team_sum{
+            margin: 0 auto;
+            width: 4.1rem;
+            color: #e4007f;
+            padding: .1rem 0;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            border-radius: .1rem;
+            border: .02rem solid #37afe6;
+        }
+        .team_info{
+            margin-top: 1.4rem;
+            display: box;              /* OLD - Android 4.4- */
+            display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+            display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+            display: -ms-flexbox;      /* TWEENER - IE 10 */
+            display: -webkit-flex;     /* NEW - Chrome */
+            display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+            /* 09版 */
+            -webkit-box-pack: center;
+            /* 12版 */
+            -webkit-justify-content: center;
+            -moz-justify-content: center;
+            -ms-justify-content: center;
+            -o-justify-content: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .team_info_list{
+            width: 33.4%;
+            margin-bottom: .2rem;
+        }
+        .team_info_item{
+            margin: 0 auto;
+            width: 1.6rem;
+            height: 1.8rem;
+            line-height: .8rem;
+            text-align: center;
+            border: .02rem solid #e4007f;
+            border-radius: .1rem;
+        }
+    </style>
+</head>
+
+<body>
+<div class="team_wrap">
+    <div class="lb_headWrap">
+        <p class="lb_headWrap_return" onclick="window.location.href = '/Mobile/User/'">
+            <img class="lb_headWrap_return_img" src="/template/mobile/rainbow/static/images/return.png" />
+        </p>
+        <span>我的团队</span>
+    </div>
+    <div class="team">
+        <div class="team_title">
+            团队销售总额
+        </div>
+        <div class="team_sum">
+            6666
+        </div>
+    </div>
+    <div class="team_info">
+        <div class="team_info_list">
+            <div class="team_info_item">
+                <p>普通顾客</p>
+                <p>1</p>
+            </div>
+        </div>
+        <div class="team_info_list">
+            <div class="team_info_item">
+                <p>优惠顾客</p>
+                <p>1</p>
+            </div>
+        </div>
+        <div class="team_info_list">
+            <div class="team_info_item">
+                <p>会员</p>
+                <p>1</p>
+            </div>
+        </div>
+        <div class="team_info_list">
+            <div class="team_info_item">
+                <p>合伙人</p>
+                <p>1</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

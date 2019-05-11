@@ -239,6 +239,10 @@ class User extends MobileBase
         $this->assign('alipay_url', urlencode(SITE_URL.U("Mobile/LoginApi/login",['oauth'=>'alipaynew'])));
         return $this->fetch();
     }
+    //log
+    public function log(){
+        return $this->fetch();
+    }
 
     /**
      * 登录
