@@ -90,7 +90,7 @@ class User extends MobileBase
         $level = M('users')->where('user_id',$this->user_id)->value('level');
         if(isset($level) && $level != 4){
             foreach ($menu_list as $key=>$value){
-                if($value['menu_id']==18){
+                if($value['menu_id']==15 || $value['menu_id']==16){
                     unset($menu_list[$key]);
                 }
             }
@@ -239,8 +239,34 @@ class User extends MobileBase
         $this->assign('alipay_url', urlencode(SITE_URL.U("Mobile/LoginApi/login",['oauth'=>'alipaynew'])));
         return $this->fetch();
     }
-    //log
-    public function log(){
+
+    //我的团队
+    public function my_team(){
+        $user_id = $this->user_id;
+        $count_four = [];   //各等级人数
+        $count_four['level1'] = 0;
+        $count_four['level2'] = 0;
+        $count_four['level3'] = 0;
+        $count_four['level4'] = 0;
+        //所有猴子猴孙id
+        $all_list = Db::query("select `user_id`,`level` from `tp_users` where `first_leader` = $user_id or parents like '%,$user_id,%'"); 
+        foreach($all_list as $k=>$v){
+            if($v['level'] == 1){
+                $count_four['level1'] += 1;
+            }elseif($v['level'] == 2){
+                $count_four['level2'] += 1;
+            }elseif($v['level'] == 3){
+                $count_four['level3'] += 1;
+            }elseif($v['level'] == 4){
+                $count_four['level4'] += 1;
+            }
+        };
+
+        //所有儿子id
+        $sun_list = Db::query("select sum(order_amount) order_amount from tp_order where user_id in ( select `user_id` from `tp_users` where `first_leader` = '$user_id' )");
+
+        $this->assign('count_four',$count_four);
+        $this->assign('sun_list',$sun_list);
         return $this->fetch();
     }
 

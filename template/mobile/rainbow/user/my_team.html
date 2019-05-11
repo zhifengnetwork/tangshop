@@ -146,32 +146,32 @@
             团队销售总额
         </div>
         <div class="team_sum">
-            6666
+            {$sun_list[0]['order_amount'] ?? 0}
         </div>
     </div>
     <div class="team_info">
         <div class="team_info_list">
             <div class="team_info_item">
                 <p>普通顾客</p>
-                <p>1</p>
+                <p>{$count_four.level1}</p>
             </div>
         </div>
         <div class="team_info_list">
             <div class="team_info_item">
                 <p>优惠顾客</p>
-                <p>1</p>
+                <p>{$count_four.level2}</p>
             </div>
         </div>
         <div class="team_info_list">
             <div class="team_info_item">
                 <p>会员</p>
-                <p>1</p>
+                <p>{$count_four.level3}</p>
             </div>
         </div>
         <div class="team_info_list">
             <div class="team_info_item">
                 <p>合伙人</p>
-                <p>1</p>
+                <p>{$count_four.level4}</p>
             </div>
         </div>
     </div>
