@@ -4,6 +4,7 @@
 .vscode
 .project
 .idea
+/public/upload/*
 cron.txt
 cron_team.sh
 /sql
