@@ -15,6 +15,7 @@
  */
 
 namespace app\admin\controller;
+use app\admin\logic\UpgradeLogic;
 use app\common\logic\Saas;
 use think\Controller;
 use think\Db;

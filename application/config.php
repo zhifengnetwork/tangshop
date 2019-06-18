@@ -154,11 +154,11 @@ return [
     // | 异常及错误设置
     // +----------------------------------------------------------------------
 
-    // 异常页面的模板文件 
+    // 异常页面的模板文件
     'exception_tmpl'         => THINK_PATH . 'tpl' . DS . 'think_exception.tpl',
     // errorpage 错误页面
-    'error_tmpl'         => THINK_PATH . 'tpl' . DS . 'think_error.tpl', 
-    
+    'error_tmpl'         => THINK_PATH . 'tpl' . DS . 'think_error.tpl',
+
 
     // 错误显示信息,非调试模式有效
     'error_message'          => '页面错误！请稍后再试～',
@@ -193,25 +193,25 @@ return [
     // +----------------------------------------------------------------------
     // | 缓存设置
     // +----------------------------------------------------------------------
-/**/   
+    /**/
     'cache'                  => [
         // 驱动方式
         'type'   => 'File',
         // 缓存保存目录
         'path'   => CACHE_PATH,
         // 缓存前缀
-        'prefix' => 'f2d8f3eebf701ee1c9485cd36e013c79',
+        'prefix' => '43b6c36333d0a979b9467ba0d31bd5c2',
         // 缓存有效期 0表示永久缓存
         'expire' => 0,
     ],
-   
-/*   
-    'cache'                  => [
-        // 驱动方式
-        'type'   => 'redis',        
-        'host'       => '192.168.0.201', // 指定redis的地址  
-    ],    
-*/ 
+
+    /*
+        'cache'                  => [
+            // 驱动方式
+            'type'   => 'redis',
+            'host'       => '192.168.0.201', // 指定redis的地址
+        ],
+    */
     // +----------------------------------------------------------------------
     // | 会话设置
     // +----------------------------------------------------------------------
@@ -256,12 +256,12 @@ return [
     ],
     // 密码加密串
     'AUTH_CODE' => "TPSHOP", //安装完毕之后不要改变，否则所有密码都会出错
-    
+
     'ORDER_STATUS' =>[
         0 => '待确认',
         1 => '已确认',
         2 => '已收货',
-        3 => '已取消',                
+        3 => '已取消',
         4 => '已完成',//评价完
         5 => '已作废',
     ],
@@ -283,17 +283,17 @@ return [
         2 => '女'
     ],
     'COUPON_TYPE' => [
-    	0 => '下单赠送',
+        0 => '下单赠送',
         1 => '指定发放',
         2 => '免费领取',
         3 => '线下发放',
     ],
-	'PROM_TYPE' => [
-		0 => '默认',
-		1 => '抢购',
-		2 => '团购',
-		3 => '优惠'			
-	],
+    'PROM_TYPE' => [
+        0 => '默认',
+        1 => '抢购',
+        2 => '团购',
+        3 => '优惠'
+    ],
     'TEAM_FOUND_STATUS' => array(
         '0'=>'待开团',
         '1'=>'已开团',
@@ -313,13 +313,13 @@ return [
     // 订单用户端显示状态
     'WAITPAY'=>' AND pay_status = 0 AND order_status = 0 AND pay_code !="cod" ', //订单查询状态 待支付
     'WAITSEND'=>' AND (pay_status=1 OR pay_code="cod") AND shipping_status !=1 AND order_status in(0,1) ', //订单查询状态 待发货
-    'WAITRECEIVE'=>' AND shipping_status=1 AND order_status = 1 ', //订单查询状态 待收货    
-    'WAITCCOMMENT'=> ' AND order_status=2 ', // 待评价 确认收货     //'FINISHED'=>'  AND order_status=1 ', //订单查询状态 已完成 
+    'WAITRECEIVE'=>' AND shipping_status=1 AND order_status = 1 ', //订单查询状态 待收货
+    'WAITCCOMMENT'=> ' AND order_status=2 ', // 待评价 确认收货     //'FINISHED'=>'  AND order_status=1 ', //订单查询状态 已完成
     'FINISH'=> ' AND order_status = 4 ', // 已完成
     'CANCEL'=> ' AND order_status = 3 ', // 已取消
     'CANCELLED'=> 'AND order_status = 5 ',//已作废
     'PAYED'=>' AND (order_status=2 OR (order_status=1 AND pay_status=1) ) ', //虚拟订单状态:已付款
-    
+
     'ORDER_STATUS_DESC' => [
         'WAITPAY' => '待支付',
         'WAITSEND'=>'待发货',
@@ -360,17 +360,17 @@ return [
         '6'=>array('身份验证','尊敬的用户，您的验证码为${code}, 请勿告诉他人.','bind_mobile_sms_enable'),
         '7'=>array('购买虚拟商品通知','尊敬的用户，您购买的虚拟商品${goodsName}兑换码已生成,请注意查收.','virtual_goods_sms_enable'),
     ),
-    
+
     'APP_TOKEN_TIME' => 60 * 60 * 24 , //App保持token时间 , 此处为1天
-    
+
     /**
-     *  订单用户端显示按钮     
-        去支付     AND pay_status=0 AND order_status=0 AND pay_code ! ="cod"
-        取消按钮  AND pay_status=0 AND shipping_status=0 AND order_status=0 
-        确认收货  AND shipping_status=1 AND order_status=0 
-        评价      AND order_status=1 
-        查看物流  if(!empty(物流单号))   
-        退货按钮（联系客服）  所有退换货操作， 都需要人工介入   不支持在线退换货
+     *  订单用户端显示按钮
+    去支付     AND pay_status=0 AND order_status=0 AND pay_code ! ="cod"
+    取消按钮  AND pay_status=0 AND shipping_status=0 AND order_status=0
+    确认收货  AND shipping_status=1 AND order_status=0
+    评价      AND order_status=1
+    查看物流  if(!empty(物流单号))
+    退货按钮（联系客服）  所有退换货操作， 都需要人工介入   不支持在线退换货
      */
 
     /*分页每页显示数*/
@@ -378,15 +378,15 @@ return [
     'finally_pay_time'=>1*24*3600,
     'WX_PAY2' => 1,
 
-    /**假设这个访问地址是 www.test.cn/home/goods/goodsInfo/id/1.html
-     *就保存名字为 home_goods_goodsinfo_1.html     
-     *配置成这样, 指定 模块 控制器 方法名 参数名      
+    /**假设这个访问地址是 www.tpshop.cn/home/goods/goodsInfo/id/1.html
+     *就保存名字为 home_goods_goodsinfo_1.html
+     *配置成这样, 指定 模块 控制器 方法名 参数名
      */
     'HTML_CACHE_ARR'=> [
-    ['mca'=>'home_Goods_goodsInfo','p'=>['id']],  
-    ['mca'=>'home_Index_index'],  // 缓存首页静态页面
-    ['mca'=>'home_Goods_ajaxComment','p'=>['goods_id','commentType','p']],  // 缓存评论静态页面 http://www.tpshop2.0.com/index.php?m=Home&c=Goods&a=ajaxComment&goods_id=142&commentType=1&p=1
-    ['mca'=>'home_Goods_ajax_consult','p'=>['goods_id','consult_type','p']],  // 缓存咨询静态页面 http://www.tpshop2.0.com/index.php?m=Home&c=Goods&a=ajax_consult&goods_id=142&consult_type=0&p=2
+        ['mca'=>'home_Goods_goodsInfo','p'=>['id']],
+        ['mca'=>'home_Index_index'],  // 缓存首页静态页面
+        ['mca'=>'home_Goods_ajaxComment','p'=>['goods_id','commentType','p']],  // 缓存评论静态页面 http://www.tpshop2.0.com/index.php?m=Home&c=Goods&a=ajaxComment&goods_id=142&commentType=1&p=1
+        ['mca'=>'home_Goods_ajax_consult','p'=>['goods_id','consult_type','p']],  // 缓存咨询静态页面 http://www.tpshop2.0.com/index.php?m=Home&c=Goods&a=ajax_consult&goods_id=142&consult_type=0&p=2
     ],
 
     /*订单操作*/
@@ -417,5 +417,5 @@ return [
     'COUPON_USER_TYPE'=>['全店通用','指定商品可用','指定分类商品可用'],
     'INVOUCE_TYPE'=>['普通发票','电子发票','增值税发票'],
     'image_upload_limit_size'=>1024 * 1024 * 5,//上传图片大小限制
-   
+
 ];
